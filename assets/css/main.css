@@ -1,0 +1,112 @@
+/* ============================================================
+   main.css — Estilos utilitarios propios
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   Placeholder images (SVG)
+   ---------------------------------------------------------- */
+.bd-placeholder-img {
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+@media (min-width: 768px) {
+  .bd-placeholder-img-lg {
+    font-size: 3.5rem;
+  }
+}
+
+/* ----------------------------------------------------------
+   Section divider
+   ---------------------------------------------------------- */
+.b-example-divider {
+  width: 100%;
+  height: 3rem;
+  background-color: rgba(255, 115, 0, 0.329);
+  border: solid rgb(255, 94, 0);
+  border-width: 1px 0;
+  box-shadow:
+    inset 0 0.5em 1.5em rgb(255, 81, 0),
+    inset 0 0.125em 0.5em rgba(255, 72, 0, 0.993);
+}
+
+/* ----------------------------------------------------------
+   Vertical rule helper
+   ---------------------------------------------------------- */
+.b-example-vr {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 100vh;
+}
+
+/* ----------------------------------------------------------
+   Bootstrap Icons — inline alignment fix
+   ---------------------------------------------------------- */
+.bi {
+  vertical-align: -0.125em;
+  fill: currentColor;
+}
+
+/* ----------------------------------------------------------
+   Horizontal scrolling nav
+   ---------------------------------------------------------- */
+.nav-scroller {
+  position: relative;
+  z-index: 2;
+  height: 2.75rem;
+  overflow-y: hidden;
+}
+
+.nav-scroller .nav {
+  display: flex;
+  flex-wrap: nowrap;
+  padding-bottom: 1rem;
+  margin-top: -1px;
+  overflow-x: auto;
+  text-align: center;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+.logo-navbar{
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+/* ----------------------------------------------------------
+   Brand primary button (violet)
+   ---------------------------------------------------------- */
+.btn-bd-primary {
+  --bd-violet-bg: hsl(27, 89%, 49%);
+  --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+  --bs-btn-font-weight: 600;
+  --bs-btn-color: var(--bs-white);
+  --bs-btn-bg: var(--bd-violet-bg);
+  --bs-btn-border-color: var(--bd-violet-bg);
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: #f08812;
+  --bs-btn-hover-border-color: #f08812;
+  --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+  --bs-btn-active-color: var(--bs-btn-hover-color);
+  --bs-btn-active-bg: #f08812;
+  --bs-btn-active-border-color: #f08812;
+}
+
+/* ----------------------------------------------------------
+   Theme toggle (fixed bottom-right)
+   ---------------------------------------------------------- */
+.bd-mode-toggle {
+  z-index: 1500;
+}
+
+.bd-mode-toggle .bi {
+  width: 1em;
+  height: 1em;
+}
+
+.bd-mode-toggle .dropdown-menu .active .bi {
+  display: block !important;
+}

@@ -1,0 +1,88 @@
+/* ============================================================
+   carousel.css — Estilos específicos de la página Carousel
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   Navbar padding compensation (fixed-top = 56px approx.)
+   ---------------------------------------------------------- */
+body {
+  padding-top: 56px;
+}
+
+/* ----------------------------------------------------------
+   Carousel — altura del slide
+   ---------------------------------------------------------- */
+.carousel-item {
+  height: 32rem;
+}
+
+.carousel-item img {
+  position: -ms-page;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ----------------------------------------------------------
+   Carousel caption
+   ---------------------------------------------------------- */
+.carousel-caption {
+  bottom: 3rem;
+}
+
+/* ----------------------------------------------------------
+   Marketing section — contenedor principal
+   ---------------------------------------------------------- */
+.container.marketing {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+/* ----------------------------------------------------------
+   3-column grid — centrar los círculos
+   ---------------------------------------------------------- */
+.marketing .col-lg-4 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.marketing h2 {
+  font-weight: 400;
+}
+
+/* ----------------------------------------------------------
+   Featurettes
+   ---------------------------------------------------------- */
+.featurette-divider {
+  margin: 5rem 0;
+}
+
+.featurette-heading {
+  letter-spacing: -0.05rem;
+}
+
+.featurette-image {
+  display: block;
+}
+
+/* ----------------------------------------------------------
+   Responsive — ajustes para pantallas pequeñas
+   ---------------------------------------------------------- */
+@media (min-width: 40em) {
+  .carousel-caption p {
+    margin-bottom: 1.25rem;
+    font-size: 1.25rem;
+    line-height: 1.4;
+  }
+
+  .featurette-heading {
+    font-size: 3.5rem;
+  }
+}
+
+@media (min-width: 62em) {
+  .featurette-heading {
+    margin-top: 7rem;
+  }
+}

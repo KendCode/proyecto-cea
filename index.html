@@ -105,38 +105,94 @@
     <!-- --------------------------------------------------------
        HEADER — fixed navbar
        -------------------------------------------------------- -->
-    <header data-bs-theme="dark">
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <div class="container-fluid">
+    <!-- ========================================================
+     HEADER RESPONSIVE
+======================================================== -->
+    <header id="inicio">
 
-                <!-- <a class="navbar-brand" href="#">
-                    <img src="assets/img/logoSinFondoCea.png" alt="Logo CEA" class="logo-navbar">
-                </a> -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <div class="container">
+
+                <!-- LOGO + NOMBRE -->
+                <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+
+                    <img src="assets/img/logos/logoSinFondoCea.png" alt="Logo CEA" class="logo-navbar">
+
+                    <span class="titulo-navbar">
+                        C.E.A. "ABYA YALA"
+                    </span>
+
+                </a>
+
+                <!-- BOTÓN HAMBURGUESA -->
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                    aria-label="Toggle navigation">
+
                     <span class="navbar-toggler-icon"></span>
+
                 </button>
 
+                <!-- MENÚ -->
                 <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-center align-items-lg-center">
+
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link active" href="#inicio">
+
+                                <i class="bi bi-house-door-fill me-1"></i>
+                                Inicio
+
+                            </a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
+                            <a class="nav-link" href="#nosotros">
+
+                                <i class="bi bi-people-fill me-1"></i>
+                                Nosotros
+
+                            </a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                            <a class="nav-link" href="#carreras">
+
+                                <i class="bi bi-mortarboard-fill me-1"></i>
+                                Carreras
+
+                            </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contacto">
+
+                                <i class="bi bi-envelope-fill me-1"></i>
+                                Contacto
+
+                            </a>
+                        </li>
+
+                        <!-- LOGIN -->
+                        <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+
+                            <a href="view/auth/login2.html" class="btn btn-warning px-3 rounded-pill fw-semibold">
+
+                                <i class="bi bi-box-arrow-in-right me-1"></i>
+                                Iniciar Sesión
+
+                            </a>
+
+                        </li>
+
                     </ul>
 
-                    <a class="navbar-brand" href="#">C.E.A. "ABYA YALA"
-                        <img src="assets/img/logos/logoSinFondoCea.png" alt="Logo CEA" class="logo-navbar">
-                    </a>
                 </div>
 
             </div>
+
         </nav>
     </header>
 
@@ -148,6 +204,7 @@
         <!-- --------------------------------------------------------
          CAROUSEL
          -------------------------------------------------------- -->
+
         <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
 
             <!-- Slide indicators -->
@@ -158,7 +215,6 @@
                 <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
             </div>
 
-            <!-- Slides -->
             <!-- Slides -->
             <div class="carousel-inner">
 
@@ -194,18 +250,20 @@
         </div><!-- /#myCarousel -->
 
         <!-- --------------------------------------------------------
-         MARKETING SECTION
+         CARRERAS
          -------------------------------------------------------- -->
+        <hr class="featurette-divider" id="carreras">
+        <div class="text-center mb-5">
+            <h1 class="fw-bold" style="object-fit: cover;">Carreras</h1>
+        </div>
         <div class="container marketing">
 
-            <!-- 3-column grid -->
+            <!-- CARRERAS -->
             <div class="row">
 
                 <div class="col-lg-4">
                     <img src="assets/img/carreras/medicina.jpg" alt="Imagen de perfil" class="rounded-circle"
                         width="140" height="140" style="object-fit: cover;">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="var(--bs-secondary-color)" />
                     </svg>
                     <h2 class="fw-normal">Medicina Tradicional</h2>
                     <!-- <p>Some representative placeholder content for the three columns of text below the carousel. This is
@@ -216,9 +274,6 @@
                 <div class="col-lg-4">
                     <img src="assets/img/carreras/sistemas.jpg" alt="Imagen de perfil" class="rounded-circle"
                         width="140" height="140" style="object-fit: cover;">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="var(--bs-secondary-color)" />
-                    </svg>
                     <h2 class="fw-normal">Sistemas Informáticos</h2>
                 </div>
 
@@ -232,14 +287,12 @@
                 </div>
 
             </div><!-- /.row (3 columns) -->
-            <!-- 3-column grid -->
+            <!-- CARRERAS -->
             <div class="row">
 
                 <div class="col-lg-4">
                     <img src="assets/img/carreras/parvularia.jpg" alt="Imagen de perfil" class="rounded-circle"
                         width="140" height="140" style="object-fit: cover;">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="var(--bs-secondary-color)" />
                     </svg>
                     <h2 class="fw-normal">Parvularia</h2>
                 </div>
@@ -263,14 +316,12 @@
                 </div>
 
             </div><!-- /.row (3 columns) -->
-            <!-- 3-column grid -->
+            <!-- CARRERAS -->
             <div class="row">
 
                 <div class="col-lg-4">
                     <img src="assets/img/carreras/construccion.jpg" alt="Imagen de perfil" class="rounded-circle"
                         width="140" height="140" style="object-fit: cover;">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="var(--bs-secondary-color)" />
                     </svg>
                     <h2 class="fw-normal">Construcción Civil</h2>
                 </div>
@@ -278,8 +329,6 @@
                 <div class="col-lg-4">
                     <img src="assets/img/carreras/mecanica.jpg" alt="Imagen de perfil" class="rounded-circle"
                         width="140" height="140" style="object-fit: cover;">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="var(--bs-secondary-color)" />
                     </svg>
                     <h2 class="fw-normal">Mecánica Automotriz</h2>
                 </div>
@@ -294,7 +343,7 @@
                 </div>
 
             </div><!-- /.row (3 columns) -->
-            <!-- 3-column grid -->
+            <!-- CARRERAS -->
             <div class="row">
 
                 <div class="col-lg-4">
@@ -327,26 +376,25 @@
             </div><!-- /.row (3 columns) -->
 
             <!-- FEATURETTES -->
-
-            <hr class="featurette-divider" />
-
+            <hr class="featurette-divider" id="nosotros" />
+            <div class="text-center mb-5">
+                <h1 class="fw-bold" style="object-fit: cover;">Nosotros</h1>
+            </div>
             <!-- Featurette 1 — text left, image right -->
             <div class="row featurette">
                 <div class="col-md-7">
                     <h2 class="featurette-heading fw-normal lh-1">
-                        First featurette heading.
-                        <span class="text-body-secondary">It'll blow your mind.</span>
+                        Centro de Educación Alternativa “Abya Yala”
+                        <span class="text-body-secondary"> Formación técnica y humanística.</span>
                     </h2>
-                    <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting
-                        prose here.</p>
+                    <p class="lead">El Centro de Educación Alternativa “Abya Yala” brinda oportunidades
+                        de formación a jóvenes y adultos, promoviendo una educación de
+                        calidad basada en valores, responsabilidad y desarrollo integral.</p>
                 </div>
                 <div class="col-md-5">
                     <img src="assets/img/logos/logoSinFondoCea.png" alt="Imagen"
                         class="featurette-image img-fluid mx-auto d-block" width="500" height="500"
                         style="object-fit: contain;">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="var(--bs-secondary-bg)" />
-                    </svg>
                 </div>
             </div>
 
@@ -356,19 +404,17 @@
             <div class="row featurette">
                 <div class="col-md-7 order-md-2">
                     <h2 class="featurette-heading fw-normal lh-1">
-                        Oh yeah, it's that good.
-                        <span class="text-body-secondary">See for yourself.</span>
+                        Participación en Desfiles Institucionales
+                        <span class="text-body-secondary">Cultura, civismo y compromiso.</span>
                     </h2>
-                    <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of
-                        how this layout would work with some actual real-world content in place.</p>
+                    <p class="lead">Nuestra institución participa activamente en desfiles y actos
+                        cívicos, fortaleciendo el espíritu de unidad, identidad cultural
+                        y compromiso con la comunidad educativa y la sociedad.</p>
                 </div>
                 <div class="col-md-5 order-md-1">
                     <img src="assets/img/home/desfile.jpg" alt="Imagen"
                         class="featurette-image img-fluid mx-auto d-block" width="500" height="500"
-                        style="object-fit: contain;">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="var(--bs-secondary-bg)" />
-                    </svg>
+                        style="object-fit: contain; border-radius: 10px;">
                 </div>
             </div>
 
@@ -378,70 +424,234 @@
             <div class="row featurette">
                 <div class="col-md-7">
                     <h2 class="featurette-heading fw-normal lh-1">
-                        And lastly, this one.
-                        <span class="text-body-secondary">Checkmate.</span>
+                        Feria Educativa y Productiva
+                        <span class="text-body-secondary">Innovación y aprendizaje práctico.</span>
                     </h2>
-                    <p class="lead">And yes, this is the last block of representative placeholder content. Again, not
-                        really intended to be actually read, simply here to give you a better view of what this would
-                        look like with some actual content. Your content.</p>
+                    <p class="lead">El Centro de Educación Alternativa “Abya Yala” organiza ferias educativas donde
+                        los estudiantes presentan proyectos, emprendimientos y trabajos
+                        prácticos desarrollados durante su formación académica y técnica.</p>
                 </div>
                 <div class="col-md-5">
                     <img src="assets/img/home/feria.jpg" alt="Imagen" class="featurette-image img-fluid mx-auto d-block"
-                        width="500" height="500" style="object-fit: contain;">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="var(--bs-secondary-bg)" />
-                    </svg>
+                        width="500" height="500" style="object-fit: contain; border-radius: 10px;">
                 </div>
             </div>
 
-            <hr class="featurette-divider" />
-
         </div><!-- /.container.marketing -->
+        <!-- ========================================================
+             CONTACTO
+        ======================================================== -->
+        <hr class="featurette-divider" id="contacto" />
+        <section id="contacto" class="py-5">
 
+            <div class="container">
+
+                <!-- TÍTULO -->
+                <div class="text-center mb-5">
+
+                    <h2 class="fw-bold">
+                        Contacto
+                    </h2>
+
+                    <p class="text-body-secondary">
+                        ¿Tienes dudas o quieres más información? Contáctanos.
+                    </p>
+
+                </div>
+
+                <!-- CONTENIDO -->
+                <div class="row g-4 align-items-stretch">
+
+                    <!-- INFORMACIÓN -->
+                    <div class="col-12 col-lg-5">
+
+                        <div class="contact-box h-100">
+
+                            <!-- Dirección -->
+                            <div class="contact-item">
+
+                                <div class="contact-icon text-primary">
+                                    <i class="bi bi-geo-alt-fill"></i>
+                                </div>
+
+                                <div>
+                                    <h6 class="fw-bold mb-1">Dirección</h6>
+
+                                    <p class="text-body-secondary mb-0">
+                                        Carretera a Viacha, Unidad Educativa Viliroco Distrito 6 <br>
+                                        Viacha, Bolivia
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <!-- WhatsApp -->
+                            <div class="contact-item">
+
+                                <div class="contact-icon text-success">
+                                    <i class="bi bi-whatsapp"></i>
+                                </div>
+
+                                <div>
+                                    <h6 class="fw-bold mb-1">WhatsApp</h6>
+
+                                    <a href="https://wa.me/59171265932"
+                                        class="text-decoration-none text-body-secondary">
+
+                                        +591 71265932
+
+                                    </a>
+                                </div>
+
+                            </div>
+
+                            <!-- Facebook -->
+                            <div class="contact-item">
+
+                                <div class="contact-icon text-primary">
+                                    <i class="bi bi-facebook"></i>
+                                </div>
+
+                                <div>
+                                    <h6 class="fw-bold mb-1">Facebook</h6>
+
+                                    <a href="https://www.facebook.com/p/CEA-Abya-Yala-61584201192653/" target="_blank"
+                                        class="text-decoration-none text-body-secondary">
+
+                                        CEA Abya Yala
+
+                                    </a>
+                                </div>
+
+                            </div>
+
+                            <!-- TikTok -->
+                            <div class="contact-item">
+
+                                <div class="contact-icon text-dark">
+                                    <i class="bi bi-tiktok"></i>
+                                </div>
+
+                                <div>
+                                    <h6 class="fw-bold mb-1">TikTok</h6>
+
+                                    <a href="https://www.tiktok.com/@c.e.a.abyayala" target="_blank"
+                                        class="text-decoration-none text-body-secondary">
+
+                                        @c.e.a.abyayala
+
+                                    </a>
+                                </div>
+
+                            </div>
+
+                            <!-- Horario -->
+                            <div class="contact-item border-0 pb-0">
+
+                                <div class="contact-icon text-warning">
+                                    <i class="bi bi-clock-fill"></i>
+                                </div>
+
+                                <div>
+                                    <h6 class="fw-bold mb-1">Horario</h6>
+
+                                    <p class="text-body-secondary mb-0">
+                                        Miercoles a Viernes: 19:00 – 21:30
+                                        <br>
+                                        Sábados: 13:00 – 17:00
+                                        <br>
+                                        Domingos: 09:00 – 12:00
+                                    </p>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- MAPA -->
+                    <div class="col-12 col-lg-7">
+
+                        <div class="map-container">
+
+                            <!-- MAPA -->
+                            <div class="map-container">
+
+                                <iframe src="https://www.google.com/maps?q=Colegio+Viliroco&output=embed"
+                                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                                    title="Ubicación Colegio Viliroco">
+                                </iframe>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
         <!-- --------------------------------------------------------
          FOOTER
          -------------------------------------------------------- -->
         <footer class="bg-dark text-light py-4 mt-5">
             <div class="container">
 
-                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <div class="row align-items-center text-center text-md-start">
 
                     <!-- Logo y texto -->
-                    <div class="col-md-6 d-flex align-items-center">
+                    <div class="col-12 col-md-8 mb-3 mb-md-0">
 
-                        <a href="#" class="me-3 text-decoration-none">
-                            <img src="assets/img/logos/logoSinFondoCea.png" alt="Logo" width="50" height="50"
-                                style="object-fit: contain;">
-                        </a>
+                        <div class="d-flex flex-column flex-md-row align-items-center">
 
-                        <span class="text-light">
-                            © 2026 Centro Educativo Abya Yala - Todos los derechos reservados
-                        </span>
+                            <a href="#" class="me-md-3 mb-2 mb-md-0 text-decoration-none">
+                                <img src="assets/img/logos/logoSinFondoCea.png" alt="Logo" width="55" height="55"
+                                    style="object-fit: contain;">
+                            </a>
+
+                            <span class="text-light">
+                                © 2026 Centro Educativo Abya Yala - Todos los derechos reservados
+                            </span>
+
+                        </div>
 
                     </div>
 
                     <!-- Redes sociales -->
-                    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+                    <div class="col-12 col-md-4">
 
-                        <li class="ms-3">
-                            <a class="text-light" href="https://www.facebook.com/p/CEA-Abya-Yala-61584201192653/">
-                                <i class="bi bi-facebook fs-4"></i>
-                            </a>
-                        </li>
+                        <ul class="nav justify-content-center justify-content-md-end list-unstyled d-flex">
 
-                        <li class="ms-3">
-                            <a class="text-light" href="https://www.tiktok.com/@c.e.a.abyayala">
-                                <i class="bi bi-tiktok fs-4"></i>
-                            </a>
-                        </li>
+                            <li class="ms-3">
+                                <a class="text-light" href="https://www.facebook.com/p/CEA-Abya-Yala-61584201192653/">
 
-                        <li class="ms-3">
-                            <a class="text-light" href="https://wa.me/59171265932">
-                                <i class="bi bi-whatsapp fs-4"></i>
-                            </a>
-                        </li>
+                                    <i class="bi bi-facebook fs-4"></i>
 
-                    </ul>
+                                </a>
+                            </li>
+
+                            <li class="ms-3">
+                                <a class="text-light" href="https://www.tiktok.com/@c.e.a.abyayala">
+
+                                    <i class="bi bi-tiktok fs-4"></i>
+
+                                </a>
+                            </li>
+
+                            <li class="ms-3">
+                                <a class="text-light" href="https://wa.me/59171265932">
+
+                                    <i class="bi bi-whatsapp fs-4"></i>
+
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
 
                 </div>
 

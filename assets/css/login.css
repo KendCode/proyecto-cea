@@ -1,0 +1,440 @@
+
+        /* ─── Variables ───────────────────────────────── */
+        :root {
+            --ink: #0d1117;
+            --ink-soft: #1c2330;
+            --gold: #c9a84c;
+            --gold-lt: #e8c96a;
+            --cream: #f5f0e8;
+            --muted: #6b7280;
+            --danger-c: #e05252;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--ink);
+            color: var(--cream);
+        }
+
+        /* ─── Layout Split ────────────────────────────── */
+        .login-wrapper {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        /* ─── Panel Izquierdo — decorativo ───────────── */
+        .panel-left {
+            position: relative;
+            background: var(--ink-soft);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+        }
+
+        /* Fondo geométrico animado */
+        .panel-left::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 20% 80%, rgba(201, 168, 76, .18) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 50% at 80% 20%, rgba(201, 168, 76, .10) 0%, transparent 55%);
+            pointer-events: none;
+        }
+
+        .geo-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(201, 168, 76, .15);
+        }
+
+        .geo-ring:nth-child(1) {
+            width: 480px;
+            height: 480px;
+            top: -120px;
+            left: -120px;
+        }
+
+        .geo-ring:nth-child(2) {
+            width: 320px;
+            height: 320px;
+            bottom: -80px;
+            right: -80px;
+            animation: spin 30s linear infinite;
+        }
+
+        .geo-ring:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .geo-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(201, 168, 76, .3), transparent);
+            height: 1px;
+            width: 100%;
+            left: 0;
+        }
+
+        .geo-line:nth-child(4) {
+            top: 30%;
+        }
+
+        .geo-line:nth-child(5) {
+            top: 70%;
+            opacity: .5;
+        }
+
+        .brand-block {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            animation: fadeUp .8s ease both;
+        }
+
+        .brand-logo {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            padding: 14px;
+            background: rgba(201, 168, 76, .08);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-inline: auto;
+        }
+
+        .brand-logo i {
+            font-size: 2.6rem;
+            color: var(--gold);
+        }
+
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 2.5vw, 2rem);
+            font-weight: 700;
+            letter-spacing: .04em;
+            color: var(--cream);
+            line-height: 1.2;
+        }
+
+        .brand-tagline {
+            font-size: .875rem;
+            color: var(--gold);
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin-top: .5rem;
+            font-weight: 300;
+        }
+
+        .brand-quote {
+            position: relative;
+            z-index: 2;
+            margin-top: 3rem;
+            padding: 1.25rem 1.5rem;
+            border-left: 3px solid var(--gold);
+            background: rgba(255, 255, 255, .04);
+            border-radius: 0 8px 8px 0;
+            max-width: 340px;
+            animation: fadeUp .9s .15s ease both;
+        }
+
+        .brand-quote p {
+            font-size: .92rem;
+            color: rgba(245, 240, 232, .75);
+            margin: 0;
+            font-style: italic;
+            line-height: 1.65;
+        }
+
+        /* ─── Panel Derecho — formulario ─────────────── */
+        .panel-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem 2rem;
+            background: var(--ink);
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            animation: fadeUp .7s .05s ease both;
+        }
+
+        .login-card h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: var(--cream);
+            margin-bottom: .35rem;
+        }
+
+        .login-card .subtitle {
+            font-size: .9rem;
+            color: var(--muted);
+            margin-bottom: 2.25rem;
+        }
+
+        /* Divider dorado */
+        .gold-divider {
+            width: 42px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-lt));
+            border-radius: 2px;
+            margin-bottom: 1.75rem;
+        }
+
+        /* Inputs */
+        .form-label {
+            font-size: .78rem;
+            font-weight: 500;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: rgba(245, 240, 232, .6);
+            margin-bottom: .4rem;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-size: 1rem;
+            pointer-events: none;
+            transition: color .2s;
+        }
+
+        .input-wrap .form-control {
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 10px;
+            color: var(--cream);
+            padding: .75rem 1rem .75rem 2.6rem;
+            font-size: .925rem;
+            transition: border-color .2s, box-shadow .2s, background .2s;
+        }
+
+        .input-wrap .form-control::placeholder {
+            color: rgba(245, 240, 232, .3);
+        }
+
+        .input-wrap .form-control:focus {
+            background: rgba(201, 168, 76, .06);
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 168, 76, .15);
+            color: var(--cream);
+            outline: none;
+        }
+
+        .input-wrap .form-control:focus+.input-icon,
+        .input-wrap:focus-within .input-icon {
+            color: var(--gold);
+        }
+
+        /* Toggle password */
+        .btn-eye {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 0;
+            font-size: 1rem;
+            line-height: 1;
+            transition: color .2s;
+        }
+
+        .btn-eye:hover {
+            color: var(--gold);
+        }
+
+        /* Checkbox */
+        .form-check-input {
+            background-color: rgba(255, 255, 255, .08);
+            border-color: rgba(255, 255, 255, .2);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--gold);
+            border-color: var(--gold);
+        }
+
+        .form-check-label {
+            font-size: .88rem;
+            color: rgba(245, 240, 232, .65);
+        }
+
+        /* Hints de formato */
+        .form-hint {
+            font-size: .76rem;
+            color: var(--muted);
+            margin-top: .35rem;
+            padding-left: .2rem;
+        }
+
+        .hint-hl {
+            color: var(--gold);
+            font-weight: 500;
+            font-family: 'Courier New', monospace;
+            letter-spacing: .03em;
+        }
+
+        .hint-sub {
+            font-size: .72rem;
+            color: var(--muted);
+            font-weight: 300;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        /* Botón principal */
+        .btn-login {
+            width: 100%;
+            padding: .85rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+            border: none;
+            border-radius: 10px;
+            color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: .95rem;
+            letter-spacing: .04em;
+            cursor: pointer;
+            transition: transform .15s, box-shadow .2s, filter .2s;
+            box-shadow: 0 4px 18px rgba(201, 168, 76, .25);
+        }
+
+        .btn-login:hover {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 28px rgba(201, 168, 76, .35);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .btn-login .spinner-border {
+            display: none;
+            width: 1rem;
+            height: 1rem;
+            border-width: 2px;
+        }
+
+        .btn-login.loading .spinner-border {
+            display: inline-block;
+        }
+
+        .btn-login.loading .btn-text {
+            display: none;
+        }
+
+        /* Links */
+        .forgot-link {
+            font-size: .85rem;
+            color: var(--gold);
+            text-decoration: none;
+            transition: opacity .2s;
+        }
+
+        .forgot-link:hover {
+            opacity: .75;
+            color: var(--gold);
+        }
+
+        /* Alerta error */
+        .alert-login {
+            background: rgba(224, 82, 82, .12);
+            border: 1px solid rgba(224, 82, 82, .35);
+            border-radius: 8px;
+            color: #f49090;
+            font-size: .88rem;
+            padding: .7rem 1rem;
+            display: none;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .alert-login.show {
+            display: flex;
+        }
+
+        /* Separador o registro */
+        .register-line {
+            text-align: center;
+            font-size: .85rem;
+            color: var(--muted);
+            margin-top: 1.5rem;
+        }
+
+        .register-line a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .register-line a:hover {
+            text-decoration: underline;
+        }
+
+        /* ─── Animación entrada ───────────────────────── */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(22px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ─── Responsive ──────────────────────────────── */
+        @media (max-width: 768px) {
+            .login-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .panel-left {
+                display: none;
+            }
+
+            .panel-right {
+                padding: 2rem 1.25rem;
+            }
+        }
+  

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CEA — Usuarios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../assets/css/adminUsuarios.css">
+</head>
+
+<body>
+
+    <div class="cea-main" id="ceaMain">
+
+        <!-- Page Header -->
+        <div class="page-header d-flex align-items-start justify-content-between flex-wrap gap-3">
+            <div>
+                <h1>Gestión de Usuarios</h1>
+                <p>Administra todos los usuarios del sistema CEA</p>
+            </div>
+            <button class="btn-add" data-bs-toggle="modal" data-bs-target="#modalUsuario" onclick="openModal('nuevo')">
+                <i class="bi bi-plus-lg"></i> Nuevo Usuario
+            </button>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-icon gold"><i class="bi bi-people-fill"></i></div>
+                    <div>
+                        <div class="stat-num" id="statTotal">0</div>
+                        <div class="stat-label">Total usuarios</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="bi bi-mortarboard-fill"></i></div>
+                    <div>
+                        <div class="stat-num" id="statDocentes">0</div>
+                        <div class="stat-label">Docentes</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="bi bi-person-badge-fill"></i></div>
+                    <div>
+                        <div class="stat-num" id="statEstudiantes">0</div>
+                        <div class="stat-label">Estudiantes</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-icon red"><i class="bi bi-person-x-fill"></i></div>
+                    <div>
+                        <div class="stat-num" id="statInactivos">0</div>
+                        <div class="stat-label">Inactivos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="table-card">
+            <div class="table-toolbar">
+                <span class="toolbar-title"><i class="bi bi-people me-2 text-secondary"></i>Lista de usuarios</span>
+                <div class="search-input-wrap">
+                    <i class="bi bi-search"></i>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Buscar usuario..." />
+                </div>
+                <select class="filter-select" id="filterRol">
+                    <option value="">Todos los roles</option>
+                    <option value="administrador">Administrador</option>
+                    <option value="directora">Directora</option>
+                    <option value="docente">Docente</option>
+                    <option value="estudiante">Estudiante</option>
+                </select>
+                <select class="filter-select" id="filterEstado">
+                    <option value="">Todos</option>
+                    <option value="true">Activos</option>
+                    <option value="false">Inactivos</option>
+                </select>
+            </div>
+
+            <div class="table-responsive">
+                <table class="cea-table" id="tablaUsuarios">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Usuario</th>
+                            <th>C.I.</th>
+                            <th>Celular</th>
+                            <th>Rol</th>
+                            <th>Registro</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyUsuarios">
+                        <!-- JS llenará aquí -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="cea-pagination">
+                <span id="paginationInfo">Mostrando 0 de 0</span>
+                <div class="page-btns" id="paginationBtns"></div>
+            </div>
+        </div>
+
+    </div><!-- /cea-main -->
+
+    <!-- ── MODAL USUARIO ── -->
+    <div class="modal fade" id="modalUsuario" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" style="border-radius:14px; border:none;">
+                <div class="modal-header cea-modal-header px-4 py-3">
+                    <h5 class="modal-title cea-modal-title" id="modalUsuarioTitle">NUEVO USUARIO</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <input type="hidden" id="editUid" />
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Nombre *</label>
+                            <input type="text" class="form-control" id="fNombre" placeholder="Bryan" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Ap. Paterno *</label>
+                            <input type="text" class="form-control" id="fApPat" placeholder="Mendoza" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Ap. Materno</label>
+                            <input type="text" class="form-control" id="fApMat" placeholder="Canaviri" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">C.I. *</label>
+                            <input type="text" class="form-control" id="fCi" placeholder="9938123" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Celular</label>
+                            <input type="text" class="form-control" id="fCelular" placeholder="60539021" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Rol *</label>
+                            <select class="form-select" id="fRol">
+                                <option value="">Seleccionar...</option>
+                                <option value="administrador">Administrador</option>
+                                <option value="directora">Directora</option>
+                                <option value="docente">Docente</option>
+                                <option value="estudiante">Estudiante</option>
+                            </select>
+                        </div>
+                        <!-- Carrera -->
+                        <div class="col-md-6" id="wrapCarrera">
+                            <label class="form-label">Carrera</label>
+                            <select class="form-select" id="fCarrera">
+                                <option value="">Seleccionar...</option>
+                                <option value="Sistemas Informaticos">
+                                    Sistemas Informáticos
+                                </option>
+                                <option value="Gastronomia">
+                                    Gastronomía
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Nivel -->
+                        <div class="col-md-6" id="wrapNivel">
+                            <label class="form-label">Nivel</label>
+                            <select class="form-select" id="fNivel">
+                                <option value="">Seleccionar...</option>
+                                <option value="TECNICO_BASICO">
+                                    Técnico Básico
+                                </option>
+                                <option value="TECNICO_AUXILIAR">
+                                    Técnico Auxiliar
+                                </option>
+                                <option value="TECNICO_MEDIO_1">
+                                    Técnico Medio 1
+                                </option>
+                                <option value="TECNICO_MEDIO_2">
+                                    Técnico Medio 2
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Sexo -->
+                        <div class="col-md-6" id="wrapSexo">
+                            <label class="form-label">Sexo</label>
+                            <select class="form-select" id="fSexo">
+                                <option value="">Seleccionar...</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                            </select>
+                        </div>
+
+                        <!-- Fecha nacimiento -->
+                        <div class="col-md-6" id="wrapFechaNac">
+                            <label class="form-label">Fecha nacimiento *</label>
+                            <input type="date" class="form-control" id="fFechaNac" />
+                            <div class="form-text">
+                                La contraseña se generará automáticamente con esta fecha.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Estado</label>
+                            <select class="form-select" id="fEstado">
+                                <option value="true">Activo</option>
+                                <option value="false">Inactivo</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Correo generado</label>
+                            <input type="text" class="form-control bg-light" id="fCorreoGen" readonly
+                                placeholder="Se genera automáticamente" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 px-4 pb-4">
+                    <button class="btn btn-light btn-sm rounded-3" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn-cea-primary btn btn-sm" id="btnGuardarUsuario">
+                        <i class="bi bi-check2-circle me-1"></i> Guardar Usuario
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── MODAL CONFIRMAR ELIMINAR ── -->
+    <div class="modal fade" id="modalEliminar" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="max-width:400px">
+            <div class="modal-content" style="border-radius:14px; border:none;">
+                <div class="modal-body p-4 text-center">
+                    <div
+                        style="width:60px;height:60px;border-radius:50%;background:#fff1f2;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;color:#e11d48;">
+                        <i class="bi bi-trash3-fill"></i>
+                    </div>
+                    <h5 style="font-family:'Bebas Neue',cursive;letter-spacing:1px;font-size:1.3rem;color:#0d1b2a;">
+                        ¿Eliminar usuario?</h5>
+                    <p style="color:#7a8fa0;font-size:.875rem;" id="eliminarNombre">Esta acción no se puede deshacer.
+                    </p>
+                    <div class="d-flex gap-2 justify-content-center mt-3">
+                        <button class="btn btn-light btn-sm rounded-3 px-4" data-bs-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-danger btn-sm rounded-3 px-4" id="btnConfirmarEliminar">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="../../assets/js/layout.js"></script> -->
+    <script type="module" src="../../controllers/usuariosController.js"></script>
+
+    <script type="module">
+
+        injectLayout(
+            'usuarios',
+            'Gestión de Usuarios'
+        );
+
+        // MODAL
+        window.openModal = (modo) => {
+
+            document.getElementById(
+                'modalUsuarioTitle'
+            ).textContent =
+                modo === 'nuevo'
+                    ? 'NUEVO USUARIO'
+                    : 'EDITAR USUARIO';
+
+            document.getElementById(
+                'editUid'
+            ).value = '';
+
+            [
+                'fNombre',
+                'fApPat',
+                'fApMat',
+                'fCi',
+                'fCelular',
+                'fPass',
+                'fCorreoGen',
+                'fCarrera',
+                'fNivel',
+                'fSexo',
+                'fFechaNac'
+            ].forEach(id => {
+
+                document.getElementById(id).value = '';
+
+            });
+
+            document.getElementById(
+                'fRol'
+            ).value = '';
+
+            document.getElementById(
+                'fEstado'
+            ).value = 'true';
+
+            onRolChange();
+
+        };
+
+        // MOSTRAR / OCULTAR CAMPOS
+        window.onRolChange = () => {
+
+            const rol =
+                document.getElementById(
+                    'fRol'
+                ).value;
+
+            const wrapCarrera =
+                document.getElementById(
+                    'wrapCarrera'
+                );
+
+            const wrapNivel =
+                document.getElementById(
+                    'wrapNivel'
+                );
+
+            const wrapSexo =
+                document.getElementById(
+                    'wrapSexo'
+                );
+
+            const wrapFechaNac =
+                document.getElementById(
+                    'wrapFechaNac'
+                );
+
+            wrapCarrera.style.display = 'none';
+            wrapNivel.style.display = 'none';
+            wrapSexo.style.display = 'none';
+            wrapFechaNac.style.display = 'none';
+
+            if (rol === 'docente') {
+
+                wrapCarrera.style.display = 'block';
+
+            }
+
+            if (rol === 'estudiante') {
+
+                wrapCarrera.style.display = 'block';
+                wrapNivel.style.display = 'block';
+                wrapSexo.style.display = 'block';
+                wrapFechaNac.style.display = 'block';
+
+            }
+
+        };
+        document
+            .getElementById('fRol')
+            .addEventListener('change', onRolChange);
+
+    </script>
+</body>
+
+</html>

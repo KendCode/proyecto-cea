@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CEA — Carreras</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../assets/css/adminCarreras.css">
+</head>
+<body>
+<div class="cea-main" id="ceaMain">
+
+  <div class="page-header d-flex align-items-start justify-content-between flex-wrap gap-3">
+    <div>
+      <h1>Gestión de Carreras</h1>
+      <p>Administra las carreras técnicas del centro educativo</p>
+    </div>
+    <button class="btn-add" data-bs-toggle="modal" data-bs-target="#modalCarrera" onclick="abrirNuevo()">
+      <i class="bi bi-plus-lg"></i> Nueva Carrera
+    </button>
+  </div>
+
+  <!-- Summary strip -->
+  <div class="summary-strip" id="summaryStrip">
+    <div class="ss-item"><div class="ss-num" id="ssTotal">0</div><div class="ss-label">Total carreras</div></div>
+    <div class="ss-item"><div class="ss-num" id="ssActivas">0</div><div class="ss-label">Activas</div></div>
+    <div class="ss-item"><div class="ss-num" id="ssEstudiantes">0</div><div class="ss-label">Estudiantes</div></div>
+    <div class="ss-item"><div class="ss-num" id="ssDocentes">0</div><div class="ss-label">Docentes</div></div>
+  </div>
+
+  <!-- Carreras Grid -->
+  <div class="carreras-grid" id="carrerasGrid">
+    <!-- Cards inserted by JS -->
+  </div>
+</div>
+
+<!-- MODAL CARRERA -->
+<div class="modal fade" id="modalCarrera" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:480px">
+    <div class="modal-content" style="border-radius:14px;border:none;">
+      <div class="modal-header cea-modal-header px-4 py-3">
+        <h5 class="modal-title cea-modal-title" id="modalCarTitle">NUEVA CARRERA</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4">
+        <input type="hidden" id="editCarId"/>
+        <div class="row g-3">
+          <div class="col-8">
+            <label class="form-label">Nombre de la Carrera *</label>
+            <input type="text" class="form-control" id="fCarNombre" placeholder="Sistemas Informaticos"/>
+          </div>
+          <div class="col-4">
+            <label class="form-label">Sigla *</label>
+            <input type="text" class="form-control" id="fCarSigla" placeholder="SI" maxlength="5"
+              oninput="this.value=this.value.toUpperCase()"/>
+          </div>
+          <div class="col-12">
+            <label class="form-label mb-2">Color identificador</label>
+            <div class="color-opts" id="colorOpts">
+              <div class="color-opt selected" data-color="#0d1b2a" style="background:#0d1b2a" onclick="selectColor(this)"></div>
+              <div class="color-opt" data-color="#2563eb" style="background:#2563eb" onclick="selectColor(this)"></div>
+              <div class="color-opt" data-color="#7c3aed" style="background:#7c3aed" onclick="selectColor(this)"></div>
+              <div class="color-opt" data-color="#059669" style="background:#059669" onclick="selectColor(this)"></div>
+              <div class="color-opt" data-color="#d97706" style="background:#d97706" onclick="selectColor(this)"></div>
+              <div class="color-opt" data-color="#dc2626" style="background:#dc2626" onclick="selectColor(this)"></div>
+              <div class="color-opt" data-color="#0891b2" style="background:#0891b2" onclick="selectColor(this)"></div>
+              <div class="color-opt" data-color="#be185d" style="background:#be185d" onclick="selectColor(this)"></div>
+            </div>
+            <input type="hidden" id="fCarColor" value="#0d1b2a"/>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Estado</label>
+            <select class="form-select" id="fCarEstado">
+              <option value="true">Activa</option>
+              <option value="false">Inactiva</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-0 px-4 pb-4">
+        <button class="btn btn-light btn-sm rounded-3" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn-cea-primary btn btn-sm" id="btnGuardarCar">
+          <i class="bi bi-check2-circle me-1"></i> Guardar Carrera
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ELIMINAR -->
+<div class="modal fade" id="modalEliminar" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:400px">
+    <div class="modal-content" style="border-radius:14px;border:none;">
+      <div class="modal-body p-4 text-center">
+        <div style="width:60px;height:60px;border-radius:50%;background:#fff1f2;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;color:#e11d48;"><i class="bi bi-trash3-fill"></i></div>
+        <h5 style="font-family:'Bebas Neue',cursive;letter-spacing:1px;font-size:1.3rem;color:#0d1b2a;">¿Eliminar carrera?</h5>
+        <p style="color:#7a8fa0;font-size:.875rem;" id="elimCarNombre">Esta acción no se puede deshacer.</p>
+        <div class="d-flex gap-2 justify-content-center mt-3">
+          <button class="btn btn-light btn-sm rounded-3 px-4" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-danger btn-sm rounded-3 px-4" id="btnConfEliminar">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../assets/js/layout.js"></script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = { /* TU CONFIG */ };
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+  injectLayout('carreras', 'Gestión de Carreras');
+
+  let allCar = [], estudiantesArr = [], docentesArr = [];
+  let deletingId = null;
+
+  window.selectColor = (el) => {
+    document.querySelectorAll('.color-opt').forEach(x => x.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('fCarColor').value = el.dataset.color;
+  };
+
+  async function cargarDatos() {
+    const [carSnap, estSnap, docSnap] = await Promise.all([
+      getDocs(collection(db,'carreras')),
+      getDocs(collection(db,'estudiantes')),
+      getDocs(collection(db,'docentes'))
+    ]);
+    allCar = carSnap.docs.map(d => ({id:d.id,...d.data()}));
+    estudiantesArr = estSnap.docs.map(d => d.data());
+    docentesArr    = docSnap.docs.map(d => d.data());
+
+    document.getElementById('ssTotal').textContent      = allCar.length;
+    document.getElementById('ssActivas').textContent    = allCar.filter(c=>c.estado).length;
+    document.getElementById('ssEstudiantes').textContent= estudiantesArr.length;
+    document.getElementById('ssDocentes').textContent   = docentesArr.length;
+
+    renderGrid();
+  }
+
+  function countByCarrera(arr, carrera) {
+    return arr.filter(x => x.carrera === carrera).length;
+  }
+  function countModulosByCarrera(carrera) {
+    // placeholder — se podría cargar módulos
+    return '—';
+  }
+
+  function renderGrid() {
+    const grid = document.getElementById('carrerasGrid');
+    let html = allCar.map(c => {
+      const nEst = countByCarrera(estudiantesArr, c.nombre);
+      const nDoc = countByCarrera(docentesArr, c.nombre);
+      const color = c.color || '#0d1b2a';
+      return `<div class="carrera-card">
+        <div class="cc-header">
+          <div class="cc-sigla-badge" style="background:${color}">${c.sigla||'??'}</div>
+          <div class="cc-name">${c.nombre||'Sin nombre'}</div>
+          <div class="cc-estado-wrap">
+            <span class="badge-estado badge-${c.estado?'activo':'inactivo'}">${c.estado?'Activa':'Inactiva'}</span>
+          </div>
+        </div>
+        <div class="cc-divider"></div>
+        <div class="cc-stats">
+          <div class="cc-stat">
+            <div class="cc-stat-num">${nEst}</div>
+            <div class="cc-stat-label">Estudiantes</div>
+          </div>
+          <div class="cc-stat">
+            <div class="cc-stat-num">${nDoc}</div>
+            <div class="cc-stat-label">Docentes</div>
+          </div>
+          <div class="cc-stat">
+            <div class="cc-stat-num">4</div>
+            <div class="cc-stat-label">Niveles</div>
+          </div>
+        </div>
+        <div class="cc-divider2"></div>
+        <div class="cc-actions">
+          <button class="btn-cc btn-cc-edit" onclick="editarCar('${c.id}')"><i class="bi bi-pencil-fill"></i> Editar</button>
+          <button class="btn-cc btn-cc-toggle ${c.estado?'':'inactive'}" onclick="toggleEstado('${c.id}',${c.estado})">
+            <i class="bi bi-${c.estado?'eye-slash-fill':'eye-fill'}"></i> ${c.estado?'Desactivar':'Activar'}
+          </button>
+          <button class="btn-cc btn-cc-delete" onclick="confirmarEliminar('${c.id}','${c.nombre}')"><i class="bi bi-trash3-fill"></i></button>
+        </div>
+      </div>`;
+    }).join('');
+
+    // Add card
+    html += `<div class="carrera-add-card" data-bs-toggle="modal" data-bs-target="#modalCarrera" onclick="abrirNuevo()">
+      <i class="bi bi-plus-circle-fill"></i>
+      <p>Agregar nueva carrera</p>
+    </div>`;
+
+    grid.innerHTML = html;
+  }
+
+  window.toggleEstado = async (id, estadoActual) => {
+    await updateDoc(doc(db,'carreras',id), { estado: !estadoActual });
+    cargarDatos();
+  };
+
+  window.abrirNuevo = () => {
+    document.getElementById('modalCarTitle').textContent = 'NUEVA CARRERA';
+    document.getElementById('editCarId').value = '';
+    document.getElementById('fCarNombre').value = '';
+    document.getElementById('fCarSigla').value = '';
+    document.getElementById('fCarEstado').value = 'true';
+    document.getElementById('fCarColor').value = '#0d1b2a';
+    document.querySelectorAll('.color-opt').forEach((x,i) => x.classList.toggle('selected', i===0));
+  };
+
+  window.editarCar = (id) => {
+    const c = allCar.find(x=>x.id===id);
+    if (!c) return;
+    document.getElementById('modalCarTitle').textContent = 'EDITAR CARRERA';
+    document.getElementById('editCarId').value  = id;
+    document.getElementById('fCarNombre').value = c.nombre||'';
+    document.getElementById('fCarSigla').value  = c.sigla||'';
+    document.getElementById('fCarEstado').value = String(c.estado);
+    document.getElementById('fCarColor').value  = c.color||'#0d1b2a';
+    document.querySelectorAll('.color-opt').forEach(x => {
+      x.classList.toggle('selected', x.dataset.color === (c.color||'#0d1b2a'));
+    });
+    new bootstrap.Modal(document.getElementById('modalCarrera')).show();
+  };
+
+  window.confirmarEliminar = (id, nombre) => {
+    deletingId = id;
+    document.getElementById('elimCarNombre').textContent = `¿Eliminar la carrera "${nombre}"? Esto podría afectar a estudiantes y módulos vinculados.`;
+    new bootstrap.Modal(document.getElementById('modalEliminar')).show();
+  };
+
+  document.getElementById('btnConfEliminar').addEventListener('click', async () => {
+    if (!deletingId) return;
+    await deleteDoc(doc(db,'carreras',deletingId));
+    bootstrap.Modal.getInstance(document.getElementById('modalEliminar')).hide();
+    cargarDatos();
+  });
+
+  document.getElementById('btnGuardarCar').addEventListener('click', async () => {
+    const uid    = document.getElementById('editCarId').value;
+    const nombre = document.getElementById('fCarNombre').value.trim();
+    const sigla  = document.getElementById('fCarSigla').value.trim();
+    const estado = document.getElementById('fCarEstado').value === 'true';
+    const color  = document.getElementById('fCarColor').value;
+    if (!nombre || !sigla) { alert('Completa nombre y sigla.'); return; }
+    const data = { nombre, sigla, estado, color };
+    const btn = document.getElementById('btnGuardarCar');
+    btn.disabled=true; btn.textContent='Guardando...';
+    try {
+      if (uid) await updateDoc(doc(db,'carreras',uid), data);
+      else await addDoc(collection(db,'carreras'), data);
+      bootstrap.Modal.getInstance(document.getElementById('modalCarrera')).hide();
+      cargarDatos();
+    } catch(e) { alert('Error: '+e.message); }
+    finally { btn.disabled=false; btn.textContent='Guardar Carrera'; }
+  });
+
+  cargarDatos();
+</script>
+</body>
+</html>

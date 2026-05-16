@@ -1,494 +1,340 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CEA — Estudiantes</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
-  <style>
-    .page-header { margin-bottom: 28px; }
-    .page-header h1 { font-family: 'Bebas Neue', cursive; font-size: 2rem; color: #0d1b2a; letter-spacing: 1px; margin: 0; }
-    .page-header p  { color: #7a8fa0; font-size: .875rem; margin: 0; }
-
-    .stat-card { background:#fff; border-radius:14px; padding:20px 22px; border:1px solid #e8edf3; display:flex; align-items:center; gap:16px; transition:box-shadow .2s; }
-    .stat-card:hover { box-shadow:0 4px 20px rgba(0,0,0,.07); }
-    .stat-icon { width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }
-    .si-teal   { background:rgba(20,184,166,.12); color:#0d9488; }
-    .si-blue   { background:rgba(37,99,235,.12);  color:#2563eb; }
-    .si-purple { background:rgba(124,58,237,.12); color:#7c3aed; }
-    .si-orange { background:rgba(234,88,12,.12);  color:#ea580c; }
-    .stat-num  { font-family:'Bebas Neue',cursive; font-size:1.8rem; color:#0d1b2a; line-height:1; }
-    .stat-label{ font-size:.76rem; color:#7a8fa0; text-transform:uppercase; letter-spacing:1.2px; }
-
-    .table-card { background:#fff; border-radius:16px; border:1px solid #e8edf3; overflow:hidden; }
-    .table-toolbar { display:flex; align-items:center; flex-wrap:wrap; gap:12px; padding:18px 22px; border-bottom:1px solid #f0f3f8; }
-    .toolbar-title { font-weight:600; color:#0d1b2a; font-size:.95rem; flex:1; }
-    .search-input-wrap { position:relative; }
-    .search-input-wrap i { position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#aab8c4; font-size:.9rem; }
-    .search-input { padding:7px 12px 7px 32px; border:1.5px solid #e2e8f0; border-radius:9px; font-family:'DM Sans',sans-serif; font-size:.85rem; width:220px; color:#0d1b2a; outline:none; transition:border-color .2s; }
-    .search-input:focus { border-color:#f0a500; }
-    .filter-select { padding:7px 10px; border:1.5px solid #e2e8f0; border-radius:9px; font-family:'DM Sans',sans-serif; font-size:.85rem; color:#0d1b2a; outline:none; cursor:pointer; }
-    .filter-select:focus { border-color:#f0a500; }
-    .btn-add { background:#0d1b2a; color:#f0a500; border:none; border-radius:9px; padding:8px 16px; font-family:'DM Sans',sans-serif; font-size:.85rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px; transition:background .2s; }
-    .btn-add:hover { background:#1b2d42; }
-
-    .cea-table { width:100%; border-collapse:collapse; }
-    .cea-table thead th { background:#f8fafc; font-size:.72rem; font-weight:700; color:#7a8fa0; text-transform:uppercase; letter-spacing:1.2px; padding:11px 18px; border-bottom:1px solid #e8edf3; white-space:nowrap; }
-    .cea-table tbody tr { border-bottom:1px solid #f0f3f8; transition:background .15s; }
-    .cea-table tbody tr:last-child { border-bottom:none; }
-    .cea-table tbody tr:hover { background:#fafbfd; }
-    .cea-table td { padding:13px 18px; font-size:.875rem; color:#334155; vertical-align:middle; }
-
-    .user-cell { display:flex; align-items:center; gap:10px; }
-    .user-avatar { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.8rem; flex-shrink:0; }
-    .user-name  { font-weight:600; color:#0d1b2a; font-size:.875rem; line-height:1.2; }
-    .user-sub   { font-size:.75rem; color:#7a8fa0; }
-
-    .badge-nivel { padding:3px 9px; border-radius:20px; font-size:.7rem; font-weight:700; white-space:nowrap; }
-    .badge-TECNICO_BASICO   { background:#dbeafe; color:#1d4ed8; }
-    .badge-TECNICO_AUXILIAR { background:#fef3c7; color:#b45309; }
-    .badge-TECNICO_MEDIO_1  { background:#d1fae5; color:#065f46; }
-    .badge-TECNICO_MEDIO_2  { background:#ede9fe; color:#5b21b6; }
-
-    .badge-sexo { padding:3px 8px; border-radius:20px; font-size:.7rem; font-weight:600; }
-    .badge-M { background:#dbeafe; color:#1d4ed8; }
-    .badge-F { background:#fce7f3; color:#9d174d; }
-
-    .badge-estado { padding:3px 9px; border-radius:20px; font-size:.72rem; font-weight:600; }
-    .badge-activo   { background:#d1fae5; color:#065f46; }
-    .badge-inactivo { background:#fee2e2; color:#991b1b; }
-
-    .action-btns { display:flex; gap:6px; }
-    .btn-action { width:30px; height:30px; border-radius:7px; display:flex; align-items:center; justify-content:center; border:none; cursor:pointer; font-size:.85rem; transition:background .18s; }
-    .btn-edit   { background:#eff6ff; color:#2563eb; }  .btn-edit:hover   { background:#dbeafe; }
-    .btn-delete { background:#fff1f2; color:#e11d48; }  .btn-delete:hover { background:#ffe4e6; }
-    .btn-view   { background:#f0fdf4; color:#16a34a; }  .btn-view:hover   { background:#dcfce7; }
-
-    .cea-pagination { display:flex; align-items:center; justify-content:space-between; padding:14px 22px; border-top:1px solid #f0f3f8; font-size:.8rem; color:#7a8fa0; }
-    .page-btns { display:flex; gap:4px; }
-    .page-btn { width:30px; height:30px; border-radius:7px; border:1px solid #e2e8f0; background:#fff; cursor:pointer; font-size:.8rem; color:#334155; display:flex; align-items:center; justify-content:center; transition:background .15s; }
-    .page-btn:hover, .page-btn.active { background:#0d1b2a; color:#f0a500; border-color:#0d1b2a; }
-
-    /* Nivel timeline sidebar in modal */
-    .nivel-selector { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-    .nivel-opt { padding:10px 12px; border:2px solid #e2e8f0; border-radius:10px; cursor:pointer; transition:all .2s; }
-    .nivel-opt:hover { border-color:#f0a500; background:#fffaf0; }
-    .nivel-opt.selected { border-color:#f0a500; background:#fffaf0; }
-    .nivel-opt-label { font-size:.72rem; font-weight:700; color:#0d1b2a; }
-    .nivel-opt-sub { font-size:.68rem; color:#7a8fa0; }
-
-    .cea-modal-header { background:#0d1b2a; color:#fff; border-radius:12px 12px 0 0; }
-    .cea-modal-header .btn-close { filter:brightness(0) invert(1); }
-    .cea-modal-title { font-family:'Bebas Neue',cursive; letter-spacing:1px; font-size:1.2rem; }
-    .form-label { font-size:.75rem; font-weight:700; color:#0d1b2a; text-transform:uppercase; letter-spacing:1px; }
-    .form-control, .form-select { border:1.5px solid #e2e8f0; border-radius:9px; font-family:'DM Sans',sans-serif; font-size:.875rem; padding:8px 12px; }
-    .form-control:focus, .form-select:focus { border-color:#f0a500; box-shadow:0 0 0 3px rgba(240,165,0,.15); }
-    .btn-cea-primary { background:#0d1b2a; color:#f0a500; border:none; border-radius:9px; font-family:'DM Sans',sans-serif; font-weight:600; padding:9px 20px; transition:background .2s; }
-    .btn-cea-primary:hover { background:#1b2d42; color:#f0a500; }
-
-    .skeleton-row td div { height:14px; border-radius:4px; background:linear-gradient(90deg,#f0f3f8 25%,#e2e8f0 50%,#f0f3f8 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; }
-    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-    .empty-state { text-align:center; padding:56px 20px; }
-    .empty-state i { font-size:2.5rem; color:#cbd5e1; margin-bottom:12px; }
-    .empty-state p { color:#7a8fa0; font-size:.875rem; }
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
 </head>
 <body>
-<div class="cea-main" id="ceaMain">
+<script src="../../assets/js/sidebar.js"></script>
+<script>renderLayout({ title: 'Estudiantes', subtitle: 'Gestión de estudiantes inscritos', activeLink: 'estudiantes' });</script>
 
-  <div class="page-header d-flex align-items-start justify-content-between flex-wrap gap-3">
-    <div>
-      <h1>Gestión de Estudiantes</h1>
-      <p>Administra la matrícula y niveles de todos los estudiantes</p>
-    </div>
-    <button class="btn-add" data-bs-toggle="modal" data-bs-target="#modalEstudiante" onclick="abrirNuevo()">
-      <i class="bi bi-plus-lg"></i> Nuevo Estudiante
-    </button>
-  </div>
+<div id="main">
+  <div class="page-content">
 
-  <!-- Stats -->
-  <div class="row g-3 mb-4">
-    <div class="col-6 col-lg-3">
+    <!-- Stats -->
+    <div class="row g-3 mb-4" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px">
       <div class="stat-card">
-        <div class="stat-icon si-teal"><i class="bi bi-person-badge-fill"></i></div>
-        <div><div class="stat-num" id="stTotal">0</div><div class="stat-label">Total</div></div>
+        <div class="icon-wrap ic-blue"><i class="bi bi-person-badge-fill"></i></div>
+        <div class="stat-value" id="totalEst">—</div>
+        <div class="stat-label">Total Estudiantes</div>
+        <span class="stat-change up"><i class="bi bi-arrow-up-short"></i> Gestión 2026</span>
       </div>
-    </div>
-    <div class="col-6 col-lg-3">
       <div class="stat-card">
-        <div class="stat-icon si-blue"><i class="bi bi-1-circle-fill"></i></div>
-        <div><div class="stat-num" id="stBasico">0</div><div class="stat-label">Téc. Básico</div></div>
+        <div class="icon-wrap ic-green"><i class="bi bi-check-circle-fill"></i></div>
+        <div class="stat-value" id="activos">—</div>
+        <div class="stat-label">Activos</div>
       </div>
-    </div>
-    <div class="col-6 col-lg-3">
       <div class="stat-card">
-        <div class="stat-icon si-purple"><i class="bi bi-2-circle-fill"></i></div>
-        <div><div class="stat-num" id="stAuxiliar">0</div><div class="stat-label">Téc. Auxiliar</div></div>
+        <div class="icon-wrap ic-purple"><i class="bi bi-building"></i></div>
+        <div class="stat-value" id="carreras">—</div>
+        <div class="stat-label">Carreras</div>
       </div>
-    </div>
-    <div class="col-6 col-lg-3">
       <div class="stat-card">
-        <div class="stat-icon si-orange"><i class="bi bi-3-circle-fill"></i></div>
-        <div><div class="stat-num" id="stMedio">0</div><div class="stat-label">Téc. Medio</div></div>
+        <div class="icon-wrap ic-amber"><i class="bi bi-layers-fill"></i></div>
+        <div class="stat-value" id="niveles">—</div>
+        <div class="stat-label">Niveles</div>
       </div>
     </div>
-  </div>
 
-  <!-- Table -->
-  <div class="table-card">
-    <div class="table-toolbar">
-      <span class="toolbar-title"><i class="bi bi-person-badge me-2 text-secondary"></i>Lista de estudiantes</span>
-      <div class="search-input-wrap">
-        <i class="bi bi-search"></i>
-        <input type="text" class="search-input" id="searchInput" placeholder="Buscar estudiante..."/>
-      </div>
-      <select class="filter-select" id="filterNivel">
-        <option value="">Todos los niveles</option>
-        <option value="TECNICO_BASICO">Téc. Básico</option>
-        <option value="TECNICO_AUXILIAR">Téc. Auxiliar</option>
-        <option value="TECNICO_MEDIO_1">Téc. Medio 1</option>
-        <option value="TECNICO_MEDIO_2">Téc. Medio 2</option>
-      </select>
-      <select class="filter-select" id="filterCarrera">
-        <option value="">Todas las carreras</option>
-      </select>
-      <select class="filter-select" id="filterGestion">
-        <option value="">Todas las gestiones</option>
-        <option value="2026">2026</option>
-        <option value="2025">2025</option>
-      </select>
-    </div>
-
-    <div class="table-responsive">
-      <table class="cea-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Estudiante</th>
-            <th>C.I.</th>
-            <th>Nivel</th>
-            <th>Carrera</th>
-            <th>Gestión</th>
-            <th>Sexo</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="tbodyEstudiantes"></tbody>
-      </table>
-    </div>
-
-    <div class="cea-pagination">
-      <span id="paginationInfo">—</span>
-      <div class="page-btns" id="paginationBtns"></div>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL ESTUDIANTE -->
-<div class="modal fade" id="modalEstudiante" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content" style="border-radius:14px;border:none;">
-      <div class="modal-header cea-modal-header px-4 py-3">
-        <h5 class="modal-title cea-modal-title" id="modalEstTitle">NUEVO ESTUDIANTE</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body p-4">
-        <input type="hidden" id="editEstId"/>
-        <div class="row g-3">
-          <div class="col-12">
-            <label class="form-label">Usuario vinculado *</label>
-            <select class="form-select" id="fUsuarioId">
-              <option value="">Seleccionar usuario...</option>
+    <!-- Tabla -->
+    <div class="panel-card">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Lista de Estudiantes</div>
+          <div class="section-sub">Todos los estudiantes registrados en el sistema</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div class="filters-bar">
+            <select class="filter-select" id="filtroCarrera" onchange="filtrarTabla()">
+              <option value="">Todas las carreras</option>
+            </select>
+            <select class="filter-select" id="filtroNivel" onchange="filtrarTabla()">
+              <option value="">Todos los niveles</option>
+            </select>
+            <select class="filter-select" id="filtroGestion" onchange="filtrarTabla()">
+              <option value="">Toda gestión</option>
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
             </select>
           </div>
-          <div class="col-md-6">
-            <label class="form-label">Carrera *</label>
-            <select class="form-select" id="fCarreraEst">
-              <option value="">Seleccionar...</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Gestión *</label>
-            <input type="text" class="form-control" id="fGestion" placeholder="2026"/>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Sexo *</label>
-            <select class="form-select" id="fSexo">
-              <option value="M">Masculino</option>
-              <option value="F">Femenino</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">Fecha de Nacimiento *</label>
-            <input type="date" class="form-control" id="fFechaNac"/>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">Estado</label>
-            <select class="form-select" id="fEstadoEst">
-              <option value="true">Activo</option>
-              <option value="false">Inactivo</option>
-            </select>
-          </div>
-          <div class="col-12">
-            <label class="form-label mb-2">Nivel *</label>
-            <div class="nivel-selector" id="nivelSelector">
-              <div class="nivel-opt" data-nivel="TECNICO_BASICO" onclick="selectNivel(this)">
-                <div class="nivel-opt-label">TÉCNICO BÁSICO</div>
-                <div class="nivel-opt-sub">1er nivel formativo</div>
-              </div>
-              <div class="nivel-opt" data-nivel="TECNICO_AUXILIAR" onclick="selectNivel(this)">
-                <div class="nivel-opt-label">TÉCNICO AUXILIAR</div>
-                <div class="nivel-opt-sub">2do nivel formativo</div>
-              </div>
-              <div class="nivel-opt" data-nivel="TECNICO_MEDIO_1" onclick="selectNivel(this)">
-                <div class="nivel-opt-label">TÉCNICO MEDIO 1</div>
-                <div class="nivel-opt-sub">3er nivel — 1ra parte</div>
-              </div>
-              <div class="nivel-opt" data-nivel="TECNICO_MEDIO_2" onclick="selectNivel(this)">
-                <div class="nivel-opt-label">TÉCNICO MEDIO 2</div>
-                <div class="nivel-opt-sub">3er nivel — 2da parte</div>
-              </div>
-            </div>
-            <input type="hidden" id="fNivelEst"/>
-          </div>
+          <button class="btn btn-primary" onclick="abrirModal()">
+            <i class="bi bi-plus-lg"></i> Nuevo Estudiante
+          </button>
         </div>
       </div>
-      <div class="modal-footer border-0 px-4 pb-4">
-        <button class="btn btn-light btn-sm rounded-3" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn-cea-primary btn btn-sm" id="btnGuardarEst">
-          <i class="bi bi-check2-circle me-1"></i> Guardar Estudiante
-        </button>
+
+      <div style="overflow-x:auto">
+        <table class="data-table" id="tablaEstudiantes">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Estudiante</th>
+              <th>CI</th>
+              <th>Usuario</th>
+              <th>Carrera</th>
+              <th>Nivel</th>
+              <th>Gestión</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyEst">
+            <tr><td colspan="9" style="text-align:center;padding:40px;color:var(--txt-muted)"><i class="bi bi-hourglass-split"></i> Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px">
+        <span style="font-size:12px;color:var(--txt-muted)" id="paginaInfo">—</span>
+        <div class="pagination" id="paginacion"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- MODAL ELIMINAR -->
-<div class="modal fade" id="modalEliminar" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered" style="max-width:400px">
-    <div class="modal-content" style="border-radius:14px;border:none;">
-      <div class="modal-body p-4 text-center">
-        <div style="width:60px;height:60px;border-radius:50%;background:#fff1f2;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;color:#e11d48;"><i class="bi bi-trash3-fill"></i></div>
-        <h5 style="font-family:'Bebas Neue',cursive;letter-spacing:1px;font-size:1.3rem;color:#0d1b2a;">¿Eliminar estudiante?</h5>
-        <p style="color:#7a8fa0;font-size:.875rem;" id="eliminarNombreEst">Esta acción no se puede deshacer.</p>
-        <div class="d-flex gap-2 justify-content-center mt-3">
-          <button class="btn btn-light btn-sm rounded-3 px-4" data-bs-dismiss="modal">Cancelar</button>
-          <button class="btn btn-danger btn-sm rounded-3 px-4" id="btnConfirmarEliminar">Eliminar</button>
-        </div>
+<!-- Modal Nuevo/Editar Estudiante -->
+<div class="modal-backdrop" id="modalEstudiante">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitulo">Nuevo Estudiante</div>
+      <button class="modal-close" onclick="cerrarModal()"><i class="bi bi-x-lg"></i></button>
+    </div>
+
+    <div style="color:var(--txt-muted);font-size:12px;margin-bottom:18px;background:var(--bg-elevated);border-radius:var(--radius-sm);padding:10px 14px">
+      <i class="bi bi-info-circle"></i> El estudiante debe tener primero un <strong style="color:var(--txt-primary)">usuario</strong> creado en el sistema.
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Usuario (UID)</label>
+        <input type="text" class="form-control" id="fUsuarioId" placeholder="ID del usuario en Firebase">
       </div>
+      <div class="form-group">
+        <label class="form-label">Gestión</label>
+        <input type="text" class="form-control" id="fGestion" placeholder="2026" value="2026">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Carrera</label>
+        <select class="form-control" id="fCarrera">
+          <option value="">Seleccionar carrera...</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nivel</label>
+        <select class="form-control" id="fNivel">
+          <option value="">Seleccionar nivel...</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarEstudiante()"><i class="bi bi-floppy-fill"></i> Guardar</button>
     </div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../../assets/js/layout.js"></script>
-
+<!-- Firebase -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  const firebaseConfig = { /* TU CONFIG */ };
-  const app = initializeApp(firebaseConfig);
-  const db  = getFirestore(app);
+const firebaseConfig = { /* TODO: your config */ };
+// const app = initializeApp(firebaseConfig);
+// const db = getFirestore(app);
 
-  injectLayout('estudiantes', 'Gestión de Estudiantes');
+// ── DEMO DATA (quitar cuando conectes Firebase) ──
+const DEMO_USUARIOS = [
+  { id:'uid1', nombre:'Juan', ap_paterno:'Pérez', ap_materno:'Quispe', ci:'1234567', usuario:'juan_p2026', estado:true },
+  { id:'uid2', nombre:'María', ap_paterno:'López', ap_materno:'Flores', ci:'2345678', usuario:'maria_l2026', estado:true },
+  { id:'uid3', nombre:'Pedro', ap_paterno:'Mamani', ap_materno:'Cruz', ci:'3456789', usuario:'pedro_m2026', estado:true },
+  { id:'uid4', nombre:'Ana', ap_paterno:'Ticona', ap_materno:'Vda.', ci:'4567890', usuario:'ana_t2026', estado:false },
+  { id:'uid5', nombre:'Carlos', ap_paterno:'Condori', ap_materno:'Ali', ci:'5678901', usuario:'carlos_c2026', estado:true },
+];
+const DEMO_CARRERAS = [
+  { id:'carrera001', nombre:'Sistemas Informáticos', sigla:'SI' },
+  { id:'carrera002', nombre:'Contabilidad', sigla:'CONT' },
+  { id:'carrera003', nombre:'Electricidad', sigla:'ELEC' },
+];
+const DEMO_NIVELES = [
+  { id:'nivel_1', nombre:'Técnico Básico', sigla:'TB', orden:1 },
+  { id:'nivel_2', nombre:'Técnico Auxiliar', sigla:'TA', orden:2 },
+  { id:'nivel_3', nombre:'Técnico Medio', sigla:'TM', orden:3 },
+];
+const DEMO_EST = [
+  { id:'est1', usuarioId:'uid1', carreraId:'carrera001', nivelId:'nivel_1', gestion:'2026' },
+  { id:'est2', usuarioId:'uid2', carreraId:'carrera001', nivelId:'nivel_2', gestion:'2026' },
+  { id:'est3', usuarioId:'uid3', carreraId:'carrera002', nivelId:'nivel_1', gestion:'2026' },
+  { id:'est4', usuarioId:'uid4', carreraId:'carrera003', nivelId:'nivel_3', gestion:'2025' },
+  { id:'est5', usuarioId:'uid5', carreraId:'carrera002', nivelId:'nivel_2', gestion:'2026' },
+];
 
-  let allData = [], filtrados = [], usuariosMap = {}, carrerasArr = [];
-  let currentPage = 1; const PER_PAGE = 10;
-  let deletingId = null;
+let estudiantes = [], usuarios = {}, carreras = {}, niveles = {};
+let editId = null;
+const PAGE = 10; let currentPage = 1;
 
-  window.selectNivel = (el) => {
-    document.querySelectorAll('.nivel-opt').forEach(x => x.classList.remove('selected'));
-    el.classList.add('selected');
-    document.getElementById('fNivelEst').value = el.dataset.nivel;
-  };
+async function cargarDatos() {
+  // Map usuarios
+  DEMO_USUARIOS.forEach(u => usuarios[u.id] = u);
+  DEMO_CARRERAS.forEach(c => carreras[c.id] = c);
+  DEMO_NIVELES.forEach(n => niveles[n.id] = n);
+  estudiantes = DEMO_EST;
+  actualizarStats();
+  poblarFiltros();
+  renderTabla();
+  poblarSelectsModal();
+}
 
-  async function cargarDatos() {
-    // Cargar usuarios (para el select)
-    const usuSnap = await getDocs(collection(db, 'usuarios'));
-    usuSnap.docs.forEach(d => { usuariosMap[d.id] = d.data(); });
+function actualizarStats() {
+  document.getElementById('totalEst').textContent = estudiantes.length;
+  document.getElementById('activos').textContent = estudiantes.filter(e => usuarios[e.usuarioId]?.estado).length;
+  document.getElementById('carreras').textContent = new Set(estudiantes.map(e => e.carreraId)).size;
+  document.getElementById('niveles').textContent = new Set(estudiantes.map(e => e.nivelId)).size;
+}
 
-    // Cargar carreras
-    const carrSnap = await getDocs(collection(db, 'carreras'));
-    carrerasArr = carrSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+function poblarFiltros() {
+  const selC = document.getElementById('filtroCarrera');
+  const selN = document.getElementById('filtroNivel');
+  DEMO_CARRERAS.forEach(c => selC.insertAdjacentHTML('beforeend', `<option value="${c.id}">${c.nombre}</option>`));
+  DEMO_NIVELES.forEach(n => selN.insertAdjacentHTML('beforeend', `<option value="${n.id}">${n.nombre}</option>`));
+}
 
-    // Poblar selects de filtro y modal
-    const fcEst = document.getElementById('fCarreraEst');
-    const fcFil = document.getElementById('filterCarrera');
-    carrerasArr.filter(c => c.estado).forEach(c => {
-      fcEst.innerHTML += `<option value="${c.nombre}">${c.nombre}</option>`;
-      fcFil.innerHTML += `<option value="${c.nombre}">${c.nombre}</option>`;
-    });
+function poblarSelectsModal() {
+  const selC = document.getElementById('fCarrera');
+  const selN = document.getElementById('fNivel');
+  DEMO_CARRERAS.forEach(c => selC.insertAdjacentHTML('beforeend', `<option value="${c.id}">${c.nombre}</option>`));
+  DEMO_NIVELES.forEach(n => selN.insertAdjacentHTML('beforeend', `<option value="${n.id}">${n.nombre}</option>`));
+}
 
-    // Poblar select de usuarios (solo rol estudiante sin ficha)
-    const fusu = document.getElementById('fUsuarioId');
-    Object.entries(usuariosMap).forEach(([id, u]) => {
-      if (u.rol === 'estudiante') fusu.innerHTML += `<option value="${id}">${u.nombre} ${u.ap_paterno} — ${u.ci}</option>`;
-    });
+window.filtrarTabla = function() { currentPage = 1; renderTabla(); };
 
-    // Cargar estudiantes
-    const snap = await getDocs(collection(db, 'estudiantes'));
-    allData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    updateStats();
-    applyFilters();
-  }
+function getFiltrados() {
+  const fc = document.getElementById('filtroCarrera').value;
+  const fn = document.getElementById('filtroNivel').value;
+  const fg = document.getElementById('filtroGestion').value;
+  return estudiantes.filter(e =>
+    (!fc || e.carreraId === fc) &&
+    (!fn || e.nivelId === fn) &&
+    (!fg || e.gestion === fg)
+  );
+}
 
-  function updateStats() {
-    document.getElementById('stTotal').textContent = allData.length;
-    document.getElementById('stBasico').textContent   = allData.filter(x => x.nivel === 'TECNICO_BASICO').length;
-    document.getElementById('stAuxiliar').textContent = allData.filter(x => x.nivel === 'TECNICO_AUXILIAR').length;
-    document.getElementById('stMedio').textContent    = allData.filter(x => x.nivel?.startsWith('TECNICO_MEDIO')).length;
-  }
+function renderTabla() {
+  const data = getFiltrados();
+  const total = data.length;
+  const totalPag = Math.ceil(total / PAGE);
+  const slice = data.slice((currentPage-1)*PAGE, currentPage*PAGE);
+  const tbody = document.getElementById('tbodyEst');
 
-  function applyFilters() {
-    const s = document.getElementById('searchInput').value.toLowerCase();
-    const n = document.getElementById('filterNivel').value;
-    const c = document.getElementById('filterCarrera').value;
-    const g = document.getElementById('filterGestion').value;
-
-    filtrados = allData.filter(e => {
-      const u = usuariosMap[e.usuarioId] || {};
-      const fullName = `${u.nombre||''} ${u.ap_paterno||''} ${u.ci||''}`.toLowerCase();
-      return (!s || fullName.includes(s)) &&
-             (!n || e.nivel === n) &&
-             (!c || e.carrera === c) &&
-             (!g || e.gestion === g);
-    });
-    currentPage = 1; renderTable();
-  }
-
-  const NIVEL_LABELS = {
-    TECNICO_BASICO:'Téc. Básico', TECNICO_AUXILIAR:'Téc. Auxiliar',
-    TECNICO_MEDIO_1:'Téc. Medio 1', TECNICO_MEDIO_2:'Téc. Medio 2'
-  };
-  const COLORS = ['#0d1b2a','#2563eb','#7c3aed','#059669','#d97706','#dc2626'];
-  function getColor(s) { let h=0; for(let c of (s||'')) h=(h*31+c.charCodeAt(0))%COLORS.length; return COLORS[h]; }
-
-  function renderTable() {
-    const tbody = document.getElementById('tbodyEstudiantes');
-    const start = (currentPage-1)*PER_PAGE;
-    const slice = filtrados.slice(start, start+PER_PAGE);
-
-    if (!slice.length) {
-      tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><i class="bi bi-person-badge"></i><p>No se encontraron estudiantes</p></div></td></tr>`;
-      renderPagination(); return;
-    }
-
+  if (!slice.length) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px"><div class="empty-state"><i class="bi bi-person-slash"></i><p>No se encontraron estudiantes</p></div></td></tr>`;
+  } else {
     tbody.innerHTML = slice.map((e, i) => {
-      const u = usuariosMap[e.usuarioId] || {};
-      const nombre = `${u.nombre||'?'} ${u.ap_paterno||''}`;
+      const u = usuarios[e.usuarioId] || {};
+      const c = carreras[e.carreraId] || {};
+      const n = niveles[e.nivelId] || {};
+      const estado = u.estado !== false;
       return `<tr>
-        <td style="color:#aab8c4;font-size:.78rem">${start+i+1}</td>
-        <td>
-          <div class="user-cell">
-            <div class="user-avatar" style="background:${getColor(u.nombre)};color:#fff">${(u.nombre||'?')[0].toUpperCase()}</div>
+        <td style="color:var(--txt-muted)">${(currentPage-1)*PAGE+i+1}</td>
+        <td class="td-name">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-weight:700;font-size:12px;color:#fff">${(u.nombre||'?')[0].toUpperCase()}</div>
             <div>
-              <div class="user-name">${nombre}</div>
-              <div class="user-sub">${u.correo||'—'}</div>
+              <div>${u.nombre||'—'} ${u.ap_paterno||''} ${u.ap_materno||''}</div>
+              <div style="font-size:11px;color:var(--txt-muted)">${u.correo||''}</div>
             </div>
           </div>
         </td>
-        <td>${u.ci||'—'}</td>
-        <td><span class="badge-nivel badge-${e.nivel}">${NIVEL_LABELS[e.nivel]||e.nivel}</span></td>
-        <td>${e.carrera||'—'}</td>
-        <td>${e.gestion||'—'}</td>
-        <td><span class="badge-sexo badge-${e.sexo||'M'}">${e.sexo==='F'?'Femenino':'Masculino'}</span></td>
-        <td><span class="badge-estado badge-${e.estado?'activo':'inactivo'}">${e.estado?'Activo':'Inactivo'}</span></td>
+        <td><span style="font-family:var(--mono)">${u.ci||'—'}</span></td>
+        <td><span style="font-family:var(--mono);color:var(--accent)">${u.usuario||'—'}</span></td>
+        <td><span class="role-badge rb-dir">${c.sigla||'—'}</span> ${c.nombre||'—'}</td>
+        <td>${n.nombre||'—'} <span style="font-size:10px;color:var(--txt-muted)">(${n.sigla||''})</span></td>
+        <td><span class="gestion-tag">${e.gestion}</span></td>
+        <td><span class="status-dot ${estado?'active':'inactive'}">${estado?'Activo':'Inactivo'}</span></td>
         <td>
-          <div class="action-btns">
-            <button class="btn-action btn-view"   onclick="verEst('${e.id}')"><i class="bi bi-eye-fill"></i></button>
-            <button class="btn-action btn-edit"   onclick="editarEst('${e.id}')"><i class="bi bi-pencil-fill"></i></button>
-            <button class="btn-action btn-delete" onclick="confirmarEliminar('${e.id}','${nombre}')"><i class="bi bi-trash3-fill"></i></button>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-ghost btn-sm" onclick="editarEstudiante('${e.id}')"><i class="bi bi-pencil-fill"></i></button>
+            <button class="btn btn-danger btn-sm" onclick="eliminarEstudiante('${e.id}')"><i class="bi bi-trash-fill"></i></button>
           </div>
         </td>
       </tr>`;
     }).join('');
-    renderPagination();
-    const end = Math.min(start+PER_PAGE, filtrados.length);
-    document.getElementById('paginationInfo').textContent = `Mostrando ${start+1}–${end} de ${filtrados.length}`;
   }
 
-  function renderPagination() {
-    const total = Math.ceil(filtrados.length/PER_PAGE);
-    const wrap = document.getElementById('paginationBtns');
-    if (total <= 1) { wrap.innerHTML=''; return; }
-    let h = `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
-    for (let p=1;p<=total;p++) h += `<button class="page-btn ${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
-    h += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===total?'disabled':''}>›</button>`;
-    wrap.innerHTML = h;
+  document.getElementById('paginaInfo').textContent = `${total} registros · Página ${currentPage} de ${Math.max(totalPag,1)}`;
+  renderPaginacion(totalPag);
+}
+
+function renderPaginacion(total) {
+  const cont = document.getElementById('paginacion');
+  cont.innerHTML = '';
+  for (let i = 1; i <= total; i++) {
+    const btn = document.createElement('button');
+    btn.className = `page-btn ${i===currentPage?'active':''}`;
+    btn.textContent = i;
+    btn.onclick = () => { currentPage = i; renderTabla(); };
+    cont.appendChild(btn);
   }
-  window.goPage = p => { currentPage=p; renderTable(); };
+}
 
-  window.abrirNuevo = () => {
-    document.getElementById('modalEstTitle').textContent = 'NUEVO ESTUDIANTE';
-    document.getElementById('editEstId').value = '';
-    document.getElementById('fGestion').value = '2026';
-    document.getElementById('fNivelEst').value = '';
-    document.querySelectorAll('.nivel-opt').forEach(x => x.classList.remove('selected'));
+window.abrirModal = function(id=null) {
+  editId = id;
+  document.getElementById('modalTitulo').textContent = id ? 'Editar Estudiante' : 'Nuevo Estudiante';
+  if (id) {
+    const e = estudiantes.find(x=>x.id===id);
+    if (e) {
+      document.getElementById('fUsuarioId').value = e.usuarioId;
+      document.getElementById('fGestion').value = e.gestion;
+      document.getElementById('fCarrera').value = e.carreraId;
+      document.getElementById('fNivel').value = e.nivelId;
+    }
+  } else {
+    ['fUsuarioId','fGestion','fCarrera','fNivel'].forEach(id=>{ document.getElementById(id).value = id==='fGestion'?'2026':''; });
+  }
+  document.getElementById('modalEstudiante').classList.add('show');
+};
+
+window.cerrarModal = function() { document.getElementById('modalEstudiante').classList.remove('show'); };
+
+window.guardarEstudiante = function() {
+  const data = {
+    usuarioId: document.getElementById('fUsuarioId').value.trim(),
+    gestion: document.getElementById('fGestion').value.trim(),
+    carreraId: document.getElementById('fCarrera').value,
+    nivelId: document.getElementById('fNivel').value,
   };
+  if (!data.usuarioId || !data.carreraId || !data.nivelId) {
+    showToast('Completa todos los campos', 'error'); return;
+  }
+  // TODO: Firestore addDoc/updateDoc
+  if (editId) {
+    const idx = estudiantes.findIndex(e=>e.id===editId);
+    if (idx>-1) estudiantes[idx] = { ...estudiantes[idx], ...data };
+    showToast('Estudiante actualizado');
+  } else {
+    estudiantes.push({ id: 'est'+ Date.now(), ...data });
+    showToast('Estudiante registrado');
+  }
+  cerrarModal(); actualizarStats(); renderTabla();
+};
 
-  window.editarEst = (id) => {
-    const e = allData.find(x => x.id === id);
-    if (!e) return;
-    document.getElementById('modalEstTitle').textContent = 'EDITAR ESTUDIANTE';
-    document.getElementById('editEstId').value = id;
-    document.getElementById('fUsuarioId').value  = e.usuarioId||'';
-    document.getElementById('fCarreraEst').value = e.carrera||'';
-    document.getElementById('fGestion').value    = e.gestion||'';
-    document.getElementById('fSexo').value       = e.sexo||'M';
-    document.getElementById('fFechaNac').value   = e.fecha_nac||'';
-    document.getElementById('fEstadoEst').value  = String(e.estado);
-    document.getElementById('fNivelEst').value   = e.nivel||'';
-    document.querySelectorAll('.nivel-opt').forEach(x => {
-      x.classList.toggle('selected', x.dataset.nivel === e.nivel);
-    });
-    new bootstrap.Modal(document.getElementById('modalEstudiante')).show();
-  };
-  window.verEst = editarEst;
+window.editarEstudiante = id => abrirModal(id);
 
-  window.confirmarEliminar = (id, nombre) => {
-    deletingId = id;
-    document.getElementById('eliminarNombreEst').textContent = `¿Eliminar a "${nombre}"? Esta acción no se puede deshacer.`;
-    new bootstrap.Modal(document.getElementById('modalEliminar')).show();
-  };
-  document.getElementById('btnConfirmarEliminar').addEventListener('click', async () => {
-    if (!deletingId) return;
-    await deleteDoc(doc(db, 'estudiantes', deletingId));
-    bootstrap.Modal.getInstance(document.getElementById('modalEliminar')).hide();
-    cargarDatos();
-  });
+window.eliminarEstudiante = function(id) {
+  if (!confirm('¿Eliminar este estudiante?')) return;
+  estudiantes = estudiantes.filter(e => e.id !== id);
+  showToast('Estudiante eliminado', 'info');
+  actualizarStats(); renderTabla();
+};
 
-  document.getElementById('btnGuardarEst').addEventListener('click', async () => {
-    const uid    = document.getElementById('editEstId').value;
-    const usuId  = document.getElementById('fUsuarioId').value;
-    const carrera= document.getElementById('fCarreraEst').value;
-    const gestion= document.getElementById('fGestion').value.trim();
-    const sexo   = document.getElementById('fSexo').value;
-    const fechaNac=document.getElementById('fFechaNac').value;
-    const nivel  = document.getElementById('fNivelEst').value;
-    const estado = document.getElementById('fEstadoEst').value === 'true';
-
-    if (!usuId || !carrera || !gestion || !nivel) { alert('Completa los campos obligatorios.'); return; }
-
-    const data = { usuarioId:usuId, nivel, carrera, gestion, fecha_nac:fechaNac, sexo, estado };
-    const btn = document.getElementById('btnGuardarEst');
-    btn.disabled = true; btn.textContent = 'Guardando...';
-    try {
-      if (uid) await updateDoc(doc(db,'estudiantes',uid), data);
-      else await addDoc(collection(db,'estudiantes'), data);
-      bootstrap.Modal.getInstance(document.getElementById('modalEstudiante')).hide();
-      cargarDatos();
-    } catch(e) { alert('Error: '+e.message); }
-    finally { btn.disabled=false; btn.textContent='Guardar Estudiante'; }
-  });
-
-  ['searchInput','filterNivel','filterCarrera','filterGestion'].forEach(id =>
-    document.getElementById(id).addEventListener('input', applyFilters)
-  );
-
-  cargarDatos();
+cargarDatos();
 </script>
 </body>
 </html>

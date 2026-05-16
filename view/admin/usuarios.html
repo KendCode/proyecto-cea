@@ -96,7 +96,6 @@
                             <th>C.I.</th>
                             <th>Celular</th>
                             <th>Rol</th>
-                            <th>Registro</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
@@ -156,40 +155,6 @@
                                 <option value="estudiante">Estudiante</option>
                             </select>
                         </div>
-                        <!-- Carrera -->
-                        <div class="col-md-6" id="wrapCarrera">
-                            <label class="form-label">Carrera</label>
-                            <select class="form-select" id="fCarrera">
-                                <option value="">Seleccionar...</option>
-                                <option value="Sistemas Informaticos">
-                                    Sistemas Informáticos
-                                </option>
-                                <option value="Gastronomia">
-                                    Gastronomía
-                                </option>
-                            </select>
-                        </div>
-
-                        <!-- Nivel -->
-                        <div class="col-md-6" id="wrapNivel">
-                            <label class="form-label">Nivel</label>
-                            <select class="form-select" id="fNivel">
-                                <option value="">Seleccionar...</option>
-                                <option value="TECNICO_BASICO">
-                                    Técnico Básico
-                                </option>
-                                <option value="TECNICO_AUXILIAR">
-                                    Técnico Auxiliar
-                                </option>
-                                <option value="TECNICO_MEDIO_1">
-                                    Técnico Medio 1
-                                </option>
-                                <option value="TECNICO_MEDIO_2">
-                                    Técnico Medio 2
-                                </option>
-                            </select>
-                        </div>
-
                         <!-- Sexo -->
                         <div class="col-md-6" id="wrapSexo">
                             <label class="form-label">Sexo</label>
@@ -256,17 +221,13 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="../../assets/js/layout.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="../../controllers/usuariosController.js"></script>
-
     <script type="module">
 
-        injectLayout(
-            'usuarios',
-            'Gestión de Usuarios'
-        );
-
-        // MODAL
+        // =========================
+        // ABRIR MODAL
+        // =========================
         window.openModal = (modo) => {
 
             document.getElementById(
@@ -280,53 +241,49 @@
                 'editUid'
             ).value = '';
 
+            // LIMPIAR FORMULARIO
             [
                 'fNombre',
                 'fApPat',
                 'fApMat',
                 'fCi',
                 'fCelular',
-                'fPass',
                 'fCorreoGen',
-                'fCarrera',
-                'fNivel',
+                'fRol',
                 'fSexo',
                 'fFechaNac'
             ].forEach(id => {
 
-                document.getElementById(id).value = '';
+                const elemento =
+                    document.getElementById(id);
+
+                if (elemento) {
+
+                    elemento.value = '';
+
+                }
 
             });
 
-            document.getElementById(
-                'fRol'
-            ).value = '';
-
+            // ESTADO POR DEFECTO
             document.getElementById(
                 'fEstado'
             ).value = 'true';
 
+            // OCULTAR CAMPOS
             onRolChange();
 
         };
 
+        // =========================
         // MOSTRAR / OCULTAR CAMPOS
+        // =========================
         window.onRolChange = () => {
 
             const rol =
                 document.getElementById(
                     'fRol'
                 ).value;
-
-            const wrapCarrera =
-                document.getElementById(
-                    'wrapCarrera'
-                );
-
-            const wrapNivel =
-                document.getElementById(
-                    'wrapNivel'
-                );
 
             const wrapSexo =
                 document.getElementById(
@@ -338,30 +295,92 @@
                     'wrapFechaNac'
                 );
 
-            wrapCarrera.style.display = 'none';
-            wrapNivel.style.display = 'none';
+            // OCULTAR TODO
             wrapSexo.style.display = 'none';
             wrapFechaNac.style.display = 'none';
 
-            if (rol === 'docente') {
+            // MOSTRAR SOLO PARA
+            // DOCENTE Y ESTUDIANTE
+            if (
+                rol === 'docente' ||
+                rol === 'estudiante'
+            ) {
 
-                wrapCarrera.style.display = 'block';
-
-            }
-
-            if (rol === 'estudiante') {
-
-                wrapCarrera.style.display = 'block';
-                wrapNivel.style.display = 'block';
                 wrapSexo.style.display = 'block';
                 wrapFechaNac.style.display = 'block';
 
             }
 
         };
+
+        // =========================
+        // EVENTO CAMBIO ROL
+        // =========================
         document
             .getElementById('fRol')
-            .addEventListener('change', onRolChange);
+            .addEventListener(
+                'change',
+                onRolChange
+            );
+
+        // =========================
+        // GENERAR CORREO AUTOMÁTICO
+        // =========================
+        const fNombre =
+            document.getElementById('fNombre');
+
+        const fCi =
+            document.getElementById('fCi');
+
+        function generarCorreo() {
+
+            const nombre =
+                fNombre.value.trim();
+
+            const ci =
+                fCi.value.trim();
+
+            if (!nombre || !ci) {
+
+                document.getElementById(
+                    'fCorreoGen'
+                ).value = '';
+
+                return;
+
+            }
+
+            const primerNombre =
+                nombre
+                    .split(' ')[0]
+                    .toLowerCase();
+
+            const usuario =
+                `${primerNombre}_${ci}`;
+
+            const correo =
+                `${usuario}@sistema.com`;
+
+            document.getElementById(
+                'fCorreoGen'
+            ).value = correo;
+
+        }
+
+        fNombre.addEventListener(
+            'input',
+            generarCorreo
+        );
+
+        fCi.addEventListener(
+            'input',
+            generarCorreo
+        );
+
+        // =========================
+        // INICIALIZAR
+        // =========================
+        onRolChange();
 
     </script>
 </body>

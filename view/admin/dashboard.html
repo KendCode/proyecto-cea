@@ -136,7 +136,7 @@
       <div class="col-6 col-lg-3">
         <div class="stat-card">
           <div class="icon-wrap ic-blue"><i class="bi bi-people-fill"></i></div>
-          <div class="stat-value">48</div>
+          <div class="stat-value" id="statTotal">0</div>
           <div class="stat-label">Total Usuarios</div>
           <div class="stat-change up"><i class="bi bi-arrow-up-short"></i>+6 este mes</div>
         </div>
@@ -144,7 +144,7 @@
       <div class="col-6 col-lg-3">
         <div class="stat-card">
           <div class="icon-wrap ic-amber"><i class="bi bi-person-badge-fill"></i></div>
-          <div class="stat-value">35</div>
+          <div class="stat-value" id="statEstudiantes">0</div>
           <div class="stat-label">Estudiantes</div>
           <div class="stat-change up"><i class="bi bi-arrow-up-short"></i>+4 nuevos</div>
         </div>
@@ -152,7 +152,7 @@
       <div class="col-6 col-lg-3">
         <div class="stat-card">
           <div class="icon-wrap ic-purple"><i class="bi bi-person-workspace"></i></div>
-          <div class="stat-value">8</div>
+          <div class="stat-value" id="statDocentes">0</div>
           <div class="stat-label">Docentes</div>
           <div class="stat-change down"><i class="bi bi-arrow-down-short"></i>-1 inactivo</div>
         </div>
@@ -160,7 +160,7 @@
       <div class="col-6 col-lg-3">
         <div class="stat-card">
           <div class="icon-wrap ic-green"><i class="bi bi-journal-bookmark-fill"></i></div>
-          <div class="stat-value">12</div>
+          <div class="stat-value" id="statModulos">0</div>
           <div class="stat-label">Módulos Activos</div>
           <div class="stat-change up"><i class="bi bi-arrow-up-short"></i>100% activos</div>
         </div>
@@ -471,6 +471,7 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../controllers/usuariosController.js"></script>
 <script>
   function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('open');

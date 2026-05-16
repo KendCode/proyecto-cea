@@ -1,83 +1,123 @@
 import {
-  createUserWithEmailAndPassword
+    createUserWithEmailAndPassword
 }
-  from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 import {
-  doc,
-  setDoc,
-  serverTimestamp
+    doc,
+    setDoc,
+    serverTimestamp,
+    collection,
+    getDocs,
+    deleteDoc
 }
-  from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-import { auth }
-  from "../firebase/auth.js";
+import {
+    auth
+}
+from "../firebase/auth.js";
 
-import { db }
-  from "../firebase/firestore.js";
+import {
+    db
+}
+from "../firebase/firestore.js";
 
+// ==========================
+// CREAR USUARIO
+// ==========================
 export async function crearUsuario(
-  data
+    data
 ) {
 
-  const cred =
-    await createUserWithEmailAndPassword(
-      auth,
-      data.correo,
-      data.password
+    const cred =
+        await createUserWithEmailAndPassword(
+            auth,
+            data.correo,
+            data.password
+        );
+
+    const uid =
+        cred.user.uid;
+
+    await setDoc(
+        doc(db, "usuarios", uid),
+        {
+
+            uid,
+
+            usuario:
+                data.usuario,
+
+            nombre:
+                data.nombre,
+
+            ap_paterno:
+                data.ap_paterno,
+
+            ap_materno:
+                data.ap_materno,
+
+            ci:
+                data.ci,
+
+            correo:
+                data.correo,
+
+            nro_celular:
+                data.nro_celular,
+
+            rol:
+                data.rol,
+
+            sexo:
+                data.sexo,
+
+            fecha_nac:
+                data.fecha_nac,
+
+            fechaRegistro:
+                serverTimestamp(),
+
+            estado:
+                data.estado
+
+        }
     );
 
-  const uid =
-    cred.user.uid;
+}
 
-  await setDoc(
-    doc(db, "usuarios", uid),
-    {
+// ==========================
+// OBTENER USUARIOS
+// ==========================
+export async function obtenerUsuarios() {
 
-      uid,
+    const querySnapshot =
+        await getDocs(
+            collection(db, "usuarios")
+        );
 
-      usuario:
-        data.usuario,
+    const usuarios = [];
 
-      nombre:
-        data.nombre,
+    querySnapshot.forEach(doc => {
 
-      ap_paterno:
-        data.ap_paterno,
+        usuarios.push({
+            id: doc.id,
+            ...doc.data()
+        });
 
-      ap_materno:
-        data.ap_materno,
+    });
 
-      ci:
-        data.ci,
+    return usuarios;
 
-      correo:
-        data.correo,
+}
+// ==========================
+// ELIMINAR USUARIO
+// ==========================
+export async function eliminarUsuario(uid) {
 
-      nro_celular:
-        data.nro_celular,
-
-      rol:
-        data.rol,
-
-      carrera:
-        data.carrera,
-
-      nivel:
-        data.nivel,
-
-      sexo:
-        data.sexo,
-
-      fecha_nac:
-        data.fecha_nac,
-
-      fechaRegistro:
-        serverTimestamp(),
-
-      estado: true
-
-    }
-  );
+    await deleteDoc(
+        doc(db, "usuarios", uid)
+    );
 
 }

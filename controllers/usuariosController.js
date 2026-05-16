@@ -1,13 +1,33 @@
 import {
-    crearUsuario
+    crearUsuario,
+    obtenerUsuarios,
+    eliminarUsuario
 }
-from "../services/usuariosService.js";
+    from "../services/usuariosService.js";
+// ==========================
+// VARIABLES GLOBALES
+// ==========================
+let usuariosGlobal = [];
 
+let modoEdicion = false;
+
+let uidEditar = null;
+// ==========================
+// ELEMENTOS
+// ==========================
 const btnGuardar =
     document.getElementById(
         "btnGuardarUsuario"
     );
 
+const tbody =
+    document.getElementById(
+        "tbodyUsuarios"
+    );
+
+// ==========================
+// GUARDAR USUARIO
+// ==========================
 btnGuardar.addEventListener(
     "click",
     async () => {
@@ -22,47 +42,14 @@ btnGuardar.addEventListener(
                 "fApPat"
             ).value.trim();
 
-        const ci =
-            document.getElementById(
-                "fCi"
-            ).value.trim();
-
-        const rol =
-            document.getElementById(
-                "fRol"
-            ).value;
-
-        // VALIDACIONES
-        if (
-            !nombre ||
-            !apPat ||
-            !ci ||
-            !rol
-        ) {
-
-            alert(
-                "Completa los campos obligatorios"
-            );
-
-            return;
-
-        }
-
-        const primerNombre =
-            nombre
-                .trim()
-                .split(" ")[0]
-                .toLowerCase();
-
-        const usuario =
-            `${primerNombre}_${ci}`;
-
-        const correo =
-            `${usuario}@sistema.com`;
-
         const apMat =
             document.getElementById(
                 "fApMat"
+            ).value.trim();
+
+        const ci =
+            document.getElementById(
+                "fCi"
             ).value.trim();
 
         const celular =
@@ -70,14 +57,9 @@ btnGuardar.addEventListener(
                 "fCelular"
             ).value.trim();
 
-        const carrera =
+        const rol =
             document.getElementById(
-                "fCarrera"
-            ).value;
-
-        const nivel =
-            document.getElementById(
-                "fNivel"
+                "fRol"
             ).value;
 
         const sexo =
@@ -87,22 +69,73 @@ btnGuardar.addEventListener(
 
         const fechaNac =
             document.getElementById(
-                'fFechaNac'
+                "fFechaNac"
             ).value;
 
+        const estado =
+            document.getElementById(
+                "fEstado"
+            ).value === "true";
+
+        // ==========================
+        // VALIDACIONES
+        // ==========================
+        if (
+            !nombre ||
+            !apPat ||
+            !ci ||
+            !rol
+        ) {
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Campos requeridos',
+                text: 'Completa los campos obligatorios'
+            });
+
+            return;
+
+        }
+
+        // ==========================
+        // GENERAR USUARIO
+        // ==========================
+        const primerNombre =
+            nombre
+                .split(" ")[0]
+                .toLowerCase();
+
+        const usuario =
+            `${primerNombre}_${ci}`;
+
+        // ==========================
+        // GENERAR CORREO
+        // ==========================
+        const correo =
+            `${usuario}@sistema.com`;
+
+        // ==========================
         // PASSWORD AUTOMÁTICA
-        let pass = '';
+        // ==========================
+        let password = '';
 
         if (fechaNac) {
 
             const partes =
                 fechaNac.split('-');
 
-            pass =
+            password =
                 `${partes[2]}-${partes[1]}-${partes[0]}`;
+
+        } else {
+
+            password = ci;
 
         }
 
+        // ==========================
+        // OBJETO
+        // ==========================
         const data = {
 
             usuario,
@@ -121,15 +154,13 @@ btnGuardar.addEventListener(
 
             rol,
 
-            carrera,
-
-            nivel,
-
             sexo,
 
             fecha_nac: fechaNac,
 
-            password: pass
+            estado,
+
+            password
 
         };
 
@@ -142,17 +173,76 @@ btnGuardar.addEventListener(
 
             await crearUsuario(data);
 
-            alert(
-                "Usuario creado correctamente"
-            );
+            Swal.fire({
+                icon: 'success',
+                title: 'Usuario creado',
+                text: 'El usuario fue registrado correctamente',
+                timer: 2000,
+                showConfirmButton: false
+            });
+
+            // CERRAR MODAL
+            const modalElement =
+                document.getElementById(
+                    'modalUsuario'
+                );
+
+            const modal =
+                bootstrap.Modal.getOrCreateInstance(
+                    modalElement
+                );
+
+            modal.hide();
+
+            // RECARGAR TABLA
+            cargarUsuarios();
+
+            // LIMPIAR FORMULARIO
+            document.getElementById(
+                "fNombre"
+            ).value = "";
+
+            document.getElementById(
+                "fApPat"
+            ).value = "";
+
+            document.getElementById(
+                "fApMat"
+            ).value = "";
+
+            document.getElementById(
+                "fCi"
+            ).value = "";
+
+            document.getElementById(
+                "fCelular"
+            ).value = "";
+
+            document.getElementById(
+                "fRol"
+            ).value = "";
+
+            document.getElementById(
+                "fSexo"
+            ).value = "";
+
+            document.getElementById(
+                "fFechaNac"
+            ).value = "";
+
+            document.getElementById(
+                "fCorreoGen"
+            ).value = "";
 
         } catch (error) {
 
             console.error(error);
 
-            alert(
-                "Error al crear usuario"
-            );
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message
+            });
 
         } finally {
 
@@ -163,4 +253,423 @@ btnGuardar.addEventListener(
 
         }
 
-    });
+    }
+);
+
+// ==========================
+// CARGAR USUARIOS
+// ==========================
+async function cargarUsuarios() {
+
+    try {
+
+        usuariosGlobal =
+            await obtenerUsuarios();
+
+        renderUsuarios();
+
+        // ==========================
+        // ESTADÍSTICAS
+        // ==========================
+        document.getElementById(
+            "statTotal"
+        ).textContent =
+            usuariosGlobal.length;
+
+        document.getElementById(
+            "statDocentes"
+        ).textContent =
+            usuariosGlobal.filter(
+                u => u.rol === "docente"
+            ).length;
+
+        document.getElementById(
+            "statEstudiantes"
+        ).textContent =
+            usuariosGlobal.filter(
+                u => u.rol === "estudiante"
+            ).length;
+
+        document.getElementById(
+            "statInactivos"
+        ).textContent =
+            usuariosGlobal.filter(
+                u => !u.estado
+            ).length;
+
+    } catch (error) {
+
+        console.error(
+            "Error al cargar usuarios:",
+            error
+        );
+
+    }
+
+}
+
+// ==========================
+// RENDER TABLA
+// ==========================
+function renderUsuarios() {
+
+    const texto =
+        document.getElementById(
+            "searchInput"
+        ).value.toLowerCase();
+
+    const rolFiltro =
+        document.getElementById(
+            "filterRol"
+        ).value;
+
+    const estadoFiltro =
+        document.getElementById(
+            "filterEstado"
+        ).value;
+
+    let usuariosFiltrados =
+        usuariosGlobal.filter(usuario => {
+
+            const coincideTexto =
+
+                usuario.nombre
+                    .toLowerCase()
+                    .includes(texto)
+
+                ||
+
+                usuario.ci
+                    .includes(texto);
+
+            const coincideRol =
+
+                !rolFiltro ||
+
+                usuario.rol === rolFiltro;
+
+            const coincideEstado =
+
+                estadoFiltro === ''
+
+                ||
+
+                usuario.estado.toString()
+                === estadoFiltro;
+
+            return (
+                coincideTexto &&
+                coincideRol &&
+                coincideEstado
+            );
+
+        });
+
+    tbody.innerHTML = '';
+
+    // ==========================
+    // VACÍO
+    // ==========================
+    if (
+        usuariosFiltrados.length === 0
+    ) {
+
+        tbody.innerHTML = `
+        <tr>
+            <td colspan="7">
+
+                <div class="empty-state">
+
+                    <i class="bi bi-people"></i>
+
+                    <p>
+                        No se encontraron usuarios
+                    </p>
+
+                </div>
+
+            </td>
+        </tr>
+    `;
+
+        return;
+
+    }
+
+    usuariosFiltrados.forEach(
+        (
+            usuario,
+            index
+        ) => {
+
+            tbody.innerHTML += `
+                <tr>
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td>
+                        ${usuario.nombre}
+                        ${usuario.ap_paterno}
+                    </td>
+
+                    <td>
+                        ${usuario.ci}
+                    </td>
+
+                    <td>
+                        ${usuario.nro_celular || '-'}
+                    </td>
+
+                    <td>
+
+                        <span class="
+                            badge-rol
+                            badge-${usuario.rol}
+                        ">
+                            ${usuario.rol}
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <span class="
+                            badge-estado
+                            ${usuario.estado
+                    ? 'badge-activo'
+                    : 'badge-inactivo'
+                }
+                        ">
+
+                            ${usuario.estado
+                    ? 'Activo'
+                    : 'Inactivo'
+                }
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <div class="action-btns">
+
+                            <button
+                                class="btn-action btn-edit"
+                                onclick="editarUsuario('${usuario.uid}')">
+
+                                <i class="bi bi-pencil-square"></i>
+
+                            </button>
+
+                            <button
+                                class="btn-action btn-delete"
+                                onclick="abrirEliminar('${usuario.uid}')">
+
+                                <i class="bi bi-trash-fill"></i>
+
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+            `;
+
+        });
+
+    // ==========================
+    // PAGINACIÓN INFO
+    // ==========================
+    document.getElementById(
+        "paginationInfo"
+    ).textContent =
+        `Mostrando ${usuariosFiltrados.length} de ${usuariosGlobal.length}`;
+
+}
+
+// ==========================
+// EDITAR
+// ==========================
+window.editarUsuario = (uid) => {
+
+    const usuario =
+        usuariosGlobal.find(
+            u => u.uid === uid
+        );
+
+    if (!usuario) return;
+
+    modoEdicion = true;
+
+    uidEditar = uid;
+
+    document.getElementById(
+        'modalUsuarioTitle'
+    ).textContent =
+        'EDITAR USUARIO';
+
+    document.getElementById(
+        'fNombre'
+    ).value =
+        usuario.nombre;
+
+    document.getElementById(
+        'fApPat'
+    ).value =
+        usuario.ap_paterno;
+
+    document.getElementById(
+        'fApMat'
+    ).value =
+        usuario.ap_materno || '';
+
+    document.getElementById(
+        'fCi'
+    ).value =
+        usuario.ci;
+
+    document.getElementById(
+        'fCelular'
+    ).value =
+        usuario.nro_celular || '';
+
+    document.getElementById(
+        'fRol'
+    ).value =
+        usuario.rol;
+
+    document.getElementById(
+        'fSexo'
+    ).value =
+        usuario.sexo || '';
+
+    document.getElementById(
+        'fFechaNac'
+    ).value =
+        usuario.fecha_nac || '';
+
+    document.getElementById(
+        'fEstado'
+    ).value =
+        usuario.estado.toString();
+
+    onRolChange();
+
+    const modal =
+        new bootstrap.Modal(
+            document.getElementById(
+                'modalUsuario'
+            )
+        );
+
+    modal.show();
+
+};
+
+// ==========================
+// ELIMINAR
+// ==========================
+let uidEliminar = null;
+
+window.abrirEliminar = (uid) => {
+
+    uidEliminar = uid;
+
+    const modal =
+        new bootstrap.Modal(
+            document.getElementById(
+                'modalEliminar'
+            )
+        );
+
+    modal.show();
+
+};
+
+// ==========================
+// CONFIRMAR ELIMINAR
+// ==========================
+document
+    .getElementById(
+        'btnConfirmarEliminar'
+    )
+    .addEventListener(
+        'click',
+        async () => {
+
+            try {
+
+                await eliminarUsuario(
+                    uidEliminar
+                );
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Usuario eliminado',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+
+                cargarUsuarios();
+
+                bootstrap.Modal
+                    .getInstance(
+                        document.getElementById(
+                            'modalEliminar'
+                        )
+                    )
+                    .hide();
+
+            } catch (error) {
+
+                console.error(error);
+
+            }
+
+        }
+    );
+
+// ==========================
+// BUSCADOR
+// ==========================
+document
+    .getElementById(
+        "searchInput"
+    )
+    .addEventListener(
+        "input",
+        renderUsuarios
+    );
+
+// ==========================
+// FILTRO ROL
+// ==========================
+document
+    .getElementById(
+        "filterRol"
+    )
+    .addEventListener(
+        "change",
+        renderUsuarios
+    );
+
+// ==========================
+// FILTRO ESTADO
+// ==========================
+document
+    .getElementById(
+        "filterEstado"
+    )
+    .addEventListener(
+        "change",
+        renderUsuarios
+    );
+
+// ==========================
+// INICIAR
+// ==========================
+cargarUsuarios();

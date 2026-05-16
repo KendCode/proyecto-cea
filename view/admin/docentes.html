@@ -1,443 +1,214 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CEA — Docentes</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
-  <style>
-    .page-header { margin-bottom:28px; }
-    .page-header h1 { font-family:'Bebas Neue',cursive; font-size:2rem; color:#0d1b2a; letter-spacing:1px; margin:0; }
-    .page-header p  { color:#7a8fa0; font-size:.875rem; margin:0; }
-
-    .stat-card { background:#fff; border-radius:14px; padding:20px 22px; border:1px solid #e8edf3; display:flex; align-items:center; gap:16px; transition:box-shadow .2s; }
-    .stat-card:hover { box-shadow:0 4px 20px rgba(0,0,0,.07); }
-    .stat-icon { width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }
-    .si-navy  { background:rgba(13,27,42,.1);   color:#0d1b2a; }
-    .si-blue  { background:rgba(37,99,235,.12); color:#2563eb; }
-    .si-green { background:rgba(16,185,129,.12);color:#059669; }
-    .si-gold  { background:rgba(240,165,0,.15); color:#b07800; }
-    .stat-num  { font-family:'Bebas Neue',cursive; font-size:1.8rem; color:#0d1b2a; line-height:1; }
-    .stat-label{ font-size:.76rem; color:#7a8fa0; text-transform:uppercase; letter-spacing:1.2px; }
-
-    /* Cards grid for docentes */
-    .docentes-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:18px; }
-    .docente-card {
-      background:#fff; border-radius:14px; border:1px solid #e8edf3;
-      padding:22px; position:relative; overflow:hidden;
-      transition:box-shadow .2s, transform .2s;
-      cursor:pointer;
-    }
-    .docente-card:hover { box-shadow:0 6px 24px rgba(0,0,0,.09); transform:translateY(-2px); }
-    .docente-card::before {
-      content:''; position:absolute; top:0; left:0; right:0; height:3px;
-      background:linear-gradient(90deg, #f0a500, #ffc534);
-    }
-    .dc-avatar {
-      width:54px; height:54px; border-radius:14px;
-      display:flex; align-items:center; justify-content:center;
-      font-weight:800; font-size:1.3rem; margin-bottom:12px;
-    }
-    .dc-name  { font-weight:700; color:#0d1b2a; font-size:.95rem; line-height:1.2; }
-    .dc-user  { font-size:.78rem; color:#7a8fa0; margin-bottom:8px; }
-    .dc-meta  { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
-    .dc-chip  { background:#f0f3f8; border-radius:6px; padding:3px 9px; font-size:.72rem; color:#4a5a6a; display:flex; align-items:center; gap:4px; }
-    .dc-chip i { font-size:.75rem; color:#f0a500; }
-    .dc-actions { display:flex; gap:6px; margin-top:14px; border-top:1px solid #f0f3f8; padding-top:12px; }
-    .btn-dc { flex:1; padding:6px; border-radius:8px; border:none; cursor:pointer; font-size:.78rem; font-weight:600; transition:background .2s; display:flex; align-items:center; justify-content:center; gap:5px; }
-    .btn-dc-edit   { background:#eff6ff; color:#2563eb; } .btn-dc-edit:hover   { background:#dbeafe; }
-    .btn-dc-delete { background:#fff1f2; color:#e11d48; } .btn-dc-delete:hover { background:#ffe4e6; }
-
-    .dc-estado-badge { position:absolute; top:14px; right:14px; padding:2px 9px; border-radius:20px; font-size:.68rem; font-weight:700; }
-    .dc-activo   { background:#d1fae5; color:#065f46; }
-    .dc-inactivo { background:#fee2e2; color:#991b1b; }
-
-    /* Table view toggle */
-    .view-toggle { display:flex; gap:4px; }
-    .view-btn { padding:6px 10px; border:1.5px solid #e2e8f0; background:#fff; border-radius:8px; cursor:pointer; font-size:.9rem; color:#7a8fa0; transition:all .2s; }
-    .view-btn.active { border-color:#0d1b2a; background:#0d1b2a; color:#f0a500; }
-
-    /* Table (shared) */
-    .table-card { background:#fff; border-radius:16px; border:1px solid #e8edf3; overflow:hidden; display:none; }
-    .table-card.visible { display:block; }
-    .cards-wrap { display:block; }
-    .cards-wrap.hidden { display:none; }
-
-    .table-toolbar { display:flex; align-items:center; flex-wrap:wrap; gap:12px; padding:18px 22px; border-bottom:1px solid #f0f3f8; }
-    .toolbar-title { font-weight:600; color:#0d1b2a; font-size:.95rem; flex:1; }
-    .search-input-wrap { position:relative; }
-    .search-input-wrap i { position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#aab8c4; font-size:.9rem; }
-    .search-input { padding:7px 12px 7px 32px; border:1.5px solid #e2e8f0; border-radius:9px; font-family:'DM Sans',sans-serif; font-size:.85rem; width:220px; color:#0d1b2a; outline:none; transition:border-color .2s; }
-    .search-input:focus { border-color:#f0a500; }
-    .filter-select { padding:7px 10px; border:1.5px solid #e2e8f0; border-radius:9px; font-family:'DM Sans',sans-serif; font-size:.85rem; color:#0d1b2a; outline:none; }
-    .filter-select:focus { border-color:#f0a500; }
-    .btn-add { background:#0d1b2a; color:#f0a500; border:none; border-radius:9px; padding:8px 16px; font-family:'DM Sans',sans-serif; font-size:.85rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px; }
-    .btn-add:hover { background:#1b2d42; }
-
-    .cea-table { width:100%; border-collapse:collapse; }
-    .cea-table thead th { background:#f8fafc; font-size:.72rem; font-weight:700; color:#7a8fa0; text-transform:uppercase; letter-spacing:1.2px; padding:11px 18px; border-bottom:1px solid #e8edf3; white-space:nowrap; }
-    .cea-table tbody tr { border-bottom:1px solid #f0f3f8; transition:background .15s; }
-    .cea-table tbody tr:hover { background:#fafbfd; }
-    .cea-table td { padding:13px 18px; font-size:.875rem; color:#334155; vertical-align:middle; }
-    .user-cell { display:flex; align-items:center; gap:10px; }
-    .user-avatar { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.8rem; flex-shrink:0; }
-    .user-name { font-weight:600; color:#0d1b2a; font-size:.875rem; }
-    .user-sub  { font-size:.75rem; color:#7a8fa0; }
-    .badge-estado { padding:3px 9px; border-radius:20px; font-size:.72rem; font-weight:600; }
-    .badge-activo   { background:#d1fae5; color:#065f46; }
-    .badge-inactivo { background:#fee2e2; color:#991b1b; }
-    .action-btns { display:flex; gap:6px; }
-    .btn-action { width:30px; height:30px; border-radius:7px; display:flex; align-items:center; justify-content:center; border:none; cursor:pointer; font-size:.85rem; transition:background .18s; }
-    .btn-edit   { background:#eff6ff; color:#2563eb; } .btn-edit:hover   { background:#dbeafe; }
-    .btn-delete { background:#fff1f2; color:#e11d48; } .btn-delete:hover { background:#ffe4e6; }
-
-    .cea-modal-header { background:#0d1b2a; color:#fff; border-radius:12px 12px 0 0; }
-    .cea-modal-header .btn-close { filter:brightness(0) invert(1); }
-    .cea-modal-title { font-family:'Bebas Neue',cursive; letter-spacing:1px; font-size:1.2rem; }
-    .form-label { font-size:.75rem; font-weight:700; color:#0d1b2a; text-transform:uppercase; letter-spacing:1px; }
-    .form-control,.form-select { border:1.5px solid #e2e8f0; border-radius:9px; font-family:'DM Sans',sans-serif; font-size:.875rem; padding:8px 12px; }
-    .form-control:focus,.form-select:focus { border-color:#f0a500; box-shadow:0 0 0 3px rgba(240,165,0,.15); }
-    .btn-cea-primary { background:#0d1b2a; color:#f0a500; border:none; border-radius:9px; font-family:'DM Sans',sans-serif; font-weight:600; padding:9px 20px; }
-    .btn-cea-primary:hover { background:#1b2d42; color:#f0a500; }
-
-    .empty-state { text-align:center; padding:56px 20px; grid-column:1/-1; }
-    .empty-state i { font-size:2.5rem; color:#cbd5e1; margin-bottom:12px; display:block; }
-    .empty-state p { color:#7a8fa0; font-size:.875rem; }
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
 </head>
 <body>
-<div class="cea-main" id="ceaMain">
+<script src="../../assets/js/sidebar.js"></script>
+<script>renderLayout({ title: 'Docentes', subtitle: 'Gestión del cuerpo docente', activeLink: 'docentes' });</script>
 
-  <div class="page-header d-flex align-items-start justify-content-between flex-wrap gap-3">
-    <div>
-      <h1>Gestión de Docentes</h1>
-      <p>Administra el personal docente del centro educativo</p>
-    </div>
-    <div class="d-flex gap-2">
-      <div class="view-toggle">
-        <button class="view-btn active" id="btnCards" onclick="setView('cards')"><i class="bi bi-grid-3x3-gap-fill"></i></button>
-        <button class="view-btn" id="btnTable" onclick="setView('table')"><i class="bi bi-table"></i></button>
-      </div>
-      <button class="btn-add" data-bs-toggle="modal" data-bs-target="#modalDocente" onclick="abrirNuevo()">
-        <i class="bi bi-plus-lg"></i> Nuevo Docente
-      </button>
-    </div>
-  </div>
+<div id="main">
+  <div class="page-content">
 
-  <!-- Stats -->
-  <div class="row g-3 mb-4">
-    <div class="col-6 col-lg-3">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px">
       <div class="stat-card">
-        <div class="stat-icon si-navy"><i class="bi bi-mortarboard-fill"></i></div>
-        <div><div class="stat-num" id="stTotal">0</div><div class="stat-label">Total docentes</div></div>
+        <div class="icon-wrap ic-green"><i class="bi bi-person-workspace"></i></div>
+        <div class="stat-value" id="totalDoc">—</div>
+        <div class="stat-label">Total Docentes</div>
+        <span class="stat-change up"><i class="bi bi-arrow-up-short"></i> Activos</span>
       </div>
-    </div>
-    <div class="col-6 col-lg-3">
       <div class="stat-card">
-        <div class="stat-icon si-green"><i class="bi bi-check-circle-fill"></i></div>
-        <div><div class="stat-num" id="stActivos">0</div><div class="stat-label">Activos</div></div>
+        <div class="icon-wrap ic-blue"><i class="bi bi-building"></i></div>
+        <div class="stat-value" id="carrerasDoc">—</div>
+        <div class="stat-label">Carreras Cubiertas</div>
       </div>
-    </div>
-    <div class="col-6 col-lg-3">
       <div class="stat-card">
-        <div class="stat-icon si-blue"><i class="bi bi-diagram-3-fill"></i></div>
-        <div><div class="stat-num" id="stCarreras">0</div><div class="stat-label">Carreras</div></div>
+        <div class="icon-wrap ic-purple"><i class="bi bi-layers-fill"></i></div>
+        <div class="stat-value" id="nivelesDoc">—</div>
+        <div class="stat-label">Niveles</div>
       </div>
     </div>
-    <div class="col-6 col-lg-3">
-      <div class="stat-card">
-        <div class="stat-icon si-gold"><i class="bi bi-x-circle-fill"></i></div>
-        <div><div class="stat-num" id="stInactivos">0</div><div class="stat-label">Inactivos</div></div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Toolbar (shared) -->
-  <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
-    <div class="search-input-wrap">
-      <i class="bi bi-search"></i>
-      <input type="text" class="search-input" id="searchInput" placeholder="Buscar docente..."/>
-    </div>
-    <select class="filter-select" id="filterCarrera"><option value="">Todas las carreras</option></select>
-    <select class="filter-select" id="filterEstado">
-      <option value="">Todos</option>
-      <option value="true">Activos</option>
-      <option value="false">Inactivos</option>
-    </select>
-  </div>
-
-  <!-- Cards View -->
-  <div class="cards-wrap" id="cardsWrap">
-    <div class="docentes-grid" id="docentesGrid"></div>
-  </div>
-
-  <!-- Table View -->
-  <div class="table-card" id="tableCard">
-    <div class="table-toolbar">
-      <span class="toolbar-title"><i class="bi bi-mortarboard me-2 text-secondary"></i>Lista de docentes</span>
-    </div>
-    <div class="table-responsive">
-      <table class="cea-table">
-        <thead>
-          <tr>
-            <th>#</th><th>Docente</th><th>C.I.</th><th>Carrera</th><th>Celular</th><th>Estado</th><th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="tbodyDocentes"></tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL DOCENTE -->
-<div class="modal fade" id="modalDocente" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered" style="max-width:480px">
-    <div class="modal-content" style="border-radius:14px;border:none;">
-      <div class="modal-header cea-modal-header px-4 py-3">
-        <h5 class="modal-title cea-modal-title" id="modalDocTitle">NUEVO DOCENTE</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body p-4">
-        <input type="hidden" id="editDocId"/>
-        <div class="row g-3">
-          <div class="col-12">
-            <label class="form-label">Usuario vinculado *</label>
-            <select class="form-select" id="fDocUsuario">
-              <option value="">Seleccionar usuario...</option>
-            </select>
-          </div>
-          <div class="col-12">
-            <label class="form-label">Carrera *</label>
-            <select class="form-select" id="fDocCarrera">
-              <option value="">Seleccionar carrera...</option>
-            </select>
-          </div>
-          <div class="col-12">
-            <label class="form-label">Estado</label>
-            <select class="form-select" id="fDocEstado">
-              <option value="true">Activo</option>
-              <option value="false">Inactivo</option>
-            </select>
-          </div>
+    <div class="panel-card">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Lista de Docentes</div>
+          <div class="section-sub">Docentes asignados a carreras y niveles</div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <select class="filter-select" id="filtroCarrera" onchange="renderTabla()">
+            <option value="">Todas las carreras</option>
+          </select>
+          <button class="btn btn-primary" onclick="abrirModal()">
+            <i class="bi bi-plus-lg"></i> Nuevo Docente
+          </button>
         </div>
       </div>
-      <div class="modal-footer border-0 px-4 pb-4">
-        <button class="btn btn-light btn-sm rounded-3" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn-cea-primary btn btn-sm" id="btnGuardarDoc">
-          <i class="bi bi-check2-circle me-1"></i> Guardar Docente
-        </button>
+
+      <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Docente</th><th>CI</th><th>Celular</th><th>Carrera</th><th>Nivel</th><th>Estado</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyDoc"></tbody>
+        </table>
       </div>
     </div>
   </div>
 </div>
 
-<!-- MODAL ELIMINAR -->
-<div class="modal fade" id="modalEliminar" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered" style="max-width:400px">
-    <div class="modal-content" style="border-radius:14px;border:none;">
-      <div class="modal-body p-4 text-center">
-        <div style="width:60px;height:60px;border-radius:50%;background:#fff1f2;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;color:#e11d48;"><i class="bi bi-trash3-fill"></i></div>
-        <h5 style="font-family:'Bebas Neue',cursive;letter-spacing:1px;font-size:1.3rem;color:#0d1b2a;">¿Eliminar docente?</h5>
-        <p style="color:#7a8fa0;font-size:.875rem;" id="elimDocNombre">Esta acción no se puede deshacer.</p>
-        <div class="d-flex gap-2 justify-content-center mt-3">
-          <button class="btn btn-light btn-sm rounded-3 px-4" data-bs-dismiss="modal">Cancelar</button>
-          <button class="btn btn-danger btn-sm rounded-3 px-4" id="btnConfEliminar">Eliminar</button>
-        </div>
+<!-- Modal -->
+<div class="modal-backdrop" id="modalDocente">
+  <div class="modal" style="max-width:580px">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitulo">Nuevo Docente</div>
+      <button class="modal-close" onclick="cerrarModal()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div style="color:var(--txt-muted);font-size:12px;margin-bottom:16px;background:var(--bg-elevated);border-radius:var(--radius-sm);padding:10px 14px">
+      <i class="bi bi-info-circle"></i> El docente debe tener un <strong style="color:var(--txt-primary)">usuario con rol "docente"</strong> ya creado.
+    </div>
+    <div class="form-group">
+      <label class="form-label">Usuario ID</label>
+      <input type="text" class="form-control" id="fUsuarioId" placeholder="UID del usuario Firebase">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Carrera</label>
+        <select class="form-control" id="fCarrera">
+          <option value="">Seleccionar...</option>
+        </select>
       </div>
+      <div class="form-group">
+        <label class="form-label">Nivel</label>
+        <select class="form-control" id="fNivel">
+          <option value="">Seleccionar...</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardar()"><i class="bi bi-floppy-fill"></i> Guardar</button>
     </div>
   </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../../assets/js/layout.js"></script>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const DEMO_USUARIOS = [
+  { id:'uid10', nombre:'Ana', ap_paterno:'Quispe', ap_materno:'Mamani', ci:'9001234', nro_celular:'75012345', estado:true },
+  { id:'uid11', nombre:'Roberto', ap_paterno:'Flores', ap_materno:'Yujra', ci:'9001235', nro_celular:'75012346', estado:true },
+  { id:'uid12', nombre:'Lidia', ap_paterno:'Cruz', ap_materno:'Apaza', ci:'9001236', nro_celular:'75012347', estado:false },
+];
+const DEMO_CARRERAS = [
+  { id:'carrera001', nombre:'Sistemas Informáticos', sigla:'SI' },
+  { id:'carrera002', nombre:'Contabilidad', sigla:'CONT' },
+  { id:'carrera003', nombre:'Electricidad', sigla:'ELEC' },
+];
+const DEMO_NIVELES = [
+  { id:'nivel_1', nombre:'Técnico Básico', sigla:'TB' },
+  { id:'nivel_2', nombre:'Técnico Auxiliar', sigla:'TA' },
+  { id:'nivel_3', nombre:'Técnico Medio', sigla:'TM' },
+];
+let docentes = [
+  { id:'doc1', usuarioId:'uid10', carreraId:'carrera001', nivelId:'nivel_1' },
+  { id:'doc2', usuarioId:'uid11', carreraId:'carrera002', nivelId:'nivel_2' },
+  { id:'doc3', usuarioId:'uid12', carreraId:'carrera003', nivelId:'nivel_3' },
+];
+let usuarios = {}, carreras = {}, niveles = {}, editId = null;
 
-  const firebaseConfig = { /* TU CONFIG */ };
-  const app = initializeApp(firebaseConfig);
-  const db  = getFirestore(app);
-  injectLayout('docentes', 'Gestión de Docentes');
+DEMO_USUARIOS.forEach(u => usuarios[u.id] = u);
+DEMO_CARRERAS.forEach(c => carreras[c.id] = c);
+DEMO_NIVELES.forEach(n => niveles[n.id] = n);
 
-  let allDoc = [], filtrados = [], usuariosMap = {}, carrerasArr = [];
-  let deletingId = null;
-  let currentView = 'cards';
-
-  const COLORS = ['#0d1b2a','#2563eb','#7c3aed','#059669','#d97706','#dc2626'];
-  function getColor(s) { let h=0; for(let c of (s||'')) h=(h*31+c.charCodeAt(0))%COLORS.length; return COLORS[h]; }
-
-  window.setView = (v) => {
-    currentView = v;
-    document.getElementById('btnCards').classList.toggle('active', v==='cards');
-    document.getElementById('btnTable').classList.toggle('active', v==='table');
-    document.getElementById('cardsWrap').classList.toggle('hidden', v!=='cards');
-    document.getElementById('tableCard').classList.toggle('visible', v==='table');
-    render();
-  };
-
-  async function cargarDatos() {
-    const [usuSnap, carrSnap, docSnap] = await Promise.all([
-      getDocs(collection(db,'usuarios')),
-      getDocs(collection(db,'carreras')),
-      getDocs(collection(db,'docentes'))
-    ]);
-    usuSnap.docs.forEach(d => { usuariosMap[d.id] = d.data(); });
-    carrerasArr = carrSnap.docs.map(d => ({id:d.id,...d.data()}));
-    allDoc = docSnap.docs.map(d => ({id:d.id,...d.data()}));
-
-    // Poblar selects
-    const fc = document.getElementById('filterCarrera');
-    const fd = document.getElementById('fDocCarrera');
-    carrerasArr.filter(c=>c.estado).forEach(c => {
-      fc.innerHTML += `<option value="${c.nombre}">${c.nombre}</option>`;
-      fd.innerHTML += `<option value="${c.nombre}">${c.nombre}</option>`;
-    });
-    const fu = document.getElementById('fDocUsuario');
-    Object.entries(usuariosMap).forEach(([id,u]) => {
-      if (u.rol==='docente') fu.innerHTML += `<option value="${id}">${u.nombre} ${u.ap_paterno} — ${u.ci}</option>`;
-    });
-
-    const carrSet = new Set(allDoc.map(d=>d.carrera).filter(Boolean));
-    document.getElementById('stCarreras').textContent = carrSet.size;
-
-    applyFilters();
-  }
-
-  function applyFilters() {
-    const s = document.getElementById('searchInput').value.toLowerCase();
-    const c = document.getElementById('filterCarrera').value;
-    const e = document.getElementById('filterEstado').value;
-
-    filtrados = allDoc.filter(d => {
-      const u = usuariosMap[d.usuarioId]||{};
-      const nombre = `${u.nombre||''} ${u.ap_paterno||''} ${u.ci||''}`.toLowerCase();
-      return (!s || nombre.includes(s)) &&
-             (!c || d.carrera===c) &&
-             (e==='' || String(d.estado)===e);
-    });
-
-    document.getElementById('stTotal').textContent = filtrados.length;
-    document.getElementById('stActivos').textContent   = filtrados.filter(x=>x.estado).length;
-    document.getElementById('stInactivos').textContent = filtrados.filter(x=>!x.estado).length;
-    render();
-  }
-
-  function render() {
-    if (currentView==='cards') renderCards();
-    else renderTable();
-  }
-
-  function renderCards() {
-    const grid = document.getElementById('docentesGrid');
-    if (!filtrados.length) {
-      grid.innerHTML = `<div class="empty-state"><i class="bi bi-mortarboard"></i><p>No se encontraron docentes</p></div>`;
-      return;
-    }
-    grid.innerHTML = filtrados.map(d => {
-      const u = usuariosMap[d.usuarioId]||{};
-      const nombre = `${u.nombre||'?'} ${u.ap_paterno||''}`;
-      const color  = getColor(u.nombre);
-      return `<div class="docente-card">
-        <span class="dc-estado-badge ${d.estado?'dc-activo':'dc-inactivo'}">${d.estado?'Activo':'Inactivo'}</span>
-        <div class="dc-avatar" style="background:${color}1a;color:${color}">${(u.nombre||'?')[0].toUpperCase()}</div>
-        <div class="dc-name">${nombre}</div>
-        <div class="dc-user">@${u.usuario||'—'}</div>
-        <div class="dc-meta">
-          <span class="dc-chip"><i class="bi bi-diagram-3-fill"></i>${d.carrera||'—'}</span>
-          <span class="dc-chip"><i class="bi bi-credit-card-fill"></i>${u.ci||'—'}</span>
-          <span class="dc-chip"><i class="bi bi-phone-fill"></i>${u.nro_celular||'—'}</span>
-        </div>
-        <div class="dc-actions">
-          <button class="btn-dc btn-dc-edit" onclick="editarDoc('${d.id}')"><i class="bi bi-pencil-fill"></i> Editar</button>
-          <button class="btn-dc btn-dc-delete" onclick="confirmarEliminar('${d.id}','${nombre}')"><i class="bi bi-trash3-fill"></i> Eliminar</button>
-        </div>
-      </div>`;
-    }).join('');
-  }
-
-  function renderTable() {
-    const tbody = document.getElementById('tbodyDocentes');
-    if (!filtrados.length) {
-      tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><i class="bi bi-mortarboard"></i><p>No se encontraron docentes</p></div></td></tr>`;
-      return;
-    }
-    tbody.innerHTML = filtrados.map((d,i) => {
-      const u = usuariosMap[d.usuarioId]||{};
-      const nombre = `${u.nombre||'?'} ${u.ap_paterno||''}`;
-      return `<tr>
-        <td style="color:#aab8c4;font-size:.78rem">${i+1}</td>
-        <td><div class="user-cell">
-          <div class="user-avatar" style="background:${getColor(u.nombre)};color:#fff">${(u.nombre||'?')[0].toUpperCase()}</div>
-          <div><div class="user-name">${nombre}</div><div class="user-sub">${u.correo||'—'}</div></div>
-        </div></td>
-        <td>${u.ci||'—'}</td>
-        <td>${d.carrera||'—'}</td>
-        <td>${u.nro_celular||'—'}</td>
-        <td><span class="badge-estado badge-${d.estado?'activo':'inactivo'}">${d.estado?'Activo':'Inactivo'}</span></td>
-        <td><div class="action-btns">
-          <button class="btn-action btn-edit" onclick="editarDoc('${d.id}')"><i class="bi bi-pencil-fill"></i></button>
-          <button class="btn-action btn-delete" onclick="confirmarEliminar('${d.id}','${nombre}')"><i class="bi bi-trash3-fill"></i></button>
-        </div></td>
-      </tr>`;
-    }).join('');
-  }
-
-  window.abrirNuevo = () => {
-    document.getElementById('modalDocTitle').textContent = 'NUEVO DOCENTE';
-    document.getElementById('editDocId').value = '';
-    document.getElementById('fDocUsuario').value = '';
-    document.getElementById('fDocCarrera').value = '';
-    document.getElementById('fDocEstado').value = 'true';
-  };
-
-  window.editarDoc = (id) => {
-    const d = allDoc.find(x=>x.id===id);
-    if (!d) return;
-    document.getElementById('modalDocTitle').textContent = 'EDITAR DOCENTE';
-    document.getElementById('editDocId').value    = id;
-    document.getElementById('fDocUsuario').value  = d.usuarioId||'';
-    document.getElementById('fDocCarrera').value  = d.carrera||'';
-    document.getElementById('fDocEstado').value   = String(d.estado);
-    new bootstrap.Modal(document.getElementById('modalDocente')).show();
-  };
-
-  window.confirmarEliminar = (id, nombre) => {
-    deletingId = id;
-    document.getElementById('elimDocNombre').textContent = `¿Eliminar a "${nombre}"?`;
-    new bootstrap.Modal(document.getElementById('modalEliminar')).show();
-  };
-
-  document.getElementById('btnConfEliminar').addEventListener('click', async () => {
-    if (!deletingId) return;
-    await deleteDoc(doc(db,'docentes',deletingId));
-    bootstrap.Modal.getInstance(document.getElementById('modalEliminar')).hide();
-    cargarDatos();
+function init() {
+  document.getElementById('totalDoc').textContent = docentes.length;
+  document.getElementById('carrerasDoc').textContent = new Set(docentes.map(d=>d.carreraId)).size;
+  document.getElementById('nivelesDoc').textContent = new Set(docentes.map(d=>d.nivelId)).size;
+  const selFC = document.getElementById('filtroCarrera');
+  const selC = document.getElementById('fCarrera');
+  const selN = document.getElementById('fNivel');
+  DEMO_CARRERAS.forEach(c => {
+    selFC.insertAdjacentHTML('beforeend', `<option value="${c.id}">${c.nombre}</option>`);
+    selC.insertAdjacentHTML('beforeend', `<option value="${c.id}">${c.nombre}</option>`);
   });
+  DEMO_NIVELES.forEach(n => selN.insertAdjacentHTML('beforeend', `<option value="${n.id}">${n.nombre}</option>`));
+  renderTabla();
+}
 
-  document.getElementById('btnGuardarDoc').addEventListener('click', async () => {
-    const uid    = document.getElementById('editDocId').value;
-    const usuId  = document.getElementById('fDocUsuario').value;
-    const carrera= document.getElementById('fDocCarrera').value;
-    const estado = document.getElementById('fDocEstado').value === 'true';
-    if (!usuId || !carrera) { alert('Completa los campos obligatorios.'); return; }
-    const data = { usuarioId:usuId, carrera, estado };
-    const btn = document.getElementById('btnGuardarDoc');
-    btn.disabled=true; btn.textContent='Guardando...';
-    try {
-      if (uid) await updateDoc(doc(db,'docentes',uid), data);
-      else await addDoc(collection(db,'docentes'), data);
-      bootstrap.Modal.getInstance(document.getElementById('modalDocente')).hide();
-      cargarDatos();
-    } catch(e) { alert('Error: '+e.message); }
-    finally { btn.disabled=false; btn.textContent='Guardar Docente'; }
-  });
+window.renderTabla = function() {
+  const fc = document.getElementById('filtroCarrera').value;
+  const data = docentes.filter(d => !fc || d.carreraId === fc);
+  const tbody = document.getElementById('tbodyDoc');
+  if (!data.length) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--txt-muted)">Sin docentes</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map((d, i) => {
+    const u = usuarios[d.usuarioId] || {};
+    const c = carreras[d.carreraId] || {};
+    const n = niveles[d.nivelId] || {};
+    const activo = u.estado !== false;
+    return `<tr>
+      <td style="color:var(--txt-muted)">${i+1}</td>
+      <td class="td-name">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent-3),var(--accent));display:grid;place-items:center;font-weight:700;font-size:12px;color:#fff">${(u.nombre||'?')[0]}</div>
+          <div>
+            <div>${u.nombre||'—'} ${u.ap_paterno||''}</div>
+            <div style="font-size:11px;color:var(--txt-muted)">Docente</div>
+          </div>
+        </div>
+      </td>
+      <td><span style="font-family:var(--mono)">${u.ci||'—'}</span></td>
+      <td>${u.nro_celular||'—'}</td>
+      <td><span class="role-badge rb-dir">${c.sigla||'—'}</span> ${c.nombre||'—'}</td>
+      <td>${n.nombre||'—'}</td>
+      <td><span class="status-dot ${activo?'active':'inactive'}">${activo?'Activo':'Inactivo'}</span></td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-ghost btn-sm" onclick="editarDocente('${d.id}')"><i class="bi bi-pencil-fill"></i></button>
+          <button class="btn btn-danger btn-sm" onclick="eliminar('${d.id}')"><i class="bi bi-trash-fill"></i></button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+};
 
-  ['searchInput','filterCarrera','filterEstado'].forEach(id =>
-    document.getElementById(id).addEventListener('input', applyFilters)
-  );
-  cargarDatos();
+window.abrirModal = function(id=null) {
+  editId = id;
+  document.getElementById('modalTitulo').textContent = id ? 'Editar Docente' : 'Nuevo Docente';
+  if (id) {
+    const d = docentes.find(x=>x.id===id);
+    if (d) { document.getElementById('fUsuarioId').value=d.usuarioId; document.getElementById('fCarrera').value=d.carreraId; document.getElementById('fNivel').value=d.nivelId; }
+  } else {
+    document.getElementById('fUsuarioId').value='';
+    document.getElementById('fCarrera').value='';
+    document.getElementById('fNivel').value='';
+  }
+  document.getElementById('modalDocente').classList.add('show');
+};
+window.cerrarModal = () => document.getElementById('modalDocente').classList.remove('show');
+window.editarDocente = id => abrirModal(id);
+window.guardar = function() {
+  const data = { usuarioId: document.getElementById('fUsuarioId').value.trim(), carreraId: document.getElementById('fCarrera').value, nivelId: document.getElementById('fNivel').value };
+  if (!data.usuarioId||!data.carreraId||!data.nivelId) { showToast('Completa todos los campos','error'); return; }
+  if (editId) { const i = docentes.findIndex(d=>d.id===editId); if(i>-1) docentes[i]={...docentes[i],...data}; showToast('Docente actualizado'); }
+  else { docentes.push({id:'doc'+Date.now(),...data}); showToast('Docente registrado'); }
+  cerrarModal(); renderTabla();
+};
+window.eliminar = function(id) {
+  if (!confirm('¿Eliminar docente?')) return;
+  docentes = docentes.filter(d=>d.id!==id); showToast('Eliminado','info'); renderTabla();
+};
+
+init();
 </script>
 </body>
 </html>

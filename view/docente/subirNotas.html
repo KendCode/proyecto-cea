@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CEA · Subir Notas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../../assets/css/DocenteStyle.css">
+  <style>
+    .nota-input { width: 80px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 7px 10px; color: var(--txt-primary); font-family: var(--mono); font-size: 14px; font-weight: 700; text-align: center; outline: none; transition: border-color .2s, box-shadow .2s; }
+    .nota-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .nota-input.saved { border-color: var(--accent-3); }
+    .nota-badge { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 28px; border-radius: 7px; font-family: var(--mono); font-size: 13px; font-weight: 700; }
+    .nota-a { background: rgba(16,185,129,.15); color: var(--accent-3); }
+    .nota-b { background: rgba(59,130,246,.15);  color: var(--accent); }
+    .nota-c { background: rgba(245,158,11,.15);  color: var(--accent-4); }
+    .nota-r { background: rgba(239,68,68,.15);   color: var(--danger); }
+  </style>
+</head>
+<body>
+<div id="main">
+  <div class="page-content">
+
+    <!-- Filtros -->
+    <div class="panel-card" style="margin-bottom:22px;animation:fadeUp .4s ease">
+      <div class="section-header" style="margin-bottom:18px">
+        <div>
+          <div class="section-title"><i class="bi bi-pencil-square" style="color:var(--accent)"></i> Subir / Editar Notas</div>
+          <div class="section-sub">Selecciona carrera, nivel y módulo para ingresar calificaciones</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;align-items:end">
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Carrera</label>
+          <select class="form-control" id="selCarrera" onchange="onCarreraChange()">
+            <option value="">— Seleccionar —</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Nivel</label>
+          <select class="form-control" id="selNivel" onchange="onNivelChange()">
+            <option value="">— Seleccionar —</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Módulo</label>
+          <select class="form-control" id="selModulo" onchange="onModuloChange()">
+            <option value="">— Seleccionar —</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Gestión</label>
+          <select class="form-control" id="selGestion">
+            <option value="2026">2026</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla de notas -->
+    <div class="panel-card" id="tablaNota" style="display:none">
+      <div class="section-header">
+        <div>
+          <div class="section-title" id="tituloTabla">— Notas</div>
+          <div class="section-sub" id="subTabla"></div>
+        </div>
+        <button class="btn btn-primary" onclick="guardarTodas()" id="btnGuardar">
+          <i class="bi bi-check2-all"></i> Guardar Todas
+        </button>
+      </div>
+
+      <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Estudiante</th>
+              <th>CI</th>
+              <th>Nota Actual</th>
+              <th>Nueva Nota (0–100)</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="notasBody"></tbody>
+        </table>
+      </div>
+
+      <div id="progresoBar" style="margin-top:16px;display:none">
+        <div style="font-size:12px;color:var(--txt-muted);margin-bottom:6px" id="progText"></div>
+        <div class="prog-bar"><div class="prog-fill" id="progFill" style="background:var(--accent);width:0%;transition:width .3s"></div></div>
+      </div>
+    </div>
+
+    <!-- Placeholder -->
+    <div id="placeholderTabla" class="empty-state" style="padding:80px 20px">
+      <i class="bi bi-pencil-square"></i>
+      <p>Selecciona Carrera → Nivel → Módulo para ver los estudiantes y subir notas</p>
+    </div>
+
+  </div>
+</div>
+
+<script src="../../assets/js/sidebar.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = { /* ← tu config */ };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+renderLayout({ title: 'Subir Notas', subtitle: 'Ingresa calificaciones de tus módulos', activeLink: 'subirNotas', role: 'docente' });
+
+let docenteUid = null;
+let asignaciones = [];
+let estudiantesActuales = [];
+let moduloActualId = null;
+
+onAuthStateChanged(auth, async user => {
+  if (!user) { window.location.href = '../auth/login.html'; return; }
+  docenteUid = user.uid;
+  await cargarAsignaciones();
+});
+
+async function cargarAsignaciones() {
+  const q = query(collection(db, 'docentes'), where('usuarioId', '==', docenteUid));
+  const snap = await getDocs(q);
+  asignaciones = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+  // Poblar carrera select
+  const carreraIds = [...new Set(asignaciones.map(a => a.carreraId))];
+  const selC = document.getElementById('selCarrera');
+  selC.innerHTML = '<option value="">— Seleccionar —</option>';
+  for (const cId of carreraIds) {
+    const cSnap = await getDoc(doc(db, 'carreras', cId.split('/').pop()));
+    const c = cSnap.exists() ? cSnap.data() : { nombre: cId };
+    selC.innerHTML += `<option value="${cId}">${c.nombre}</option>`;
+  }
+
+  // Leer params URL
+  const params = new URLSearchParams(location.search);
+  if (params.get('moduloId')) {
+    // Autocargar si viene con moduloId
+    await autocargarDesdeModulo(params.get('moduloId'));
+  }
+}
+
+window.onCarreraChange = async function() {
+  const carreraId = document.getElementById('selCarrera').value;
+  const selN = document.getElementById('selNivel');
+  selN.innerHTML = '<option value="">— Seleccionar —</option>';
+  document.getElementById('selModulo').innerHTML = '<option value="">— Seleccionar —</option>';
+  if (!carreraId) return;
+
+  const niveles = [...new Set(asignaciones.filter(a => a.carreraId === carreraId).map(a => a.nivelId))];
+  for (const nId of niveles) {
+    const nSnap = await getDoc(doc(db, 'niveles', nId.split('/').pop()));
+    const n = nSnap.exists() ? nSnap.data() : { nombre: nId };
+    selN.innerHTML += `<option value="${nId}">${n.nombre}</option>`;
+  }
+}
+
+window.onNivelChange = async function() {
+  const carreraId = document.getElementById('selCarrera').value;
+  const nivelId   = document.getElementById('selNivel').value;
+  const selM = document.getElementById('selModulo');
+  selM.innerHTML = '<option value="">— Seleccionar —</option>';
+  if (!carreraId || !nivelId) return;
+
+  const mQ = query(collection(db, 'modulos'),
+    where('carreraId', '==', carreraId),
+    where('nivelId', '==', nivelId),
+    where('estado', '==', true));
+  const mSnap = await getDocs(mQ);
+  mSnap.docs.sort((a,b) => (a.data().orden||0) - (b.data().orden||0)).forEach(d => {
+    selM.innerHTML += `<option value="${d.id}">${d.data().nombre}</option>`;
+  });
+}
+
+window.onModuloChange = async function() {
+  const moduloId  = document.getElementById('selModulo').value;
+  const nivelId   = document.getElementById('selNivel').value;
+  const carreraId = document.getElementById('selCarrera').value;
+  const gestion   = document.getElementById('selGestion').value;
+  if (!moduloId) {
+    document.getElementById('tablaNota').style.display = 'none';
+    document.getElementById('placeholderTabla').style.display = '';
+    return;
+  }
+  await cargarEstudiantesParaNota(moduloId, nivelId, carreraId, gestion);
+}
+
+async function cargarEstudiantesParaNota(moduloId, nivelId, carreraId, gestion) {
+  moduloActualId = moduloId;
+  document.getElementById('tablaNota').style.display = '';
+  document.getElementById('placeholderTabla').style.display = 'none';
+
+  const mSnap = await getDoc(doc(db, 'modulos', moduloId));
+  const modulo = mSnap.exists() ? mSnap.data() : { nombre: 'Módulo' };
+
+  document.getElementById('tituloTabla').textContent = modulo.nombre;
+  document.getElementById('subTabla').textContent = `Gestión ${gestion} · Ingresa una nota entre 0 y 100`;
+
+  // Cargar estudiantes del nivel
+  const estQ = query(collection(db, 'estudiantes'),
+    where('nivel', '==', nivelId),
+    where('carrera', '==', carreraId),
+    where('gestion', '==', gestion));
+  const estSnap = await getDocs(estQ);
+
+  // Cargar notas existentes
+  const calQ = query(collection(db, 'calificaciones'),
+    where('moduloId', '==', moduloId),
+    where('gestion', '==', gestion));
+  const calSnap = await getDocs(calQ);
+  const notasMap = {};
+  calSnap.docs.forEach(d => { notasMap[d.data().estudianteId] = { id: d.id, nota: d.data().nota }; });
+
+  estudiantesActuales = [];
+  for (const estDoc of estSnap.docs) {
+    const est = estDoc.data();
+    const usrSnap = await getDoc(doc(db, 'usuarios', est.usuarioId));
+    const usr = usrSnap.exists() ? usrSnap.data() : {};
+    estudiantesActuales.push({ id: estDoc.id, ...est, ...usr, notaExist: notasMap[estDoc.id] });
+  }
+
+  const tbody = document.getElementById('notasBody');
+  if (!estudiantesActuales.length) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="bi bi-people"></i><p>Sin estudiantes en este nivel/carrera/gestión</p></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = estudiantesActuales.map((e, i) => {
+    const notaVal = e.notaExist ? e.notaExist.nota : '';
+    const nClass = notaVal >= 90 ? 'nota-a' : notaVal >= 70 ? 'nota-b' : notaVal >= 51 ? 'nota-c' : (notaVal !== '' ? 'nota-r' : '');
+    return `
+      <tr id="row-${e.id}">
+        <td style="color:var(--txt-muted)">${i+1}</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-weight:700;font-size:12px;color:#fff;flex-shrink:0">${(e.nombre||'?')[0].toUpperCase()}</div>
+            <div>
+              <div class="td-name">${e.nombre||''} ${e.ap_paterno||''} ${e.ap_materno||''}</div>
+              <div style="font-size:11px;color:var(--txt-muted)">${e.correo||''}</div>
+            </div>
+          </div>
+        </td>
+        <td style="font-family:var(--mono);font-size:12px">${e.ci||'—'}</td>
+        <td>
+          ${notaVal !== '' ? `<span class="nota-badge ${nClass}">${notaVal}</span>` : `<span style="color:var(--txt-muted);font-size:12px">Sin nota</span>`}
+        </td>
+        <td>
+          <input type="number" min="0" max="100" class="nota-input ${notaVal !== '' ? 'saved' : ''}"
+            id="nota-${e.id}" value="${notaVal}" placeholder="0-100"
+            onchange="marcadorCambio('${e.id}')">
+        </td>
+        <td id="status-${e.id}">
+          ${notaVal !== '' ? `<span class="status-dot active" style="font-size:12px;color:var(--accent-3)">Guardado</span>` : `<span class="status-dot inactive" style="font-size:12px;color:var(--txt-muted)">Pendiente</span>`}
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+window.marcadorCambio = function(estId) {
+  const inp = document.getElementById(`nota-${estId}`);
+  const status = document.getElementById(`status-${estId}`);
+  inp.classList.remove('saved');
+  inp.style.borderColor = 'var(--accent-4)';
+  status.innerHTML = `<span style="color:var(--accent-4);font-size:12px"><i class="bi bi-clock"></i> Modificado</span>`;
+}
+
+window.guardarTodas = async function() {
+  if (!moduloActualId || !estudiantesActuales.length) return;
+  const gestion = document.getElementById('selGestion').value;
+  const btn = document.getElementById('btnGuardar');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner" style="width:16px;height:16px;border-width:2px"></div> Guardando...';
+
+  const prog = document.getElementById('progresoBar');
+  const progFill = document.getElementById('progFill');
+  const progText = document.getElementById('progText');
+  prog.style.display = '';
+
+  let guardados = 0;
+  for (const est of estudiantesActuales) {
+    const inp = document.getElementById(`nota-${est.id}`);
+    const val = parseFloat(inp.value);
+    if (isNaN(val) || inp.value === '') continue;
+    const nota = Math.max(0, Math.min(100, val));
+
+    const calId = `${est.id}_${moduloActualId}_${gestion}`;
+    await setDoc(doc(db, 'calificaciones', calId), {
+      estudianteId: est.id,
+      docenteId:    docenteUid,
+      moduloId:     moduloActualId,
+      nota,
+      gestion,
+      timestamp:    serverTimestamp()
+    });
+
+    // Notificación al estudiante
+    const notiRef = doc(collection(db, 'notificaciones'));
+    await setDoc(notiRef, {
+      usuarioId: est.usuarioId,
+      titulo:    'Nueva calificación registrada',
+      mensaje:   `Tu docente ingresó la nota del módulo.`,
+      tipo:      'CALIFICACION',
+      leido:     false,
+      url:       '/views/estudiante/historial.html',
+      fecha:     new Date().toISOString().split('T')[0],
+      timestamp: serverTimestamp()
+    });
+
+    guardados++;
+    const pct = Math.round((guardados / estudiantesActuales.length) * 100);
+    progFill.style.width = pct + '%';
+    progText.textContent = `Guardando ${guardados} de ${estudiantesActuales.length}...`;
+
+    // Actualizar UI fila
+    inp.classList.add('saved');
+    inp.style.borderColor = '';
+    document.getElementById(`status-${est.id}`).innerHTML = `<span class="status-dot active" style="font-size:12px;color:var(--accent-3)">Guardado</span>`;
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<i class="bi bi-check2-all"></i> Guardar Todas';
+  showToast(`✓ ${guardados} notas guardadas correctamente`, 'success');
+  setTimeout(() => { prog.style.display = 'none'; }, 2000);
+}
+
+async function autocargarDesdeModulo(moduloId) {
+  const mSnap = await getDoc(doc(db, 'modulos', moduloId));
+  if (!mSnap.exists()) return;
+  const m = mSnap.data();
+  document.getElementById('selCarrera').value = m.carreraId;
+  await window.onCarreraChange();
+  document.getElementById('selNivel').value = m.nivelId;
+  await window.onNivelChange();
+  document.getElementById('selModulo').value = moduloId;
+  await window.onModuloChange();
+}
+</script>
+<style>.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}</style>
+</body>
+</html>

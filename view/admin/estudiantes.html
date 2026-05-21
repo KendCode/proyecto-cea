@@ -1,340 +1,162 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CEA — Estudiantes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../../assets/css/styles.css">
 </head>
+
 <body>
-<script src="../../assets/js/sidebar.js"></script>
-<script>renderLayout({ title: 'Estudiantes', subtitle: 'Gestión de estudiantes inscritos', activeLink: 'estudiantes' });</script>
+  <script src="../../assets/js/sidebar.js"></script>
+  <script>renderLayout({ title: 'Estudiantes', subtitle: 'Gestión de estudiantes inscritos', activeLink: 'estudiantes' });</script>
 
-<div id="main">
-  <div class="page-content">
+  <div id="main">
+    <div class="page-content">
 
-    <!-- Stats -->
-    <div class="row g-3 mb-4" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px">
-      <div class="stat-card">
-        <div class="icon-wrap ic-blue"><i class="bi bi-person-badge-fill"></i></div>
-        <div class="stat-value" id="totalEst">—</div>
-        <div class="stat-label">Total Estudiantes</div>
-        <span class="stat-change up"><i class="bi bi-arrow-up-short"></i> Gestión 2026</span>
-      </div>
-      <div class="stat-card">
-        <div class="icon-wrap ic-green"><i class="bi bi-check-circle-fill"></i></div>
-        <div class="stat-value" id="activos">—</div>
-        <div class="stat-label">Activos</div>
-      </div>
-      <div class="stat-card">
-        <div class="icon-wrap ic-purple"><i class="bi bi-building"></i></div>
-        <div class="stat-value" id="carreras">—</div>
-        <div class="stat-label">Carreras</div>
-      </div>
-      <div class="stat-card">
-        <div class="icon-wrap ic-amber"><i class="bi bi-layers-fill"></i></div>
-        <div class="stat-value" id="niveles">—</div>
-        <div class="stat-label">Niveles</div>
-      </div>
-    </div>
-
-    <!-- Tabla -->
-    <div class="panel-card">
-      <div class="section-header">
-        <div>
-          <div class="section-title">Lista de Estudiantes</div>
-          <div class="section-sub">Todos los estudiantes registrados en el sistema</div>
+      <!-- Stats -->
+      <div class="row g-3 mb-4"
+        style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px">
+        <div class="stat-card">
+          <div class="icon-wrap ic-blue"><i class="bi bi-person-badge-fill"></i></div>
+          <div class="stat-value" id="totalEst">—</div>
+          <div class="stat-label">Total Estudiantes</div>
+          <span class="stat-change up"><i class="bi bi-arrow-up-short"></i> Gestión 2026</span>
         </div>
-        <div style="display:flex;gap:10px;align-items:center">
-          <div class="filters-bar">
-            <select class="filter-select" id="filtroCarrera" onchange="filtrarTabla()">
-              <option value="">Todas las carreras</option>
-            </select>
-            <select class="filter-select" id="filtroNivel" onchange="filtrarTabla()">
-              <option value="">Todos los niveles</option>
-            </select>
-            <select class="filter-select" id="filtroGestion" onchange="filtrarTabla()">
-              <option value="">Toda gestión</option>
-              <option value="2026">2026</option>
-              <option value="2025">2025</option>
-            </select>
+        <div class="stat-card">
+          <div class="icon-wrap ic-green"><i class="bi bi-check-circle-fill"></i></div>
+          <div class="stat-value" id="activos">—</div>
+          <div class="stat-label">Activos</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon-wrap ic-purple"><i class="bi bi-building"></i></div>
+          <div class="stat-value" id="carreras">—</div>
+          <div class="stat-label">Carreras</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon-wrap ic-amber"><i class="bi bi-layers-fill"></i></div>
+          <div class="stat-value" id="niveles">—</div>
+          <div class="stat-label">Niveles</div>
+        </div>
+      </div>
+
+      <!-- Tabla -->
+      <div class="panel-card">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Lista de Estudiantes</div>
+            <div class="section-sub">Todos los estudiantes registrados en el sistema</div>
           </div>
-          <button class="btn btn-primary" onclick="abrirModal()">
-            <i class="bi bi-plus-lg"></i> Nuevo Estudiante
-          </button>
-        </div>
-      </div>
-
-      <div style="overflow-x:auto">
-        <table class="data-table" id="tablaEstudiantes">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Estudiante</th>
-              <th>CI</th>
-              <th>Usuario</th>
-              <th>Carrera</th>
-              <th>Nivel</th>
-              <th>Gestión</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tbodyEst">
-            <tr><td colspan="9" style="text-align:center;padding:40px;color:var(--txt-muted)"><i class="bi bi-hourglass-split"></i> Cargando...</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px">
-        <span style="font-size:12px;color:var(--txt-muted)" id="paginaInfo">—</span>
-        <div class="pagination" id="paginacion"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Nuevo/Editar Estudiante -->
-<div class="modal-backdrop" id="modalEstudiante">
-  <div class="modal" style="max-width:600px">
-    <div class="modal-header">
-      <div class="modal-title" id="modalTitulo">Nuevo Estudiante</div>
-      <button class="modal-close" onclick="cerrarModal()"><i class="bi bi-x-lg"></i></button>
-    </div>
-
-    <div style="color:var(--txt-muted);font-size:12px;margin-bottom:18px;background:var(--bg-elevated);border-radius:var(--radius-sm);padding:10px 14px">
-      <i class="bi bi-info-circle"></i> El estudiante debe tener primero un <strong style="color:var(--txt-primary)">usuario</strong> creado en el sistema.
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Usuario (UID)</label>
-        <input type="text" class="form-control" id="fUsuarioId" placeholder="ID del usuario en Firebase">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Gestión</label>
-        <input type="text" class="form-control" id="fGestion" placeholder="2026" value="2026">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Carrera</label>
-        <select class="form-control" id="fCarrera">
-          <option value="">Seleccionar carrera...</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Nivel</label>
-        <select class="form-control" id="fNivel">
-          <option value="">Seleccionar nivel...</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="cerrarModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="guardarEstudiante()"><i class="bi bi-floppy-fill"></i> Guardar</button>
-    </div>
-  </div>
-</div>
-
-<!-- Firebase -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-const firebaseConfig = { /* TODO: your config */ };
-// const app = initializeApp(firebaseConfig);
-// const db = getFirestore(app);
-
-// ── DEMO DATA (quitar cuando conectes Firebase) ──
-const DEMO_USUARIOS = [
-  { id:'uid1', nombre:'Juan', ap_paterno:'Pérez', ap_materno:'Quispe', ci:'1234567', usuario:'juan_p2026', estado:true },
-  { id:'uid2', nombre:'María', ap_paterno:'López', ap_materno:'Flores', ci:'2345678', usuario:'maria_l2026', estado:true },
-  { id:'uid3', nombre:'Pedro', ap_paterno:'Mamani', ap_materno:'Cruz', ci:'3456789', usuario:'pedro_m2026', estado:true },
-  { id:'uid4', nombre:'Ana', ap_paterno:'Ticona', ap_materno:'Vda.', ci:'4567890', usuario:'ana_t2026', estado:false },
-  { id:'uid5', nombre:'Carlos', ap_paterno:'Condori', ap_materno:'Ali', ci:'5678901', usuario:'carlos_c2026', estado:true },
-];
-const DEMO_CARRERAS = [
-  { id:'carrera001', nombre:'Sistemas Informáticos', sigla:'SI' },
-  { id:'carrera002', nombre:'Contabilidad', sigla:'CONT' },
-  { id:'carrera003', nombre:'Electricidad', sigla:'ELEC' },
-];
-const DEMO_NIVELES = [
-  { id:'nivel_1', nombre:'Técnico Básico', sigla:'TB', orden:1 },
-  { id:'nivel_2', nombre:'Técnico Auxiliar', sigla:'TA', orden:2 },
-  { id:'nivel_3', nombre:'Técnico Medio', sigla:'TM', orden:3 },
-];
-const DEMO_EST = [
-  { id:'est1', usuarioId:'uid1', carreraId:'carrera001', nivelId:'nivel_1', gestion:'2026' },
-  { id:'est2', usuarioId:'uid2', carreraId:'carrera001', nivelId:'nivel_2', gestion:'2026' },
-  { id:'est3', usuarioId:'uid3', carreraId:'carrera002', nivelId:'nivel_1', gestion:'2026' },
-  { id:'est4', usuarioId:'uid4', carreraId:'carrera003', nivelId:'nivel_3', gestion:'2025' },
-  { id:'est5', usuarioId:'uid5', carreraId:'carrera002', nivelId:'nivel_2', gestion:'2026' },
-];
-
-let estudiantes = [], usuarios = {}, carreras = {}, niveles = {};
-let editId = null;
-const PAGE = 10; let currentPage = 1;
-
-async function cargarDatos() {
-  // Map usuarios
-  DEMO_USUARIOS.forEach(u => usuarios[u.id] = u);
-  DEMO_CARRERAS.forEach(c => carreras[c.id] = c);
-  DEMO_NIVELES.forEach(n => niveles[n.id] = n);
-  estudiantes = DEMO_EST;
-  actualizarStats();
-  poblarFiltros();
-  renderTabla();
-  poblarSelectsModal();
-}
-
-function actualizarStats() {
-  document.getElementById('totalEst').textContent = estudiantes.length;
-  document.getElementById('activos').textContent = estudiantes.filter(e => usuarios[e.usuarioId]?.estado).length;
-  document.getElementById('carreras').textContent = new Set(estudiantes.map(e => e.carreraId)).size;
-  document.getElementById('niveles').textContent = new Set(estudiantes.map(e => e.nivelId)).size;
-}
-
-function poblarFiltros() {
-  const selC = document.getElementById('filtroCarrera');
-  const selN = document.getElementById('filtroNivel');
-  DEMO_CARRERAS.forEach(c => selC.insertAdjacentHTML('beforeend', `<option value="${c.id}">${c.nombre}</option>`));
-  DEMO_NIVELES.forEach(n => selN.insertAdjacentHTML('beforeend', `<option value="${n.id}">${n.nombre}</option>`));
-}
-
-function poblarSelectsModal() {
-  const selC = document.getElementById('fCarrera');
-  const selN = document.getElementById('fNivel');
-  DEMO_CARRERAS.forEach(c => selC.insertAdjacentHTML('beforeend', `<option value="${c.id}">${c.nombre}</option>`));
-  DEMO_NIVELES.forEach(n => selN.insertAdjacentHTML('beforeend', `<option value="${n.id}">${n.nombre}</option>`));
-}
-
-window.filtrarTabla = function() { currentPage = 1; renderTabla(); };
-
-function getFiltrados() {
-  const fc = document.getElementById('filtroCarrera').value;
-  const fn = document.getElementById('filtroNivel').value;
-  const fg = document.getElementById('filtroGestion').value;
-  return estudiantes.filter(e =>
-    (!fc || e.carreraId === fc) &&
-    (!fn || e.nivelId === fn) &&
-    (!fg || e.gestion === fg)
-  );
-}
-
-function renderTabla() {
-  const data = getFiltrados();
-  const total = data.length;
-  const totalPag = Math.ceil(total / PAGE);
-  const slice = data.slice((currentPage-1)*PAGE, currentPage*PAGE);
-  const tbody = document.getElementById('tbodyEst');
-
-  if (!slice.length) {
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px"><div class="empty-state"><i class="bi bi-person-slash"></i><p>No se encontraron estudiantes</p></div></td></tr>`;
-  } else {
-    tbody.innerHTML = slice.map((e, i) => {
-      const u = usuarios[e.usuarioId] || {};
-      const c = carreras[e.carreraId] || {};
-      const n = niveles[e.nivelId] || {};
-      const estado = u.estado !== false;
-      return `<tr>
-        <td style="color:var(--txt-muted)">${(currentPage-1)*PAGE+i+1}</td>
-        <td class="td-name">
-          <div style="display:flex;align-items:center;gap:10px">
-            <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-weight:700;font-size:12px;color:#fff">${(u.nombre||'?')[0].toUpperCase()}</div>
-            <div>
-              <div>${u.nombre||'—'} ${u.ap_paterno||''} ${u.ap_materno||''}</div>
-              <div style="font-size:11px;color:var(--txt-muted)">${u.correo||''}</div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <div class="filters-bar">
+              <select class="filter-select" id="filtroCarrera" onchange="filtrarTabla()">
+                <option value="">Todas las carreras</option>
+              </select>
+              <select class="filter-select" id="filtroNivel" onchange="filtrarTabla()">
+                <option value="">Todos los niveles</option>
+              </select>
+              <select class="filter-select" id="filtroGestion" onchange="filtrarTabla()">
+                <option value="">Toda gestión</option>
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+              </select>
             </div>
+            <button class="btn btn-primary" onclick="abrirModal()">
+              <i class="bi bi-plus-lg"></i> Nuevo Estudiante
+            </button>
           </div>
-        </td>
-        <td><span style="font-family:var(--mono)">${u.ci||'—'}</span></td>
-        <td><span style="font-family:var(--mono);color:var(--accent)">${u.usuario||'—'}</span></td>
-        <td><span class="role-badge rb-dir">${c.sigla||'—'}</span> ${c.nombre||'—'}</td>
-        <td>${n.nombre||'—'} <span style="font-size:10px;color:var(--txt-muted)">(${n.sigla||''})</span></td>
-        <td><span class="gestion-tag">${e.gestion}</span></td>
-        <td><span class="status-dot ${estado?'active':'inactive'}">${estado?'Activo':'Inactivo'}</span></td>
-        <td>
-          <div style="display:flex;gap:6px">
-            <button class="btn btn-ghost btn-sm" onclick="editarEstudiante('${e.id}')"><i class="bi bi-pencil-fill"></i></button>
-            <button class="btn btn-danger btn-sm" onclick="eliminarEstudiante('${e.id}')"><i class="bi bi-trash-fill"></i></button>
-          </div>
-        </td>
-      </tr>`;
-    }).join('');
-  }
+        </div>
 
-  document.getElementById('paginaInfo').textContent = `${total} registros · Página ${currentPage} de ${Math.max(totalPag,1)}`;
-  renderPaginacion(totalPag);
-}
+        <div style="overflow-x:auto">
+          <table class="data-table" id="tablaEstudiantes">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Estudiante</th>
+                <th>CI</th>
+                <th>Usuario</th>
+                <th>Carrera</th>
+                <th>Nivel</th>
+                <th>Gestión</th>
+                <th>Estado</th>
+                <!-- <th>Acciones</th> -->
+              </tr>
+            </thead>
+            <tbody id="tbodyEst">
+              <tr>
+                <td colspan="9" style="text-align:center;padding:40px;color:var(--txt-muted)"><i
+                    class="bi bi-hourglass-split"></i> Cargando...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-function renderPaginacion(total) {
-  const cont = document.getElementById('paginacion');
-  cont.innerHTML = '';
-  for (let i = 1; i <= total; i++) {
-    const btn = document.createElement('button');
-    btn.className = `page-btn ${i===currentPage?'active':''}`;
-    btn.textContent = i;
-    btn.onclick = () => { currentPage = i; renderTabla(); };
-    cont.appendChild(btn);
-  }
-}
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px">
+          <span style="font-size:12px;color:var(--txt-muted)" id="paginaInfo">—</span>
+          <div class="pagination" id="paginacion"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-window.abrirModal = function(id=null) {
-  editId = id;
-  document.getElementById('modalTitulo').textContent = id ? 'Editar Estudiante' : 'Nuevo Estudiante';
-  if (id) {
-    const e = estudiantes.find(x=>x.id===id);
-    if (e) {
-      document.getElementById('fUsuarioId').value = e.usuarioId;
-      document.getElementById('fGestion').value = e.gestion;
-      document.getElementById('fCarrera').value = e.carreraId;
-      document.getElementById('fNivel').value = e.nivelId;
-    }
-  } else {
-    ['fUsuarioId','fGestion','fCarrera','fNivel'].forEach(id=>{ document.getElementById(id).value = id==='fGestion'?'2026':''; });
-  }
-  document.getElementById('modalEstudiante').classList.add('show');
-};
+  <!-- Modal Nuevo/Editar Estudiante -->
+  <div class="modal-backdrop" id="modalEstudiante">
+    <div class="modal" style="max-width:600px">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitulo">Nuevo Estudiante</div>
+        <button class="modal-close" onclick="cerrarModal()"><i class="bi bi-x-lg"></i></button>
+      </div>
 
-window.cerrarModal = function() { document.getElementById('modalEstudiante').classList.remove('show'); };
+      <div
+        style="color:var(--txt-muted);font-size:12px;margin-bottom:18px;background:var(--bg-elevated);border-radius:var(--radius-sm);padding:10px 14px">
+        <i class="bi bi-info-circle"></i> El estudiante debe tener primero un <strong
+          style="color:var(--txt-primary)">usuario</strong> creado en el sistema.
+      </div>
 
-window.guardarEstudiante = function() {
-  const data = {
-    usuarioId: document.getElementById('fUsuarioId').value.trim(),
-    gestion: document.getElementById('fGestion').value.trim(),
-    carreraId: document.getElementById('fCarrera').value,
-    nivelId: document.getElementById('fNivel').value,
-  };
-  if (!data.usuarioId || !data.carreraId || !data.nivelId) {
-    showToast('Completa todos los campos', 'error'); return;
-  }
-  // TODO: Firestore addDoc/updateDoc
-  if (editId) {
-    const idx = estudiantes.findIndex(e=>e.id===editId);
-    if (idx>-1) estudiantes[idx] = { ...estudiantes[idx], ...data };
-    showToast('Estudiante actualizado');
-  } else {
-    estudiantes.push({ id: 'est'+ Date.now(), ...data });
-    showToast('Estudiante registrado');
-  }
-  cerrarModal(); actualizarStats(); renderTabla();
-};
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Estudiante</label>
 
-window.editarEstudiante = id => abrirModal(id);
+          <select class="form-control" id="fUsuarioId">
+            <option value="">
+              Seleccionar estudiante...
+            </option>
+          </select>
 
-window.eliminarEstudiante = function(id) {
-  if (!confirm('¿Eliminar este estudiante?')) return;
-  estudiantes = estudiantes.filter(e => e.id !== id);
-  showToast('Estudiante eliminado', 'info');
-  actualizarStats(); renderTabla();
-};
+        </div>
+        <div class="form-group">
+          <label class="form-label">Gestión</label>
+          <input type="text" class="form-control" id="fGestion" placeholder="2026" value="2026">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Carrera</label>
+          <select class="form-control" id="fCarrera">
+            <option value="">Seleccionar carrera...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nivel</label>
+          <select class="form-control" id="fNivel">
+            <option value="">Seleccionar nivel...</option>
+          </select>
+        </div>
+      </div>
 
-cargarDatos();
-</script>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="cerrarModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="guardarEstudiante()"><i class="bi bi-floppy-fill"></i> Guardar</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="../../controllers/estudiantesController.js"></script>
 </body>
+
 </html>

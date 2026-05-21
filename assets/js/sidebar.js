@@ -38,6 +38,9 @@ function renderLayout({ title, subtitle, activeLink }) {
         <a href="modulos.html" class="nav-link-custom ${activeLink==='modulos'?'active':''}">
           <i class="bi bi-journals"></i> Módulos
         </a>
+        <a href="niveles.html" class="nav-link-custom ${activeLink==='niveles'?'active':''}">
+          <i class="bi bi-layers-fill"></i> Niveles
+        </a>
       </div>
     </div>
 
@@ -114,7 +117,7 @@ function loadUserInfo() {
 function cerrarSesion() {
   if (confirm('¿Cerrar sesión?')) {
     sessionStorage.clear();
-    window.location.href = '../../views/auth/login.html';
+    window.location.href = '../../index.html';
   }
 }
 

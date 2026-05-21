@@ -1,9 +1,11 @@
 import {
     crearUsuario,
     obtenerUsuarios,
-    eliminarUsuario
+    eliminarUsuario,
+    actualizarUsuario
 }
-    from "../services/usuariosService.js";
+from "../services/usuariosService.js";
+
 // ==========================
 // VARIABLES GLOBALES
 // ==========================
@@ -12,6 +14,9 @@ let usuariosGlobal = [];
 let modoEdicion = false;
 
 let uidEditar = null;
+
+let uidEliminar = null;
+
 // ==========================
 // ELEMENTOS
 // ==========================
@@ -88,9 +93,9 @@ btnGuardar.addEventListener(
         ) {
 
             Swal.fire({
-                icon: 'warning',
-                title: 'Campos requeridos',
-                text: 'Completa los campos obligatorios'
+                icon: "warning",
+                title: "Campos requeridos",
+                text: "Completa los campos obligatorios"
             });
 
             return;
@@ -115,14 +120,14 @@ btnGuardar.addEventListener(
             `${usuario}@sistema.com`;
 
         // ==========================
-        // PASSWORD AUTOMÁTICA
+        // PASSWORD
         // ==========================
-        let password = '';
+        let password = "";
 
         if (fechaNac) {
 
             const partes =
-                fechaNac.split('-');
+                fechaNac.split("-");
 
             password =
                 `${partes[2]}-${partes[1]}-${partes[0]}`;
@@ -169,78 +174,62 @@ btnGuardar.addEventListener(
             btnGuardar.disabled = true;
 
             btnGuardar.innerHTML =
-                'Guardando...';
+                "Guardando...";
 
-            await crearUsuario(data);
+            // ==========================
+            // CREAR
+            // ==========================
+            if (!modoEdicion) {
 
-            Swal.fire({
-                icon: 'success',
-                title: 'Usuario creado',
-                text: 'El usuario fue registrado correctamente',
-                timer: 2000,
-                showConfirmButton: false
-            });
+                await crearUsuario(data);
 
-            // CERRAR MODAL
-            const modalElement =
-                document.getElementById(
-                    'modalUsuario'
+                Swal.fire({
+                    icon: "success",
+                    title: "Usuario creado",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+
+            }
+
+            // ==========================
+            // EDITAR
+            // ==========================
+            else {
+
+                await actualizarUsuario(
+                    uidEditar,
+                    data
                 );
 
-            const modal =
-                bootstrap.Modal.getOrCreateInstance(
-                    modalElement
-                );
+                Swal.fire({
+                    icon: "success",
+                    title: "Usuario actualizado",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
 
-            modal.hide();
+            }
 
-            // RECARGAR TABLA
+            limpiarFormulario();
+
+            bootstrap.Modal
+                .getInstance(
+                    document.getElementById(
+                        "modalUsuario"
+                    )
+                )
+                .hide();
+
             cargarUsuarios();
-
-            // LIMPIAR FORMULARIO
-            document.getElementById(
-                "fNombre"
-            ).value = "";
-
-            document.getElementById(
-                "fApPat"
-            ).value = "";
-
-            document.getElementById(
-                "fApMat"
-            ).value = "";
-
-            document.getElementById(
-                "fCi"
-            ).value = "";
-
-            document.getElementById(
-                "fCelular"
-            ).value = "";
-
-            document.getElementById(
-                "fRol"
-            ).value = "";
-
-            document.getElementById(
-                "fSexo"
-            ).value = "";
-
-            document.getElementById(
-                "fFechaNac"
-            ).value = "";
-
-            document.getElementById(
-                "fCorreoGen"
-            ).value = "";
 
         } catch (error) {
 
             console.error(error);
 
             Swal.fire({
-                icon: 'error',
-                title: 'Error',
+                icon: "error",
+                title: "Error",
                 text: error.message
             });
 
@@ -249,7 +238,7 @@ btnGuardar.addEventListener(
             btnGuardar.disabled = false;
 
             btnGuardar.innerHTML =
-                'Guardar Usuario';
+                "Guardar Usuario";
 
         }
 
@@ -268,9 +257,6 @@ async function cargarUsuarios() {
 
         renderUsuarios();
 
-        // ==========================
-        // ESTADÍSTICAS
-        // ==========================
         document.getElementById(
             "statTotal"
         ).textContent =
@@ -300,7 +286,7 @@ async function cargarUsuarios() {
     } catch (error) {
 
         console.error(
-            "Error al cargar usuarios:",
+            "Error al cargar usuarios",
             error
         );
 
@@ -328,7 +314,7 @@ function renderUsuarios() {
             "filterEstado"
         ).value;
 
-    let usuariosFiltrados =
+    const usuariosFiltrados =
         usuariosGlobal.filter(usuario => {
 
             const coincideTexto =
@@ -350,7 +336,7 @@ function renderUsuarios() {
 
             const coincideEstado =
 
-                estadoFiltro === ''
+                estadoFiltro === ""
 
                 ||
 
@@ -365,37 +351,40 @@ function renderUsuarios() {
 
         });
 
-    tbody.innerHTML = '';
+    tbody.innerHTML = "";
 
     // ==========================
-    // VACÍO
+    // TABLA VACÍA
     // ==========================
     if (
         usuariosFiltrados.length === 0
     ) {
 
         tbody.innerHTML = `
-        <tr>
-            <td colspan="7">
+            <tr>
+                <td colspan="7">
 
-                <div class="empty-state">
+                    <div class="empty-state">
 
-                    <i class="bi bi-people"></i>
+                        <i class="bi bi-people"></i>
 
-                    <p>
-                        No se encontraron usuarios
-                    </p>
+                        <p>
+                            No se encontraron usuarios
+                        </p>
 
-                </div>
+                    </div>
 
-            </td>
-        </tr>
-    `;
+                </td>
+            </tr>
+        `;
 
         return;
 
     }
 
+    // ==========================
+    // TABLA
+    // ==========================
     usuariosFiltrados.forEach(
         (
             usuario,
@@ -412,6 +401,7 @@ function renderUsuarios() {
                     <td>
                         ${usuario.nombre}
                         ${usuario.ap_paterno}
+                        ${usuario.ap_materno || ""}
                     </td>
 
                     <td>
@@ -419,7 +409,7 @@ function renderUsuarios() {
                     </td>
 
                     <td>
-                        ${usuario.nro_celular || '-'}
+                        ${usuario.nro_celular || "-"}
                     </td>
 
                     <td>
@@ -438,15 +428,15 @@ function renderUsuarios() {
                         <span class="
                             badge-estado
                             ${usuario.estado
-                    ? 'badge-activo'
-                    : 'badge-inactivo'
-                }
+                                ? "badge-activo"
+                                : "badge-inactivo"
+                            }
                         ">
 
                             ${usuario.estado
-                    ? 'Activo'
-                    : 'Inactivo'
-                }
+                                ? "Activo"
+                                : "Inactivo"
+                            }
 
                         </span>
 
@@ -458,7 +448,8 @@ function renderUsuarios() {
 
                             <button
                                 class="btn-action btn-edit"
-                                onclick="editarUsuario('${usuario.uid}')">
+                                onclick="editarUsuario('${usuario.uid}')"
+                            >
 
                                 <i class="bi bi-pencil-square"></i>
 
@@ -466,7 +457,8 @@ function renderUsuarios() {
 
                             <button
                                 class="btn-action btn-delete"
-                                onclick="abrirEliminar('${usuario.uid}')">
+                                onclick="abrirEliminar('${usuario.uid}')"
+                            >
 
                                 <i class="bi bi-trash-fill"></i>
 
@@ -481,9 +473,6 @@ function renderUsuarios() {
 
         });
 
-    // ==========================
-    // PAGINACIÓN INFO
-    // ==========================
     document.getElementById(
         "paginationInfo"
     ).textContent =
@@ -492,7 +481,7 @@ function renderUsuarios() {
 }
 
 // ==========================
-// EDITAR
+// EDITAR USUARIO
 // ==========================
 window.editarUsuario = (uid) => {
 
@@ -508,61 +497,59 @@ window.editarUsuario = (uid) => {
     uidEditar = uid;
 
     document.getElementById(
-        'modalUsuarioTitle'
+        "modalUsuarioTitle"
     ).textContent =
-        'EDITAR USUARIO';
+        "EDITAR USUARIO";
 
     document.getElementById(
-        'fNombre'
+        "fNombre"
     ).value =
         usuario.nombre;
 
     document.getElementById(
-        'fApPat'
+        "fApPat"
     ).value =
         usuario.ap_paterno;
 
     document.getElementById(
-        'fApMat'
+        "fApMat"
     ).value =
-        usuario.ap_materno || '';
+        usuario.ap_materno || "";
 
     document.getElementById(
-        'fCi'
+        "fCi"
     ).value =
         usuario.ci;
 
     document.getElementById(
-        'fCelular'
+        "fCelular"
     ).value =
-        usuario.nro_celular || '';
+        usuario.nro_celular || "";
 
     document.getElementById(
-        'fRol'
+        "fRol"
     ).value =
         usuario.rol;
 
     document.getElementById(
-        'fSexo'
+        "fSexo"
     ).value =
-        usuario.sexo || '';
+        usuario.sexo || "";
 
     document.getElementById(
-        'fFechaNac'
+        "fFechaNac"
     ).value =
-        usuario.fecha_nac || '';
+        usuario.fecha_nac || "";
 
     document.getElementById(
-        'fEstado'
+        "fEstado"
     ).value =
         usuario.estado.toString();
-
-    onRolChange();
 
     const modal =
         new bootstrap.Modal(
             document.getElementById(
-                'modalUsuario'
+                "modalUsuario"
             )
         );
 
@@ -573,8 +560,6 @@ window.editarUsuario = (uid) => {
 // ==========================
 // ELIMINAR
 // ==========================
-let uidEliminar = null;
-
 window.abrirEliminar = (uid) => {
 
     uidEliminar = uid;
@@ -582,7 +567,7 @@ window.abrirEliminar = (uid) => {
     const modal =
         new bootstrap.Modal(
             document.getElementById(
-                'modalEliminar'
+                "modalEliminar"
             )
         );
 
@@ -595,10 +580,10 @@ window.abrirEliminar = (uid) => {
 // ==========================
 document
     .getElementById(
-        'btnConfirmarEliminar'
+        "btnConfirmarEliminar"
     )
     .addEventListener(
-        'click',
+        "click",
         async () => {
 
             try {
@@ -608,21 +593,21 @@ document
                 );
 
                 Swal.fire({
-                    icon: 'success',
-                    title: 'Usuario eliminado',
+                    icon: "success",
+                    title: "Usuario eliminado",
                     timer: 1500,
                     showConfirmButton: false
                 });
 
-                cargarUsuarios();
-
                 bootstrap.Modal
                     .getInstance(
                         document.getElementById(
-                            'modalEliminar'
+                            "modalEliminar"
                         )
                     )
                     .hide();
+
+                cargarUsuarios();
 
             } catch (error) {
 
@@ -634,7 +619,59 @@ document
     );
 
 // ==========================
-// BUSCADOR
+// LIMPIAR FORMULARIO
+// ==========================
+function limpiarFormulario() {
+
+    modoEdicion = false;
+
+    uidEditar = null;
+
+    document.getElementById(
+        "modalUsuarioTitle"
+    ).textContent =
+        "NUEVO USUARIO";
+
+    document.getElementById(
+        "fNombre"
+    ).value = "";
+
+    document.getElementById(
+        "fApPat"
+    ).value = "";
+
+    document.getElementById(
+        "fApMat"
+    ).value = "";
+
+    document.getElementById(
+        "fCi"
+    ).value = "";
+
+    document.getElementById(
+        "fCelular"
+    ).value = "";
+
+    document.getElementById(
+        "fRol"
+    ).value = "";
+
+    document.getElementById(
+        "fSexo"
+    ).value = "";
+
+    document.getElementById(
+        "fFechaNac"
+    ).value = "";
+
+    document.getElementById(
+        "fEstado"
+    ).value = "true";
+
+}
+
+// ==========================
+// FILTROS
 // ==========================
 document
     .getElementById(
@@ -645,9 +682,6 @@ document
         renderUsuarios
     );
 
-// ==========================
-// FILTRO ROL
-// ==========================
 document
     .getElementById(
         "filterRol"
@@ -657,9 +691,6 @@ document
         renderUsuarios
     );
 
-// ==========================
-// FILTRO ESTADO
-// ==========================
 document
     .getElementById(
         "filterEstado"

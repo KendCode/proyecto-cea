@@ -9,6 +9,7 @@ import {
     serverTimestamp,
     collection,
     getDocs,
+    updateDoc,
     deleteDoc
 }
 from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
@@ -86,7 +87,21 @@ export async function crearUsuario(
     );
 
 }
+// ==========================
+// ACTUALIZAR USUARIO
+// ==========================
 
+export async function actualizarUsuario(
+    id,
+    data
+) {
+
+    await updateDoc(
+        doc(db, "usuarios", id),
+        data
+    );
+
+}
 // ==========================
 // OBTENER USUARIOS
 // ==========================

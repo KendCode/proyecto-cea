@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CEA · Ranking Estudiantil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../../assets/css/EstudianteStyle.css">
+  <style>
+    .podium-wrap { display: flex; align-items: flex-end; justify-content: center; gap: 16px; padding: 30px 20px 0; }
+    .podium-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 16px; text-align: center; transition: transform .2s; position: relative; }
+    .podium-card:hover { transform: translateY(-4px); }
+    .podium-1 { width: 200px; border-color: rgba(245,158,11,.4); background: rgba(245,158,11,.06); }
+    .podium-2 { width: 170px; border-color: rgba(148,163,184,.3); }
+    .podium-3 { width: 155px; border-color: rgba(180,120,60,.25); }
+    .podium-medal { font-size: 28px; margin-bottom: 8px; display: block; }
+    .podium-avatar { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 20px; color: #fff; margin: 0 auto 10px; }
+    .podium-name { font-weight: 700; font-size: 13.5px; color: var(--txt-primary); margin-bottom: 4px; }
+    .podium-pct  { font-family: var(--mono); font-size: 22px; font-weight: 800; }
+    .podium-pts  { font-size: 11px; color: var(--txt-muted); margin-top: 2px; }
+
+    .rank-row { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-bottom: 8px; transition: background .15s, border-color .15s; }
+    .rank-row:hover { background: var(--bg-elevated); border-color: var(--border-light); }
+    .rank-row.rank-me { border-color: rgba(59,130,246,.4); background: rgba(59,130,246,.06); }
+    .rank-num { font-family: var(--mono); font-weight: 800; font-size: 16px; width: 28px; text-align: center; flex-shrink: 0; }
+    .rank-avatar { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 14px; color: #fff; flex-shrink: 0; }
+    .rank-info { flex: 1; }
+    .rank-info .name  { font-weight: 700; font-size: 13px; color: var(--txt-primary); }
+    .rank-info .nivel { font-size: 11px; color: var(--txt-muted); }
+    .rank-pct-wrap { min-width: 180px; }
+    .rank-pct-val { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+    .rank-pct-num { font-family: var(--mono); font-weight: 800; font-size: 15px; }
+    .rank-pts { font-family: var(--mono); font-weight: 700; font-size: 13px; min-width: 50px; text-align: right; }
+
+    .medal-1 { color: #f59e0b; }
+    .medal-2 { color: #94a3b8; }
+    .medal-3 { color: #b46a14; }
+
+    @media (max-width: 700px) {
+      .podium-wrap { flex-direction: column; align-items: center; }
+      .podium-1, .podium-2, .podium-3 { width: 100%; max-width: 280px; }
+      .rank-pct-wrap { min-width: 120px; }
+    }
+  </style>
+</head>
+<body>
+<div id="main">
+  <div class="page-content">
+
+    <!-- Header -->
+    <div style="margin-bottom:24px;animation:fadeUp .4s ease;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:22px;font-weight:800;letter-spacing:-.4px"><i class="bi bi-trophy-fill" style="color:var(--accent-4)"></i> Ranking Estudiantil</div>
+        <div style="color:var(--txt-muted);font-size:13px;margin-top:3px">Clasificación basada en promedio porcentual y sumatoria de notas</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <select class="filter-select" id="filtroCarrera" onchange="aplicarFiltros()">
+          <option value="">Todas las carreras</option>
+        </select>
+        <select class="filter-select" id="filtroNivel" onchange="aplicarFiltros()">
+          <option value="">Todos los niveles</option>
+        </select>
+        <select class="filter-select" id="filtroGestion" onchange="aplicarFiltros()">
+          <option value="">Todas las gestiones</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Podio top 3 -->
+    <div class="panel-card" style="margin-bottom:22px;padding-bottom:22px">
+      <div class="section-title" style="margin-bottom:4px;text-align:center">
+        <i class="bi bi-trophy" style="color:var(--accent-4)"></i> Top 3 Estudiantes
+      </div>
+      <div class="podium-wrap" id="podiumWrap">
+        <div style="text-align:center;padding:40px;color:var(--txt-muted)"><i class="bi bi-hourglass-split" style="font-size:28px;display:block;margin-bottom:8px"></i>Cargando...</div>
+      </div>
+    </div>
+
+    <!-- Mi posición -->
+    <div id="miPosicion" style="display:none;margin-bottom:18px">
+      <div style="background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.3);border-radius:var(--radius-sm);padding:14px 18px;display:flex;align-items:center;gap:12px">
+        <i class="bi bi-pin-map-fill" style="color:var(--accent);font-size:18px"></i>
+        <span style="font-weight:700">Tu posición en el ranking:</span>
+        <span id="miPosNumero" style="font-family:var(--mono);font-size:18px;font-weight:800;color:var(--accent)">—</span>
+        <span id="miPosInfo" style="font-size:12px;color:var(--txt-muted)"></span>
+      </div>
+    </div>
+
+    <!-- Tabla ranking -->
+    <div class="panel-card" style="animation-delay:.2s">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Clasificación Completa</div>
+          <div class="section-sub" id="rankingSubtitle">Todos los estudiantes</div>
+        </div>
+        <div style="font-size:12px;color:var(--txt-muted)"><i class="bi bi-info-circle"></i> Porcentaje = Promedio / 100 · Puntos = Sumatoria notas</div>
+      </div>
+
+      <!-- Encabezados -->
+      <div style="display:flex;align-items:center;gap:14px;padding:8px 16px;border-bottom:1px solid var(--border);margin-bottom:8px">
+        <div style="width:28px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--txt-muted);text-align:center">#</div>
+        <div style="width:38px"></div>
+        <div style="flex:1;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--txt-muted)">Estudiante</div>
+        <div style="min-width:180px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--txt-muted)">Porcentaje / Puntos</div>
+        <div style="min-width:50px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--txt-muted);text-align:right">Total</div>
+      </div>
+
+      <div id="rankingList">
+        <div class="empty-state"><i class="bi bi-hourglass-split"></i><p>Cargando ranking...</p></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../../assets/js/sidebar.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = { /* ← tu config */ };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+renderLayout({ title: 'Ranking', subtitle: 'Clasificación estudiantil', activeLink: 'ranking', role: 'estudiante' });
+
+let rankingCompleto = [];
+let miUid = null;
+let miEstId = null;
+
+const GRADIENTS = [
+  'linear-gradient(135deg,#3b82f6,#8b5cf6)',
+  'linear-gradient(135deg,#10b981,#3b82f6)',
+  'linear-gradient(135deg,#f59e0b,#ef4444)',
+  'linear-gradient(135deg,#8b5cf6,#ec4899)',
+  'linear-gradient(135deg,#06b6d4,#3b82f6)',
+];
+
+onAuthStateChanged(auth, async user => {
+  if (!user) { window.location.href = '../auth/login.html'; return; }
+  miUid = user.uid;
+
+  // Obtener mi estId
+  const estQ = query(collection(db, 'estudiantes'), where('usuarioId', '==', miUid));
+  const estSnap = await getDocs(estQ);
+  if (!estSnap.empty) miEstId = estSnap.docs[0].id;
+
+  await cargarRanking();
+});
+
+async function cargarRanking() {
+  try {
+    // 1. Todos los estudiantes
+    const estSnap = await getDocs(collection(db, 'estudiantes'));
+    const carreras = {}; const niveles = {}; const gestiones = new Set();
+
+    const datos = [];
+
+    for (const estDoc of estSnap.docs) {
+      const est = estDoc.data();
+      gestiones.add(est.gestion || '2026');
+
+      // Obtener usuario
+      const usrSnap = await getDoc(doc(db, 'usuarios', est.usuarioId));
+      if (!usrSnap.exists() || usrSnap.data().estado === false) continue;
+      const usr = usrSnap.data();
+
+      // Calificaciones de este estudiante
+      const calQ = query(collection(db, 'calificaciones'), where('estudianteId', '==', estDoc.id));
+      const calSnap = await getDocs(calQ);
+
+      const notas = calSnap.docs.map(d => d.data().nota).filter(n => typeof n === 'number');
+      const sumatoria = notas.reduce((s, n) => s + n, 0);
+      const promedio  = notas.length ? sumatoria / notas.length : 0;
+      const porcentaje = Math.min(100, Math.round(promedio)); // promedio sobre 100
+
+      // Carrera y nivel
+      const cId = typeof est.carrera === 'string' ? est.carrera.split('/').pop() : '';
+      const nId = typeof est.nivel   === 'string' ? est.nivel.split('/').pop()   : '';
+      if (!carreras[cId]) {
+        const cSnap = await getDoc(doc(db, 'carreras', cId));
+        carreras[cId] = cSnap.exists() ? cSnap.data() : { nombre: '—', sigla: '—' };
+      }
+      if (!niveles[nId]) {
+        const nSnap = await getDoc(doc(db, 'niveles', nId));
+        niveles[nId] = nSnap.exists() ? nSnap.data() : { nombre: '—', sigla: '—' };
+      }
+
+      datos.push({
+        estId: estDoc.id,
+        nombre: `${usr.nombre||''} ${usr.ap_paterno||''} ${usr.ap_materno||''}`.trim(),
+        inicial: (usr.nombre||'?')[0].toUpperCase(),
+        carreraId: cId, nivelId: nId,
+        carreraNombre: carreras[cId].nombre,
+        nivelNombre:   niveles[nId].nombre,
+        gestion: est.gestion || '2026',
+        sumatoria, promedio, porcentaje,
+        cantModulos: notas.length
+      });
+
+      // Poblar filtros
+      if (!document.querySelector(`#filtroCarrera option[value="${cId}"]`)) {
+        document.getElementById('filtroCarrera').innerHTML += `<option value="${cId}">${carreras[cId].nombre}</option>`;
+      }
+      if (!document.querySelector(`#filtroNivel option[value="${nId}"]`)) {
+        document.getElementById('filtroNivel').innerHTML += `<option value="${nId}">${niveles[nId].nombre}</option>`;
+      }
+    }
+
+    // Gestiones filter
+    [...gestiones].sort((a,b) => b-a).forEach(g => {
+      document.getElementById('filtroGestion').innerHTML += `<option value="${g}">${g}</option>`;
+    });
+
+    // Ordenar por porcentaje desc, luego sumatoria desc
+    datos.sort((a, b) => b.porcentaje - a.porcentaje || b.sumatoria - a.sumatoria);
+    rankingCompleto = datos;
+
+    renderRanking(datos);
+  } catch (err) {
+    console.error(err);
+    showToast('Error al cargar ranking: ' + err.message, 'error');
+  }
+}
+
+function renderRanking(datos) {
+  document.getElementById('rankingSubtitle').textContent = `${datos.length} estudiante${datos.length !== 1 ? 's' : ''} clasificados`;
+
+  // Podio
+  const top3 = datos.slice(0, 3);
+  const medalIcons = ['🥇','🥈','🥉'];
+  const podiumOrder = top3.length >= 2 ? [top3[1], top3[0], top3[2]].filter(Boolean) : top3;
+  const podiumClasses = top3.length >= 2 ? ['podium-2','podium-1','podium-3'] : ['podium-1','podium-2','podium-3'];
+
+  let podiumHTML = '';
+  podiumOrder.forEach((est, pi) => {
+    const realIdx = datos.indexOf(est);
+    const medal = medalIcons[realIdx] || '🏅';
+    const pctColor = est.porcentaje >= 80 ? 'var(--accent-3)' : est.porcentaje >= 60 ? 'var(--accent)' : 'var(--accent-4)';
+    podiumHTML += `
+      <div class="podium-card ${podiumClasses[pi]}">
+        <span class="podium-medal">${medal}</span>
+        <div class="podium-avatar" style="background:${GRADIENTS[realIdx % GRADIENTS.length]}">${est.inicial}</div>
+        <div class="podium-name">${est.nombre}</div>
+        <div style="font-size:10.5px;color:var(--txt-muted);margin-bottom:10px">${est.carreraNombre}</div>
+        <div class="podium-pct" style="color:${pctColor}">${est.porcentaje}%</div>
+        <div class="podium-pts">${est.sumatoria} pts · ${est.cantModulos} módulos</div>
+      </div>`;
+  });
+  document.getElementById('podiumWrap').innerHTML = podiumHTML || '<p style="color:var(--txt-muted)">Sin datos</p>';
+
+  // Mi posición
+  const miIdx = datos.findIndex(d => d.estId === miEstId);
+  if (miIdx >= 0) {
+    document.getElementById('miPosicion').style.display = '';
+    document.getElementById('miPosNumero').textContent = `#${miIdx + 1}`;
+    document.getElementById('miPosInfo').textContent = `de ${datos.length} estudiantes · ${datos[miIdx].porcentaje}% · ${datos[miIdx].sumatoria} pts`;
+  }
+
+  // Lista completa
+  if (!datos.length) {
+    document.getElementById('rankingList').innerHTML = `<div class="empty-state"><i class="bi bi-trophy"></i><p>No hay datos de ranking para los filtros seleccionados</p></div>`;
+    return;
+  }
+
+  const html = datos.map((est, i) => {
+    const esYo = est.estId === miEstId;
+    const pct = est.porcentaje;
+    const barColor = pct >= 90 ? 'var(--accent-3)' : pct >= 70 ? 'var(--accent)' : pct >= 51 ? 'var(--accent-4)' : 'var(--danger)';
+    const numColor = i === 0 ? '#f59e0b' : i === 1 ? '#94a3b8' : i === 2 ? '#b46a14' : 'var(--txt-muted)';
+    const medal = i < 3 ? ['🥇','🥈','🥉'][i] : `${i+1}`;
+
+    return `
+      <div class="rank-row ${esYo ? 'rank-me' : ''}">
+        <div class="rank-num" style="color:${numColor}">${medal}</div>
+        <div class="rank-avatar" style="background:${GRADIENTS[i % GRADIENTS.length]}">${est.inicial}</div>
+        <div class="rank-info">
+          <div class="name">${est.nombre} ${esYo ? '<span style="font-size:10px;background:rgba(59,130,246,.2);color:var(--accent);border-radius:5px;padding:1px 6px;margin-left:6px">Tú</span>' : ''}</div>
+          <div class="nivel">${est.carreraNombre} · ${est.nivelNombre} · Gestión ${est.gestion}</div>
+        </div>
+        <div class="rank-pct-wrap">
+          <div class="rank-pct-val">
+            <span class="rank-pct-num" style="color:${barColor}">${pct}%</span>
+            <span style="font-size:11px;color:var(--txt-muted)">${est.cantModulos} móds.</span>
+          </div>
+          <div class="prog-bar">
+            <div class="prog-fill" style="width:${pct}%;background:${barColor};transition:width .6s ease ${i*0.04}s"></div>
+          </div>
+        </div>
+        <div class="rank-pts" style="color:var(--accent)">${est.sumatoria}</div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('rankingList').innerHTML = html;
+}
+
+window.aplicarFiltros = function() {
+  const carreraF = document.getElementById('filtroCarrera').value;
+  const nivelF   = document.getElementById('filtroNivel').value;
+  const gestionF = document.getElementById('filtroGestion').value;
+
+  let filtrado = rankingCompleto;
+  if (carreraF) filtrado = filtrado.filter(d => d.carreraId === carreraF);
+  if (nivelF)   filtrado = filtrado.filter(d => d.nivelId   === nivelF);
+  if (gestionF) filtrado = filtrado.filter(d => d.gestion   === gestionF);
+
+  renderRanking(filtrado);
+}
+</script>
+</body>
+</html>

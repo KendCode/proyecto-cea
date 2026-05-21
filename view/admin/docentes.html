@@ -1,214 +1,122 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CEA — Docentes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../../assets/css/styles.css">
 </head>
+
 <body>
-<script src="../../assets/js/sidebar.js"></script>
-<script>renderLayout({ title: 'Docentes', subtitle: 'Gestión del cuerpo docente', activeLink: 'docentes' });</script>
+  <script src="../../assets/js/sidebar.js"></script>
+  <script>renderLayout({ title: 'Docentes', subtitle: 'Gestión del cuerpo docente', activeLink: 'docentes' });</script>
 
-<div id="main">
-  <div class="page-content">
+  <div id="main">
+    <div class="page-content">
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px">
-      <div class="stat-card">
-        <div class="icon-wrap ic-green"><i class="bi bi-person-workspace"></i></div>
-        <div class="stat-value" id="totalDoc">—</div>
-        <div class="stat-label">Total Docentes</div>
-        <span class="stat-change up"><i class="bi bi-arrow-up-short"></i> Activos</span>
-      </div>
-      <div class="stat-card">
-        <div class="icon-wrap ic-blue"><i class="bi bi-building"></i></div>
-        <div class="stat-value" id="carrerasDoc">—</div>
-        <div class="stat-label">Carreras Cubiertas</div>
-      </div>
-      <div class="stat-card">
-        <div class="icon-wrap ic-purple"><i class="bi bi-layers-fill"></i></div>
-        <div class="stat-value" id="nivelesDoc">—</div>
-        <div class="stat-label">Niveles</div>
-      </div>
-    </div>
-
-    <div class="panel-card">
-      <div class="section-header">
-        <div>
-          <div class="section-title">Lista de Docentes</div>
-          <div class="section-sub">Docentes asignados a carreras y niveles</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px">
+        <div class="stat-card">
+          <div class="icon-wrap ic-green"><i class="bi bi-person-workspace"></i></div>
+          <div class="stat-value" id="totalDoc">—</div>
+          <div class="stat-label">Total Docentes</div>
+          <span class="stat-change up"><i class="bi bi-arrow-up-short"></i> Activos</span>
         </div>
-        <div style="display:flex;gap:10px">
-          <select class="filter-select" id="filtroCarrera" onchange="renderTabla()">
-            <option value="">Todas las carreras</option>
-          </select>
-          <button class="btn btn-primary" onclick="abrirModal()">
-            <i class="bi bi-plus-lg"></i> Nuevo Docente
-          </button>
+        <div class="stat-card">
+          <div class="icon-wrap ic-blue"><i class="bi bi-building"></i></div>
+          <div class="stat-value" id="carrerasDoc">—</div>
+          <div class="stat-label">Carreras Cubiertas</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon-wrap ic-purple"><i class="bi bi-layers-fill"></i></div>
+          <div class="stat-value" id="nivelesDoc">—</div>
+          <div class="stat-label">Niveles</div>
         </div>
       </div>
 
-      <div style="overflow-x:auto">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>#</th><th>Docente</th><th>CI</th><th>Celular</th><th>Carrera</th><th>Nivel</th><th>Estado</th><th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tbodyDoc"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal-backdrop" id="modalDocente">
-  <div class="modal" style="max-width:580px">
-    <div class="modal-header">
-      <div class="modal-title" id="modalTitulo">Nuevo Docente</div>
-      <button class="modal-close" onclick="cerrarModal()"><i class="bi bi-x-lg"></i></button>
-    </div>
-    <div style="color:var(--txt-muted);font-size:12px;margin-bottom:16px;background:var(--bg-elevated);border-radius:var(--radius-sm);padding:10px 14px">
-      <i class="bi bi-info-circle"></i> El docente debe tener un <strong style="color:var(--txt-primary)">usuario con rol "docente"</strong> ya creado.
-    </div>
-    <div class="form-group">
-      <label class="form-label">Usuario ID</label>
-      <input type="text" class="form-control" id="fUsuarioId" placeholder="UID del usuario Firebase">
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Carrera</label>
-        <select class="form-control" id="fCarrera">
-          <option value="">Seleccionar...</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Nivel</label>
-        <select class="form-control" id="fNivel">
-          <option value="">Seleccionar...</option>
-        </select>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="cerrarModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="guardar()"><i class="bi bi-floppy-fill"></i> Guardar</button>
-    </div>
-  </div>
-</div>
-
-<script type="module">
-const DEMO_USUARIOS = [
-  { id:'uid10', nombre:'Ana', ap_paterno:'Quispe', ap_materno:'Mamani', ci:'9001234', nro_celular:'75012345', estado:true },
-  { id:'uid11', nombre:'Roberto', ap_paterno:'Flores', ap_materno:'Yujra', ci:'9001235', nro_celular:'75012346', estado:true },
-  { id:'uid12', nombre:'Lidia', ap_paterno:'Cruz', ap_materno:'Apaza', ci:'9001236', nro_celular:'75012347', estado:false },
-];
-const DEMO_CARRERAS = [
-  { id:'carrera001', nombre:'Sistemas Informáticos', sigla:'SI' },
-  { id:'carrera002', nombre:'Contabilidad', sigla:'CONT' },
-  { id:'carrera003', nombre:'Electricidad', sigla:'ELEC' },
-];
-const DEMO_NIVELES = [
-  { id:'nivel_1', nombre:'Técnico Básico', sigla:'TB' },
-  { id:'nivel_2', nombre:'Técnico Auxiliar', sigla:'TA' },
-  { id:'nivel_3', nombre:'Técnico Medio', sigla:'TM' },
-];
-let docentes = [
-  { id:'doc1', usuarioId:'uid10', carreraId:'carrera001', nivelId:'nivel_1' },
-  { id:'doc2', usuarioId:'uid11', carreraId:'carrera002', nivelId:'nivel_2' },
-  { id:'doc3', usuarioId:'uid12', carreraId:'carrera003', nivelId:'nivel_3' },
-];
-let usuarios = {}, carreras = {}, niveles = {}, editId = null;
-
-DEMO_USUARIOS.forEach(u => usuarios[u.id] = u);
-DEMO_CARRERAS.forEach(c => carreras[c.id] = c);
-DEMO_NIVELES.forEach(n => niveles[n.id] = n);
-
-function init() {
-  document.getElementById('totalDoc').textContent = docentes.length;
-  document.getElementById('carrerasDoc').textContent = new Set(docentes.map(d=>d.carreraId)).size;
-  document.getElementById('nivelesDoc').textContent = new Set(docentes.map(d=>d.nivelId)).size;
-  const selFC = document.getElementById('filtroCarrera');
-  const selC = document.getElementById('fCarrera');
-  const selN = document.getElementById('fNivel');
-  DEMO_CARRERAS.forEach(c => {
-    selFC.insertAdjacentHTML('beforeend', `<option value="${c.id}">${c.nombre}</option>`);
-    selC.insertAdjacentHTML('beforeend', `<option value="${c.id}">${c.nombre}</option>`);
-  });
-  DEMO_NIVELES.forEach(n => selN.insertAdjacentHTML('beforeend', `<option value="${n.id}">${n.nombre}</option>`));
-  renderTabla();
-}
-
-window.renderTabla = function() {
-  const fc = document.getElementById('filtroCarrera').value;
-  const data = docentes.filter(d => !fc || d.carreraId === fc);
-  const tbody = document.getElementById('tbodyDoc');
-  if (!data.length) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--txt-muted)">Sin docentes</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = data.map((d, i) => {
-    const u = usuarios[d.usuarioId] || {};
-    const c = carreras[d.carreraId] || {};
-    const n = niveles[d.nivelId] || {};
-    const activo = u.estado !== false;
-    return `<tr>
-      <td style="color:var(--txt-muted)">${i+1}</td>
-      <td class="td-name">
-        <div style="display:flex;align-items:center;gap:10px">
-          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent-3),var(--accent));display:grid;place-items:center;font-weight:700;font-size:12px;color:#fff">${(u.nombre||'?')[0]}</div>
+      <div class="panel-card">
+        <div class="section-header">
           <div>
-            <div>${u.nombre||'—'} ${u.ap_paterno||''}</div>
-            <div style="font-size:11px;color:var(--txt-muted)">Docente</div>
+            <div class="section-title">Lista de Docentes</div>
+            <div class="section-sub">Docentes asignados a carreras y niveles</div>
+          </div>
+          <div style="display:flex;gap:10px">
+            <select class="filter-select" id="filtroCarrera" onchange="renderTabla()">
+              <option value="">Todas las carreras</option>
+            </select>
+            <button class="btn btn-primary" onclick="abrirModal()">
+              <i class="bi bi-plus-lg"></i> Nuevo Docente
+            </button>
           </div>
         </div>
-      </td>
-      <td><span style="font-family:var(--mono)">${u.ci||'—'}</span></td>
-      <td>${u.nro_celular||'—'}</td>
-      <td><span class="role-badge rb-dir">${c.sigla||'—'}</span> ${c.nombre||'—'}</td>
-      <td>${n.nombre||'—'}</td>
-      <td><span class="status-dot ${activo?'active':'inactive'}">${activo?'Activo':'Inactivo'}</span></td>
-      <td>
-        <div style="display:flex;gap:6px">
-          <button class="btn btn-ghost btn-sm" onclick="editarDocente('${d.id}')"><i class="bi bi-pencil-fill"></i></button>
-          <button class="btn btn-danger btn-sm" onclick="eliminar('${d.id}')"><i class="bi bi-trash-fill"></i></button>
+
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Docente</th>
+                <th>CI</th>
+                <th>Celular</th>
+                <th>Carrera</th>
+                <th>Nivel</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyDoc"></tbody>
+          </table>
         </div>
-      </td>
-    </tr>`;
-  }).join('');
-};
+      </div>
+    </div>
+  </div>
 
-window.abrirModal = function(id=null) {
-  editId = id;
-  document.getElementById('modalTitulo').textContent = id ? 'Editar Docente' : 'Nuevo Docente';
-  if (id) {
-    const d = docentes.find(x=>x.id===id);
-    if (d) { document.getElementById('fUsuarioId').value=d.usuarioId; document.getElementById('fCarrera').value=d.carreraId; document.getElementById('fNivel').value=d.nivelId; }
-  } else {
-    document.getElementById('fUsuarioId').value='';
-    document.getElementById('fCarrera').value='';
-    document.getElementById('fNivel').value='';
-  }
-  document.getElementById('modalDocente').classList.add('show');
-};
-window.cerrarModal = () => document.getElementById('modalDocente').classList.remove('show');
-window.editarDocente = id => abrirModal(id);
-window.guardar = function() {
-  const data = { usuarioId: document.getElementById('fUsuarioId').value.trim(), carreraId: document.getElementById('fCarrera').value, nivelId: document.getElementById('fNivel').value };
-  if (!data.usuarioId||!data.carreraId||!data.nivelId) { showToast('Completa todos los campos','error'); return; }
-  if (editId) { const i = docentes.findIndex(d=>d.id===editId); if(i>-1) docentes[i]={...docentes[i],...data}; showToast('Docente actualizado'); }
-  else { docentes.push({id:'doc'+Date.now(),...data}); showToast('Docente registrado'); }
-  cerrarModal(); renderTabla();
-};
-window.eliminar = function(id) {
-  if (!confirm('¿Eliminar docente?')) return;
-  docentes = docentes.filter(d=>d.id!==id); showToast('Eliminado','info'); renderTabla();
-};
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modalDocente">
+    <div class="modal" style="max-width:580px">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitulo">Nuevo Docente</div>
+        <button class="modal-close" onclick="cerrarModal()"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div
+        style="color:var(--txt-muted);font-size:12px;margin-bottom:16px;background:var(--bg-elevated);border-radius:var(--radius-sm);padding:10px 14px">
+        <i class="bi bi-info-circle"></i> El docente debe tener un <strong style="color:var(--txt-primary)">usuario con
+          rol "docente"</strong> ya creado.
+      </div>
+      <div class="form-group">
+        <label class="form-label">Docente</label>
 
-init();
-</script>
+        <select class="form-control" id="fUsuarioId">
+          <option value="">Seleccionar docente...</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Carrera</label>
+          <select class="form-control" id="fCarrera">
+            <option value="">Seleccionar...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nivel</label>
+          <select class="form-control" id="fNivel">
+            <option value="">Seleccionar...</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="cerrarModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="guardar()"><i class="bi bi-floppy-fill"></i> Guardar</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="../../controllers/docentesController.js">
+  </script>
 </body>
+
 </html>

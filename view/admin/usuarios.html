@@ -11,20 +11,18 @@
 </head>
 
 <body>
+    <script src="../../assets/js/sidebar.js"></script>
+    <script>
+        renderLayout({
+            title: 'Usuarios',
+            subtitle: 'Gestión de usuarios del sistema CEA',
+            activeLink: 'usuarios'
+        });
+    </script>
 
-    <div class="cea-main" id="ceaMain">
 
-        <!-- Page Header -->
-        <div class="page-header d-flex align-items-start justify-content-between flex-wrap gap-3">
-            <div>
-                <h1>Gestión de Usuarios</h1>
-                <p>Administra todos los usuarios del sistema CEA</p>
-            </div>
-            <button class="btn-add" data-bs-toggle="modal" data-bs-target="#modalUsuario" onclick="openModal('nuevo')">
-                <i class="bi bi-plus-lg"></i> Nuevo Usuario
-            </button>
-        </div>
-
+    <div id="main">
+        <br>
         <!-- Stat Cards -->
         <div class="row g-3 mb-4">
             <div class="col-6 col-lg-3">
@@ -69,6 +67,7 @@
         <div class="table-card">
             <div class="table-toolbar">
                 <span class="toolbar-title"><i class="bi bi-people me-2 text-secondary"></i>Lista de usuarios</span>
+
                 <div class="search-input-wrap">
                     <i class="bi bi-search"></i>
                     <input type="text" class="search-input" id="searchInput" placeholder="Buscar usuario..." />
@@ -85,6 +84,10 @@
                     <option value="true">Activos</option>
                     <option value="false">Inactivos</option>
                 </select>
+                <button class="btn-add" data-bs-toggle="modal" data-bs-target="#modalUsuario"
+                    onclick="openModal('nuevo')">
+                    <i class="bi bi-plus-lg"></i> Nuevo Usuario
+                </button>
             </div>
 
             <div class="table-responsive">
@@ -280,11 +283,6 @@
         // =========================
         window.onRolChange = () => {
 
-            const rol =
-                document.getElementById(
-                    'fRol'
-                ).value;
-
             const wrapSexo =
                 document.getElementById(
                     'wrapSexo'
@@ -295,21 +293,10 @@
                     'wrapFechaNac'
                 );
 
-            // OCULTAR TODO
-            wrapSexo.style.display = 'none';
-            wrapFechaNac.style.display = 'none';
+            // MOSTRAR PARA TODOS
+            wrapSexo.style.display = 'block';
 
-            // MOSTRAR SOLO PARA
-            // DOCENTE Y ESTUDIANTE
-            if (
-                rol === 'docente' ||
-                rol === 'estudiante'
-            ) {
-
-                wrapSexo.style.display = 'block';
-                wrapFechaNac.style.display = 'block';
-
-            }
+            wrapFechaNac.style.display = 'block';
 
         };
 

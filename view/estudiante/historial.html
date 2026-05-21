@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CEA · Mi Historial Académico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../../assets/css/EstudianteStyle.css">
+  <style>
+    .gestion-block { margin-bottom: 28px; }
+    .gestion-header { display: flex; align-items: center; gap: 12px; padding: 12px 18px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 14px; }
+    .nota-pill { display: inline-flex; align-items: center; justify-content: center; min-width: 52px; height: 30px; border-radius: 8px; font-family: var(--mono); font-size: 14px; font-weight: 800; padding: 0 8px; }
+    .np-a { background:rgba(16,185,129,.15); color:var(--accent-3); }
+    .np-b { background:rgba(59,130,246,.15);  color:var(--accent); }
+    .np-c { background:rgba(245,158,11,.15);  color:var(--accent-4); }
+    .np-r { background:rgba(239,68,68,.15);   color:var(--danger); }
+    .np-n { background:var(--bg-elevated);    color:var(--txt-muted); }
+  </style>
+</head>
+<body>
+<div id="main">
+  <div class="page-content">
+
+    <div style="margin-bottom:24px;animation:fadeUp .4s ease;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:22px;font-weight:800;letter-spacing:-.4px">Mi Historial Académico</div>
+        <div style="color:var(--txt-muted);font-size:13px;margin-top:3px">Todas tus calificaciones organizadas por gestión</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <select class="filter-select" id="filtroGestion" onchange="filtrar()">
+          <option value="">Todas las gestiones</option>
+        </select>
+        <a href="ranking.html" class="btn btn-ghost"><i class="bi bi-trophy-fill"></i> Ranking</a>
+      </div>
+    </div>
+
+    <!-- Resumen general -->
+    <div id="resumenBanner" style="display:none;background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(59,130,246,.08));border:1px solid rgba(16,185,129,.2);border-radius:var(--radius);padding:20px 24px;margin-bottom:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:16px;animation:fadeUp .4s ease .1s both">
+      <div style="text-align:center">
+        <div style="font-size:28px;font-weight:800;font-family:var(--mono);color:var(--accent-3)" id="resPromedio">—</div>
+        <div style="font-size:11px;color:var(--txt-muted);margin-top:3px">PROMEDIO GENERAL</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:28px;font-weight:800;font-family:var(--mono);color:var(--accent)" id="resAprobados">—</div>
+        <div style="font-size:11px;color:var(--txt-muted);margin-top:3px">APROBADOS</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:28px;font-weight:800;font-family:var(--mono);color:var(--danger)" id="resReprobados">—</div>
+        <div style="font-size:11px;color:var(--txt-muted);margin-top:3px">REPROBADOS</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:28px;font-weight:800;font-family:var(--mono);color:var(--accent-4)" id="resPendientes">—</div>
+        <div style="font-size:11px;color:var(--txt-muted);margin-top:3px">PENDIENTES</div>
+      </div>
+    </div>
+
+    <div id="historialContainer">
+      <div class="empty-state"><i class="bi bi-hourglass-split"></i><p>Cargando historial...</p></div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../../assets/js/sidebar.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = { /* ← tu config */ };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+renderLayout({ title: 'Mi Historial', subtitle: 'Calificaciones académicas', activeLink: 'historial', role: 'estudiante' });
+
+let historialData = [];
+
+onAuthStateChanged(auth, async user => {
+  if (!user) { window.location.href = '../auth/login.html'; return; }
+  await cargarHistorial(user.uid);
+});
+
+async function cargarHistorial(uid) {
+  const estQ = query(collection(db, 'estudiantes'), where('usuarioId', '==', uid));
+  const estSnap = await getDocs(estQ);
+  if (estSnap.empty) return;
+
+  const estDoc = estSnap.docs[0];
+  const est = estDoc.data();
+  const estId = estDoc.id;
+
+  // Calificaciones del estudiante
+  const calQ = query(collection(db, 'calificaciones'), where('estudianteId', '==', estId));
+  const calSnap = await getDocs(calQ);
+
+  if (calSnap.empty) {
+    document.getElementById('historialContainer').innerHTML = `<div class="empty-state"><i class="bi bi-journal-x"></i><p>No tienes calificaciones registradas aún</p></div>`;
+    return;
+  }
+
+  // Agrupar por gestión
+  const porGestion = {};
+  const gestiones = new Set();
+  for (const calDoc of calSnap.docs) {
+    const cal = calDoc.data();
+    gestiones.add(cal.gestion);
+    if (!porGestion[cal.gestion]) porGestion[cal.gestion] = [];
+
+    const mSnap = await getDoc(doc(db, 'modulos', cal.moduloId));
+    const modulo = mSnap.exists() ? mSnap.data() : { nombre: cal.moduloId, orden: 99 };
+    porGestion[cal.gestion].push({ ...cal, id: calDoc.id, modulo });
+  }
+
+  // Poblar filtro gestión
+  const filtro = document.getElementById('filtroGestion');
+  [...gestiones].sort((a,b) => b-a).forEach(g => {
+    filtro.innerHTML += `<option value="${g}">${g}</option>`;
+  });
+
+  historialData = porGestion;
+
+  // Calcular resumen
+  const todasNotas = calSnap.docs.map(d => d.data().nota);
+  const promedio  = todasNotas.length ? Math.round(todasNotas.reduce((s,n)=>s+n,0)/todasNotas.length) : 0;
+  const aprobados = todasNotas.filter(n => n >= 51).length;
+  const reprobados= todasNotas.filter(n => n < 51).length;
+
+  // Módulos totales
+  const mQ = query(collection(db, 'modulos'), where('carreraId', '==', est.carrera), where('nivelId', '==', est.nivel));
+  const mSnap = await getDocs(mQ);
+  const pendientes = mSnap.size - calSnap.size;
+
+  document.getElementById('resPromedio').textContent = promedio;
+  document.getElementById('resAprobados').textContent = aprobados;
+  document.getElementById('resReprobados').textContent = reprobados;
+  document.getElementById('resPendientes').textContent = Math.max(0, pendientes);
+  document.getElementById('resumenBanner').style.display = 'grid';
+
+  renderHistorial(porGestion);
+}
+
+function notaClass(n) {
+  if (n === null) return 'np-n';
+  if (n >= 90) return 'np-a';
+  if (n >= 70) return 'np-b';
+  if (n >= 51) return 'np-c';
+  return 'np-r';
+}
+
+function renderHistorial(data) {
+  const gestiones = Object.keys(data).sort((a,b) => b-a);
+  let html = '';
+
+  for (const g of gestiones) {
+    const modulos = data[g].sort((a,b) => (a.modulo.orden||99) - (b.modulo.orden||99));
+    const suma    = modulos.reduce((s,m) => s + m.nota, 0);
+    const prom    = modulos.length ? Math.round(suma / modulos.length) : 0;
+    const aprobados = modulos.filter(m => m.nota >= 51).length;
+
+    html += `
+      <div class="gestion-block">
+        <div class="gestion-header">
+          <i class="bi bi-calendar3" style="color:var(--accent);font-size:16px"></i>
+          <span style="font-weight:800;font-size:15px">Gestión ${g}</span>
+          <span class="gestion-tag">${g}</span>
+          <div style="margin-left:auto;display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+            <div style="text-align:center">
+              <div style="font-size:10px;color:var(--txt-muted)">PROMEDIO</div>
+              <div style="font-family:var(--mono);font-weight:800;font-size:16px;color:${prom>=51?'var(--accent-3)':'var(--danger)'}">${prom}</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:10px;color:var(--txt-muted)">SUMATORIA</div>
+              <div style="font-family:var(--mono);font-weight:800;font-size:16px;color:var(--accent)">${suma}</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:10px;color:var(--txt-muted)">APROBADOS</div>
+              <div style="font-family:var(--mono);font-weight:800;font-size:16px;color:var(--accent-3)">${aprobados}/${modulos.length}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-card" style="padding:0;overflow:hidden">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Módulo</th>
+                <th>Sigla</th>
+                <th>Nota</th>
+                <th>Porcentaje</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${modulos.map((m, i) => {
+                const pct = m.nota;
+                const nc  = notaClass(m.nota);
+                const estado = m.nota >= 51 ? 'Aprobado' : 'Reprobado';
+                const estadoColor = m.nota >= 51 ? 'var(--accent-3)' : 'var(--danger)';
+                return `
+                  <tr>
+                    <td style="color:var(--txt-muted)">${m.modulo.orden || i+1}</td>
+                    <td class="td-name">${m.modulo.nombre}</td>
+                    <td style="font-family:var(--mono);font-size:11px">${m.modulo.sigla||'—'}</td>
+                    <td><span class="nota-pill ${nc}">${m.nota}</span></td>
+                    <td style="min-width:140px">
+                      <div style="display:flex;align-items:center;gap:8px">
+                        <div class="prog-bar" style="flex:1">
+                          <div class="prog-fill" style="width:${pct}%;background:${pct>=90?'var(--accent-3)':pct>=70?'var(--accent)':pct>=51?'var(--accent-4)':'var(--danger)'}"></div>
+                        </div>
+                        <span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--txt-secondary);min-width:32px">${pct}%</span>
+                      </div>
+                    </td>
+                    <td><span style="font-size:12px;font-weight:700;color:${estadoColor}">${estado}</span></td>
+                  </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>`;
+  }
+
+  document.getElementById('historialContainer').innerHTML = html;
+}
+
+window.filtrar = function() {
+  const g = document.getElementById('filtroGestion').value;
+  if (!g) {
+    renderHistorial(historialData);
+  } else {
+    renderHistorial({ [g]: historialData[g] || [] });
+  }
+}
+</script>
+</body>
+</html>

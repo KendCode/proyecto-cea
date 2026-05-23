@@ -1,262 +1,746 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CEA · Mi Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CEA · Panel Estudiante</title>
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="../../assets/css/EstudianteStyle.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap"
+    rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
   <style>
-    .nota-ring-wrap { position: relative; width: 110px; height: 110px; flex-shrink: 0; }
-    .nota-ring-wrap svg { transform: rotate(-90deg); }
-    .nota-ring-val { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .nota-ring-val .val { font-size: 24px; font-weight: 800; font-family: var(--mono); }
-    .nota-ring-val .pct { font-size: 10px; color: var(--txt-muted); margin-top: -2px; }
-  </style>
-</head>
-<body>
-<div id="main">
-  <div class="page-content">
-
-    <!-- Bienvenida -->
-    <div style="background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(59,130,246,.10));border:1px solid rgba(16,185,129,.2);border-radius:var(--radius);padding:24px 26px;margin-bottom:24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;animation:fadeUp .4s ease">
-      <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--accent-3),var(--accent));display:grid;place-items:center;font-size:22px;color:#fff;flex-shrink:0">
-        <i class="bi bi-person-badge-fill"></i>
-      </div>
-      <div style="flex:1">
-        <div style="font-size:19px;font-weight:800;letter-spacing:-.3px" id="welcomeName">Mi Panel</div>
-        <div style="font-size:12.5px;color:var(--txt-muted);margin-top:3px" id="infoCarrera">Cargando información...</div>
-      </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <a href="historial.html" class="btn btn-success"><i class="bi bi-journal-text"></i> Mi Historial</a>
-        <a href="ranking.html"   class="btn btn-ghost"><i class="bi bi-trophy-fill"></i> Ranking</a>
-      </div>
-    </div>
-
-    <!-- Stats -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:26px">
-      <div class="stat-card" style="animation-delay:.05s">
-        <div class="icon-wrap ic-blue"><i class="bi bi-building"></i></div>
-        <div class="stat-value" id="statCarrera">—</div>
-        <div class="stat-label">Carrera</div>
-      </div>
-      <div class="stat-card" style="animation-delay:.10s">
-        <div class="icon-wrap ic-purple"><i class="bi bi-layers-fill"></i></div>
-        <div class="stat-value" id="statNivel">—</div>
-        <div class="stat-label">Nivel Actual</div>
-      </div>
-      <div class="stat-card" style="animation-delay:.15s">
-        <div class="icon-wrap ic-green"><i class="bi bi-star-fill"></i></div>
-        <div class="stat-value" id="statPromedio">—</div>
-        <div class="stat-label">Promedio General</div>
-      </div>
-      <div class="stat-card" style="animation-delay:.20s">
-        <div class="icon-wrap ic-amber"><i class="bi bi-journals"></i></div>
-        <div class="stat-value" id="statModulos">—</div>
-        <div class="stat-label">Módulos</div>
-      </div>
-    </div>
-
-    <!-- Dos columnas -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px" id="gridPrincipal">
-
-      <!-- Docente asignado -->
-      <div class="panel-card">
-        <div class="section-header">
-          <div>
-            <div class="section-title"><i class="bi bi-person-workspace" style="color:var(--accent-2)"></i> Mi Docente</div>
-            <div class="section-sub">Docente asignado a tu nivel</div>
-          </div>
-        </div>
-        <div id="docenteCard">
-          <div class="empty-state" style="padding:30px"><i class="bi bi-hourglass-split"></i><p>Cargando...</p></div>
-        </div>
-      </div>
-
-      <!-- Mis notas recientes -->
-      <div class="panel-card" style="animation-delay:.15s">
-        <div class="section-header">
-          <div>
-            <div class="section-title"><i class="bi bi-star-fill" style="color:var(--accent-4)"></i> Mis Calificaciones</div>
-            <div class="section-sub">Notas registradas este período</div>
-          </div>
-          <a href="historial.html" class="btn btn-sm btn-ghost"><i class="bi bi-arrow-right"></i> Ver todo</a>
-        </div>
-        <div id="notasList">
-          <div class="empty-state" style="padding:30px"><i class="bi bi-hourglass-split"></i><p>Cargando...</p></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Progreso por módulo -->
-    <div class="panel-card" style="animation-delay:.3s">
-      <div class="section-header">
-        <div>
-          <div class="section-title"><i class="bi bi-bar-chart-fill" style="color:var(--accent-3)"></i> Progreso por Módulo</div>
-          <div class="section-sub">Tu rendimiento en cada módulo del nivel</div>
-        </div>
-      </div>
-      <div id="progresoModulos">
-        <div class="empty-state"><i class="bi bi-hourglass-split"></i><p>Cargando...</p></div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<script src="../../assets/js/sidebar.js"></script>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-const firebaseConfig = { /* ← tu config */ };
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db   = getFirestore(app);
-
-renderLayout({ title: 'Mi Panel', subtitle: 'Resumen académico', activeLink: 'dashboard', role: 'estudiante' });
-
-onAuthStateChanged(auth, async user => {
-  if (!user) { window.location.href = '../auth/login.html'; return; }
-  const ceaUser = JSON.parse(sessionStorage.getItem('cea_user') || '{}');
-  if (ceaUser.nombre) {
-    document.getElementById('welcomeName').textContent = `Hola, ${ceaUser.nombre} ${ceaUser.ap_paterno||''}`.trim();
-  }
-  await cargarDatos(user.uid);
-});
-
-async function cargarDatos(uid) {
-  try {
-    // Obtener registro estudiante
-    const estQ = query(collection(db, 'estudiantes'), where('usuarioId', '==', uid));
-    const estSnap = await getDocs(estQ);
-    if (estSnap.empty) { showToast('No se encontró tu registro de estudiante.', 'info'); return; }
-
-    const estDoc = estSnap.docs[0];
-    const est = estDoc.data();
-    const estId = estDoc.id;
-    const gestion = est.gestion || new Date().getFullYear().toString();
-
-    // Carrera
-    const carreraId = typeof est.carrera === 'string' ? est.carrera.split('/').pop() : '';
-    const nivelId   = typeof est.nivel   === 'string' ? est.nivel.split('/').pop()   : '';
-
-    const [carreraSnap, nivelSnap] = await Promise.all([
-      getDoc(doc(db, 'carreras', carreraId)),
-      getDoc(doc(db, 'niveles',  nivelId))
-    ]);
-
-    const carrera = carreraSnap.exists() ? carreraSnap.data() : { nombre: '—', sigla: '—' };
-    const nivel   = nivelSnap.exists()   ? nivelSnap.data()   : { nombre: '—', sigla: '—' };
-
-    document.getElementById('statCarrera').textContent = carrera.sigla || '—';
-    document.getElementById('statNivel').textContent   = nivel.sigla || '—';
-    document.getElementById('infoCarrera').textContent = `${carrera.nombre} · ${nivel.nombre} · Gestión ${gestion}`;
-
-    // Docente
-    const docQ = query(collection(db, 'docentes'),
-      where('carreraId', '==', est.carrera),
-      where('nivelId',   '==', est.nivel));
-    const docSnap = await getDocs(docQ);
-
-    if (!docSnap.empty) {
-      const docenteData = docSnap.docs[0].data();
-      const usrSnap = await getDoc(doc(db, 'usuarios', docenteData.usuarioId));
-      const docUsr = usrSnap.exists() ? usrSnap.data() : {};
-      document.getElementById('docenteCard').innerHTML = `
-        <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--bg-elevated);border-radius:var(--radius-sm)">
-          <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--accent-2),var(--accent));display:grid;place-items:center;font-weight:800;font-size:20px;color:#fff;flex-shrink:0">
-            ${(docUsr.nombre||'D')[0].toUpperCase()}
-          </div>
-          <div>
-            <div style="font-weight:700;font-size:14px;color:var(--txt-primary)">${docUsr.nombre||''} ${docUsr.ap_paterno||''} ${docUsr.ap_materno||''}</div>
-            <div style="font-size:12px;color:var(--txt-muted);margin-top:2px">${docUsr.correo||''}</div>
-            <span class="role-badge rb-docente" style="margin-top:6px">Docente</span>
-          </div>
-        </div>
-        <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
-          <div style="padding:10px;background:var(--bg-elevated);border-radius:var(--radius-sm);text-align:center">
-            <div style="font-size:10px;color:var(--txt-muted);margin-bottom:4px">CARRERA</div>
-            <div style="font-weight:700;font-size:13px">${carrera.nombre}</div>
-          </div>
-          <div style="padding:10px;background:var(--bg-elevated);border-radius:var(--radius-sm);text-align:center">
-            <div style="font-size:10px;color:var(--txt-muted);margin-bottom:4px">NIVEL</div>
-            <div style="font-weight:700;font-size:13px">${nivel.nombre}</div>
-          </div>
-        </div>`;
-    } else {
-      document.getElementById('docenteCard').innerHTML = `<div class="empty-state" style="padding:30px"><i class="bi bi-person-x"></i><p>Sin docente asignado</p></div>`;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    // Módulos y calificaciones
-    const mQ = query(collection(db, 'modulos'),
-      where('carreraId', '==', est.carrera),
-      where('nivelId',   '==', est.nivel),
-      where('estado',    '==', true));
-    const mSnap = await getDocs(mQ);
-    const modulos = mSnap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => (a.orden||0)-(b.orden||0));
-    document.getElementById('statModulos').textContent = modulos.length;
+    :root {
+      --sidebar: #0f172a;
+      --sidebar2: #111827;
+      --primary: #10b981;
+      --primary2: #3b82f6;
+      --accent: #10b981;
+      --accent-2: #3b82f6;
+      --accent-3: #8b5cf6;
+      --accent-4: #f59e0b;
+      --txt-muted: #64748b;
+      --white: #fff;
+      --bg: #f1f5f9;
+      --radius: 22px;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .12);
+      --mono: 'JetBrains Mono', monospace;
+    }
 
-    const calQ = query(collection(db, 'calificaciones'), where('estudianteId', '==', estId), where('gestion', '==', gestion));
-    const calSnap = await getDocs(calQ);
-    const calMap = {};
-    calSnap.docs.forEach(d => { calMap[d.data().moduloId] = d.data().nota; });
+    body {
+      background: var(--bg);
+      overflow-x: hidden;
+    }
 
-    const notasArr = modulos.map(m => ({ modulo: m, nota: calMap[m.id] ?? null }));
-    const conNota  = notasArr.filter(n => n.nota !== null);
-    const promedio = conNota.length ? Math.round(conNota.reduce((s,n) => s + n.nota, 0) / conNota.length) : null;
+    a {
+      text-decoration: none;
+    }
 
-    document.getElementById('statPromedio').textContent = promedio !== null ? promedio : '—';
+    /* ================= SIDEBAR ================= */
 
-    // Notas recientes
-    const notasHTML = notasArr.slice(0,5).map(n => {
-      const nota = n.nota;
-      const color = nota === null ? 'var(--txt-muted)' : nota >= 90 ? 'var(--accent-3)' : nota >= 70 ? 'var(--accent)' : nota >= 51 ? 'var(--accent-4)' : 'var(--danger)';
-      const pct = nota !== null ? nota : 0;
-      return `
-        <div style="margin-bottom:12px">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-            <div style="font-size:13px;font-weight:600;color:var(--txt-primary)">${n.modulo.nombre}</div>
-            <div style="font-family:var(--mono);font-weight:800;font-size:14px;color:${color}">${nota !== null ? nota : '—'}</div>
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -290px;
+      width: 280px;
+      height: 100vh;
+      background:
+        linear-gradient(180deg,
+          rgba(15, 23, 42, .98),
+          rgba(17, 24, 39, .98));
+      backdrop-filter: blur(18px);
+      border-right: 1px solid rgba(255, 255, 255, .06);
+      transition: .3s ease;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar.active {
+      left: 0;
+    }
+
+    .sidebar-top {
+      padding: 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, .06);
+    }
+
+    .logo-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      background:
+        linear-gradient(135deg,
+          var(--primary),
+          var(--primary2));
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 24px;
+    }
+
+    .logo-text h2 {
+      color: white;
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .logo-text span {
+      color: #94a3b8;
+      font-size: 12px;
+    }
+
+    .sidebar-close {
+      margin-left: auto;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    /* USER */
+
+    .sidebar-user {
+      margin: 20px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .06);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background:
+        linear-gradient(135deg,
+          var(--primary),
+          var(--primary2));
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 22px;
+    }
+
+    .user-info h4 {
+      color: white;
+      font-size: 15px;
+    }
+
+    .user-info span {
+      color: #94a3b8;
+      font-size: 12px;
+    }
+
+    /* MENU */
+
+    .sidebar-menu {
+      padding: 10px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sidebar-menu a {
+      color: rgba(255, 255, 255, .82);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      transition: .25s ease;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .sidebar-menu a:hover {
+      background: rgba(255, 255, 255, .08);
+      transform: translateX(4px);
+    }
+
+    .sidebar-menu a.active {
+      background:
+        linear-gradient(135deg,
+          var(--primary),
+          var(--primary2));
+      color: white;
+    }
+
+    .sidebar-menu a i {
+      font-size: 18px;
+    }
+
+    /* ================= OVERLAY ================= */
+
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .45);
+      backdrop-filter: blur(2px);
+      opacity: 0;
+      visibility: hidden;
+      transition: .3s;
+      z-index: 999;
+    }
+
+    .sidebar-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ================= MAIN ================= */
+
+    #main {
+      min-height: 100vh;
+      transition: .3s;
+    }
+
+    /* ================= TOPBAR ================= */
+
+    .topbar {
+      height: 75px;
+      background: rgba(255, 255, 255, .85);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid rgba(0, 0, 0, .05);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .menu-btn {
+      width: 46px;
+      height: 46px;
+      border: none;
+      border-radius: 14px;
+      background: white;
+      font-size: 22px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
+    .topbar-title h3 {
+      font-size: 19px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .topbar-title span {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    /* ================= CONTENT ================= */
+
+    .page-content {
+      padding: 28px;
+    }
+
+    /* BOTONES */
+
+    .btn {
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+    }
+
+    .btn-ghost {
+      background: white;
+      color: #0f172a;
+      border: 1px solid rgba(0, 0, 0, .08);
+    }
+
+    .btn-sm {
+      padding: 10px 14px;
+      font-size: 12px;
+    }
+
+    /* BIENVENIDA */
+
+    .welcome-card {
+      background:
+        linear-gradient(135deg,
+          rgba(16, 185, 129, .12),
+          rgba(59, 130, 246, .10));
+      border: 1px solid rgba(16, 185, 129, .18);
+      border-radius: var(--radius);
+      padding: 24px 26px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* STATS */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    .ic-blue {
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+    }
+
+    .ic-purple {
+      background: linear-gradient(135deg, #8b5cf6, #a855f7);
+    }
+
+    .ic-green {
+      background: linear-gradient(135deg, #10b981, #14b8a6);
+    }
+
+    .ic-amber {
+      background: linear-gradient(135deg, #f59e0b, #f97316);
+    }
+
+    .stat-value {
+      font-size: 25px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--txt-muted);
+      margin-top: 5px;
+    }
+
+    /* GRID */
+
+    #gridPrincipal {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    /* PANEL */
+
+    .panel-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #0f172a;
+    }
+
+    .section-sub {
+      font-size: 12px;
+      color: var(--txt-muted);
+      margin-top: 4px;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: var(--txt-muted);
+    }
+
+    .empty-state i {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:991px) {
+
+      #gridPrincipal {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+    @media(min-width:992px) {
+
+      .sidebar {
+        left: 0;
+      }
+
+      #main {
+        margin-left: 280px;
+      }
+
+      .menu-btn,
+      .sidebar-close,
+      .sidebar-overlay {
+        display: none;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-top">
+
+      <div class="logo-box">
+        <i class="bi bi-mortarboard-fill"></i>
+      </div>
+
+      <div class="logo-text">
+        <h2>CEA</h2>
+        <span>Panel Estudiante</span>
+      </div>
+
+      <button class="sidebar-close" id="closeSidebar">
+        <i class="bi bi-x-lg"></i>
+      </button>
+
+    </div>
+
+    <!-- USER -->
+    <div class="sidebar-user">
+
+      <div class="avatar">
+        <i class="bi bi-person-fill"></i>
+      </div>
+
+      <div class="user-info">
+        <h4 id="sidebarNombre">Estudiante</h4>
+        <span id="sidebarCarrera">Cargando...</span>
+      </div>
+
+    </div>
+
+    <!-- MENU -->
+    <nav class="sidebar-menu">
+
+      <a href="dashboard.html" class="active">
+        <i class="bi bi-grid-fill"></i>
+        Dashboard
+      </a>
+
+      <a href="historial.html">
+        <i class="bi bi-journal-text"></i>
+        Mi Historial
+      </a>
+
+      <a href="ranking.html">
+        <i class="bi bi-trophy-fill"></i>
+        Ranking
+      </a>
+
+      <a href="perfil.html">
+        <i class="bi bi-person-circle"></i>
+        Mi Perfil
+      </a>
+
+      <a href="#">
+        <i class="bi bi-bell-fill"></i>
+        Notificaciones
+      </a>
+
+      <a href="#" id="logoutBtn">
+        <i class="bi bi-box-arrow-right"></i>
+        Cerrar Sesión
+      </a>
+
+    </nav>
+
+  </aside>
+
+  <!-- OVERLAY -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- MAIN -->
+  <main id="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+
+      <button class="menu-btn" id="openSidebar">
+        <i class="bi bi-list"></i>
+      </button>
+
+      <div class="topbar-title">
+        <h3>Mi Panel</h3>
+        <span>Bienvenido al sistema</span>
+      </div>
+
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <div class="page-content">
+
+      <!-- Bienvenida -->
+      <div class="welcome-card">
+
+        <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--accent-3),var(--accent));display:grid;place-items:center;font-size:22px;color:#fff;flex-shrink:0">
+          <i class="bi bi-person-badge-fill"></i>
+        </div>
+
+        <div style="flex:1">
+          <div style="font-size:19px;font-weight:800;letter-spacing:-.3px" id="welcomeName">
+            Mi Panel
           </div>
-          <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${color}"></div></div>
-        </div>`;
-    }).join('');
-    document.getElementById('notasList').innerHTML = notasHTML || `<div class="empty-state" style="padding:30px"><i class="bi bi-star"></i><p>Sin notas registradas</p></div>`;
 
-    // Progreso módulos completo
-    const progHTML = notasArr.map(n => {
-      const nota = n.nota;
-      const pct = nota !== null ? nota : 0;
-      const color = nota === null ? 'var(--txt-muted)' : nota >= 90 ? 'var(--accent-3)' : nota >= 70 ? 'var(--accent)' : nota >= 51 ? 'var(--accent-4)' : 'var(--danger)';
-      const estado = nota === null ? 'Pendiente' : nota >= 51 ? 'Aprobado' : 'Reprobado';
-      const estadoColor = nota === null ? 'var(--txt-muted)' : nota >= 51 ? 'var(--accent-3)' : 'var(--danger)';
-      return `
-        <div style="display:flex;align-items:center;gap:14px;padding:12px;border-radius:var(--radius-sm);border:1px solid var(--border);margin-bottom:8px;transition:background .15s" onmouseover="this.style.background='var(--bg-elevated)'" onmouseout="this.style.background=''">
-          <div style="width:36px;height:36px;border-radius:9px;background:rgba(59,130,246,.1);display:grid;place-items:center;font-size:13px;font-weight:800;color:var(--accent);flex-shrink:0">${n.modulo.orden||1}</div>
-          <div style="flex:1">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-              <span style="font-weight:600;font-size:13px;color:var(--txt-primary)">${n.modulo.nombre}</span>
-              <span style="font-family:var(--mono);font-weight:800;font-size:14px;color:${color}">${nota !== null ? nota : '—'}</span>
+          <div style="font-size:12.5px;color:var(--txt-muted);margin-top:3px" id="infoCarrera">
+            Cargando información...
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+
+          <a href="historial.html" class="btn btn-success">
+            <i class="bi bi-journal-text"></i>
+            Mi Historial
+          </a>
+
+          <a href="ranking.html" class="btn btn-ghost">
+            <i class="bi bi-trophy-fill"></i>
+            Ranking
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="icon-wrap ic-blue">
+            <i class="bi bi-building"></i>
+          </div>
+
+          <div class="stat-value" id="statCarrera">—</div>
+          <div class="stat-label">Carrera</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="icon-wrap ic-purple">
+            <i class="bi bi-layers-fill"></i>
+          </div>
+
+          <div class="stat-value" id="statNivel">—</div>
+          <div class="stat-label">Nivel Actual</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="icon-wrap ic-green">
+            <i class="bi bi-star-fill"></i>
+          </div>
+
+          <div class="stat-value" id="statPromedio">—</div>
+          <div class="stat-label">Promedio General</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="icon-wrap ic-amber">
+            <i class="bi bi-journals"></i>
+          </div>
+
+          <div class="stat-value" id="statModulos">—</div>
+          <div class="stat-label">Módulos</div>
+        </div>
+
+      </div>
+
+      <!-- DOS COLUMNAS -->
+      <div id="gridPrincipal">
+
+        <!-- DOCENTE -->
+        <div class="panel-card">
+
+          <div class="section-header">
+
+            <div>
+              <div class="section-title">
+                <i class="bi bi-person-workspace" style="color:var(--accent-2)"></i>
+                Mi Docente
+              </div>
+
+              <div class="section-sub">
+                Docente asignado a tu nivel
+              </div>
             </div>
-            <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${color}"></div></div>
-          </div>
-          <div style="text-align:right;flex-shrink:0;min-width:70px">
-            <div style="font-size:11px;font-weight:700;color:${estadoColor}">${estado}</div>
-            <div style="font-size:10px;color:var(--txt-muted)">Max: 100</div>
-          </div>
-        </div>`;
-    }).join('');
-    document.getElementById('progresoModulos').innerHTML = progHTML || `<div class="empty-state"><i class="bi bi-journals"></i><p>Sin módulos en tu nivel</p></div>`;
 
-  } catch (err) {
-    console.error(err);
-    showToast('Error al cargar datos: ' + err.message, 'error');
-  }
-}
-</script>
+          </div>
+
+          <div id="docenteCard">
+
+            <div class="empty-state" style="padding:30px">
+              <i class="bi bi-hourglass-split"></i>
+              <p>Cargando...</p>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- NOTAS -->
+        <div class="panel-card">
+
+          <div class="section-header">
+
+            <div>
+              <div class="section-title">
+                <i class="bi bi-star-fill" style="color:var(--accent-4)"></i>
+                Mis Calificaciones
+              </div>
+
+              <div class="section-sub">
+                Notas registradas este período
+              </div>
+            </div>
+
+            <a href="historial.html" class="btn btn-sm btn-ghost">
+              <i class="bi bi-arrow-right"></i>
+              Ver todo
+            </a>
+
+          </div>
+
+          <div id="notasList">
+
+            <div class="empty-state" style="padding:30px">
+              <i class="bi bi-hourglass-split"></i>
+              <p>Cargando...</p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- PROGRESO -->
+      <div class="panel-card">
+
+        <div class="section-header">
+
+          <div>
+            <div class="section-title">
+              <i class="bi bi-bar-chart-fill" style="color:var(--accent-3)"></i>
+              Progreso por Módulo
+            </div>
+
+            <div class="section-sub">
+              Tu rendimiento en cada módulo del nivel
+            </div>
+          </div>
+
+        </div>
+
+        <div id="progresoModulos">
+
+          <div class="empty-state">
+            <i class="bi bi-hourglass-split"></i>
+            <p>Cargando...</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- SCRIPT -->
+  <script>
+
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+
+    const openBtn = document.getElementById("openSidebar");
+    const closeBtn = document.getElementById("closeSidebar");
+
+    openBtn.addEventListener("click", () => {
+      sidebar.classList.add("active");
+      overlay.classList.add("active");
+    });
+
+    function cerrarSidebar() {
+      sidebar.classList.remove("active");
+      overlay.classList.remove("active");
+    }
+
+    closeBtn.addEventListener("click", cerrarSidebar);
+    overlay.addEventListener("click", cerrarSidebar);
+
+  </script>
+<script type="module" src="../../controllers/sidebarController.js"></script>
+  <!-- CONTROLADORES -->
+  <script src="../../controllers/EstudController.js" type="module"></script>
+
 </body>
+
 </html>

@@ -10,6 +10,9 @@
   <link rel="stylesheet" href="../../assets/css/DocenteStyle.css">
 </head>
 <body>
+ 
+
+
 <div id="main">
   <div class="page-content">
 
@@ -119,159 +122,7 @@
   </div>
 </div>
 
-<script src="../../assets/js/sidebar.js"></script>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-const firebaseConfig = { /* ← tu config */ };
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-renderLayout({ title: 'Panel Docente', subtitle: 'Resumen de tu actividad académica', activeLink: 'dashboard', role: 'docente' });
-
-onAuthStateChanged(auth, async user => {
-  if (!user) { window.location.href = '../auth/login.html'; return; }
-
-  const ceaUser = JSON.parse(sessionStorage.getItem('cea_user') || '{}');
-  if (ceaUser.nombre) {
-    document.getElementById('welcomeName').textContent = `Bienvenido, ${ceaUser.nombre} ${ceaUser.ap_paterno || ''}`.trim();
-  }
-
-  await cargarDatosDocente(user.uid);
-});
-
-async function cargarDatosDocente(uid) {
-  try {
-    // 1. Obtener asignaciones del docente
-    const docenteQ = query(collection(db, 'docentes'), where('usuarioId', '==', uid));
-    const docenteSnap = await getDocs(docenteQ);
-
-    if (docenteSnap.empty) {
-      showToast('No tienes asignaciones registradas.', 'info');
-      return;
-    }
-
-    const asignaciones = docenteSnap.docs.map(d => d.data());
-    const carreraIds = [...new Set(asignaciones.map(a => a.carreraId))];
-    const nivelIds   = [...new Set(asignaciones.map(a => a.nivelId))];
-
-    // 2. Cargar carreras
-    const carreras = {};
-    for (const cId of carreraIds) {
-      const snap = await getDoc(doc(db, 'carreras', cId.split('/').pop()));
-      if (snap.exists()) carreras[cId] = snap.data();
-    }
-
-    // 3. Cargar niveles
-    const niveles = {};
-    for (const nId of nivelIds) {
-      const snap = await getDoc(doc(db, 'niveles', nId.split('/').pop()));
-      if (snap.exists()) niveles[nId] = snap.data();
-    }
-
-    document.getElementById('statCarreras').textContent = carreraIds.length;
-    document.getElementById('statNiveles').textContent = nivelIds.length;
-
-    // Render Carreras
-    const carrerasHTML = carreraIds.map(cId => {
-      const c = carreras[cId] || {};
-      return `
-        <div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:var(--radius-sm);background:var(--bg-elevated);margin-bottom:8px;">
-          <div style="width:38px;height:38px;border-radius:9px;background:rgba(59,130,246,.15);display:grid;place-items:center;color:var(--accent);font-size:16px;flex-shrink:0">
-            <i class="bi bi-building"></i>
-          </div>
-          <div>
-            <div style="font-weight:700;font-size:13.5px;color:var(--txt-primary)">${c.nombre || cId}</div>
-            <div style="font-size:11px;color:var(--txt-muted)">${c.sigla || ''}</div>
-          </div>
-          <span class="gestion-tag" style="margin-left:auto">${c.sigla || '—'}</span>
-        </div>`;
-    }).join('');
-    document.getElementById('carrerasList').innerHTML = carrerasHTML || '<div class="empty-state"><i class="bi bi-building"></i><p>Sin carreras asignadas</p></div>';
-
-    // 4. Cargar módulos
-    const modulos = [];
-    for (const asi of asignaciones) {
-      const mQ = query(collection(db, 'modulos'),
-        where('carreraId', '==', asi.carreraId),
-        where('nivelId', '==', asi.nivelId),
-        where('estado', '==', true));
-      const mSnap = await getDocs(mQ);
-      mSnap.docs.forEach(d => modulos.push({ id: d.id, ...d.data() }));
-    }
-
-    document.getElementById('statModulos').textContent = modulos.length;
-
-    const colores = ['ic-blue','ic-purple','ic-green','ic-amber'];
-    const modulosHTML = modulos.map((m, i) => `
-      <div style="display:flex;align-items:center;gap:12px;padding:10px;border-radius:var(--radius-sm);border:1px solid var(--border);margin-bottom:8px;transition:background .15s" onmouseover="this.style.background='var(--bg-elevated)'" onmouseout="this.style.background=''">
-        <div style="width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:14px;flex-shrink:0" class="${colores[i%4]}">
-          <i class="bi bi-journal-text"></i>
-        </div>
-        <div style="flex:1">
-          <div style="font-weight:600;font-size:13px;color:var(--txt-primary)">${m.nombre}</div>
-          <div style="font-size:11px;color:var(--txt-muted)">${m.sigla || ''} · Orden ${m.orden || i+1}</div>
-        </div>
-        <a href="subirNotas.html?moduloId=${m.id}" class="btn btn-sm btn-ghost"><i class="bi bi-pencil"></i></a>
-      </div>`).join('');
-    document.getElementById('modulosList').innerHTML = modulosHTML || '<div class="empty-state"><i class="bi bi-journals"></i><p>Sin módulos asignados</p></div>';
-
-    // 5. Cargar estudiantes
-    const gestion = new Date().getFullYear().toString();
-    document.getElementById('gestionTag').textContent = gestion;
-
-    let allEstudiantes = [];
-    for (const nId of nivelIds) {
-      const estQ = query(collection(db, 'estudiantes'), where('nivel', '==', nId), where('gestion', '==', gestion));
-      const estSnap = await getDocs(estQ);
-      for (const estDoc of estSnap.docs) {
-        const est = estDoc.data();
-        const usrSnap = await getDoc(doc(db, 'usuarios', est.usuarioId));
-        const usr = usrSnap.exists() ? usrSnap.data() : {};
-        allEstudiantes.push({ id: estDoc.id, ...est, ...usr, nivelData: niveles[nId], carreraData: carreras[est.carrera] });
-      }
-    }
-
-    document.getElementById('statEstudiantes').textContent = allEstudiantes.length;
-
-    const tbody = document.getElementById('estudiantesBody');
-    if (!allEstudiantes.length) {
-      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="bi bi-people"></i><p>Sin estudiantes registrados en tus niveles</p></div></td></tr>`;
-      return;
-    }
-
-    tbody.innerHTML = allEstudiantes.map((e, i) => `
-      <tr>
-        <td style="color:var(--txt-muted)">${i+1}</td>
-        <td>
-          <div style="display:flex;align-items:center;gap:10px">
-            <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-weight:700;font-size:12px;color:#fff;flex-shrink:0">
-              ${(e.nombre||'?')[0].toUpperCase()}
-            </div>
-            <div>
-              <div class="td-name">${e.nombre||''} ${e.ap_paterno||''} ${e.ap_materno||''}</div>
-              <div style="font-size:11px;color:var(--txt-muted)">${e.correo||''}</div>
-            </div>
-          </div>
-        </td>
-        <td>${e.carreraData?.nombre || e.carrera || '—'}</td>
-        <td>${e.nivelData?.nombre || e.nivel || '—'}</td>
-        <td><span class="gestion-tag">${e.gestion||'—'}</span></td>
-        <td>
-          <a href="subirNotas.html?estudianteId=${e.id}" class="btn btn-sm btn-success">
-            <i class="bi bi-star-fill"></i> Calificar
-          </a>
-        </td>
-      </tr>`).join('');
-
-  } catch (err) {
-    console.error(err);
-    showToast('Error al cargar datos: ' + err.message, 'error');
-  }
-}
+<script type="module" src="../../controllers/DocController.js">
 </script>
 </body>
 </html>

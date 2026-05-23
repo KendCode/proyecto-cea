@@ -1,64 +1,138 @@
-import { obtenerRanking } from "../services/EstudService.js";
+import {
+  obtenerRanking,
+  obtenerDatosEstudiante
+} from "../services/EstudService.js";
+
+import {
+  auth
+} from "../firebase/auth.js";
+
+import {
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+const rankingList =
+  document.getElementById("rankingList");
+
+const podium =
+  document.getElementById("podiumContainer");
 
 
-
-const rankingList = document.getElementById("rankingList");
-
-async function cargarRanking() {
+// 🔥 CARGAR RANKING
+async function cargarRanking(uid) {
 
   try {
 
-    const rankingList = document.getElementById("rankingList");
-    const podium = document.getElementById("podiumContainer");
+    // 🔥 DATOS DEL ESTUDIANTE
+    const estudiante =
+      await obtenerDatosEstudiante(uid);
 
-    const data = await obtenerRanking();
+    if (!estudiante) {
 
-    if (!data || data.length === 0) {
-      rankingList.innerHTML = "No hay datos";
+      rankingList.innerHTML =
+        "No existe estudiante";
+
       return;
     }
 
-    // 🔥 ORDENAR (IMPORTANTE)
-    data.sort((a, b) => b.porcentaje - a.porcentaje);
+    // 🔥 CARRERA Y NIVEL
+    const carreraId =
+      estudiante.carreraId;
 
-    const top3 = data.slice(0, 3);
+    const nivelId =
+      estudiante.nivelId;
 
-    const [first, second, third] = top3;
+    // 🔥 TODOS LOS DATOS
+    const data =
+      await obtenerRanking();
 
-    // 🔥 PODIUM seguro
-    if (podium) {
-      podium.innerHTML = `
-        <div class="podium-card podium-2">
-          <div>${second?.nombre || "-"}</div>
-          <div>${second?.porcentaje || 0}%</div>
-        </div>
+    // 🔥 FILTRAR
+    const filtrados =
+      data.filter(est =>
 
-        <div class="podium-card podium-1">
-          <div>${first?.nombre || "-"}</div>
-          <div>${first?.porcentaje || 0}%</div>
-        </div>
+        est.carreraId === carreraId &&
+        est.nivelId === nivelId
 
-        <div class="podium-card podium-3">
-          <div>${third?.nombre || "-"}</div>
-          <div>${third?.porcentaje || 0}%</div>
-        </div>
-      `;
-    }
+      );
+
+    // 🔥 ORDENAR
+    filtrados.sort((a, b) =>
+
+      b.sumatoria - a.sumatoria
+
+    );
+
+    // 🔥 TOP 3
+    const top3 =
+      filtrados.slice(0, 3);
+
+    const [first, second, third] =
+      top3;
+
+    // 🔥 PODIUM
+    podium.innerHTML = `
+    
+      <div class="podium-card podium-2">
+        <div>${second?.nombre || "-"}</div>
+        <div>${second?.sumatoria || 0}</div>
+      </div>
+
+      <div class="podium-card podium-1">
+        <div>${first?.nombre || "-"}</div>
+        <div>${first?.sumatoria || 0}</div>
+      </div>
+
+      <div class="podium-card podium-3">
+        <div>${third?.nombre || "-"}</div>
+        <div>${third?.sumatoria || 0}</div>
+      </div>
+
+    `;
 
     // 🔥 LISTA
-    rankingList.innerHTML = top3.map((e, i) => `
-      <div class="rank-row">
-        <div>${i + 1}</div>
-        <div>${e.nombre}</div>
-        <div>${e.porcentaje}%</div>
-        <div>${e.sumatoria}</div>
-      </div>
-    `).join("");
+    rankingList.innerHTML =
+      filtrados.map((e, i) => `
+      
+        <div class="rank-row">
+
+          <div>${i + 1}</div>
+
+          <div>${e.nombre}</div>
+
+          <div>${e.sumatoria} pts</div>
+
+          <div>${e.porcentaje}%</div>
+
+        </div>
+      
+      `).join("");
 
   } catch (error) {
-    console.error("Error ranking:", error);
+
+    console.error(
+      "Error ranking:",
+      error
+    );
+
   }
 }
 
-document.addEventListener("DOMContentLoaded", cargarRanking);
 
+// 🔥 ESPERAR LOGIN
+onAuthStateChanged(auth, (user) => {
+
+  if (user) {
+
+    cargarRanking(user.uid);
+
+  } else {
+
+    console.log(
+      "No hay sesión"
+    );
+
+    window.location.href =
+      "../../index.html";
+  }
+
+});

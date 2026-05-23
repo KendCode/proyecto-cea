@@ -10,6 +10,26 @@ import {
     from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 import { db } from "../firebase/firestore.js";
 
+// 🔥 OBTENER DATOS DEL ESTUDIANTE
+export async function obtenerDatosEstudiante(uid) {
+
+  const q = query(
+    collection(db, "estudiantes"),
+    where("usuarioId", "==", uid)
+  );
+
+  const snapshot =
+    await getDocs(q);
+
+  if (snapshot.empty)
+    return null;
+
+  return {
+    id: snapshot.docs[0].id,
+    ...snapshot.docs[0].data()
+  };
+}
+
 // ========================================
 // OBTENER ESTUDIANTE POR UID
 // ========================================

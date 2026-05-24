@@ -109,23 +109,25 @@ async function cargarNiveles() {
   filtroNivel.innerHTML =
     `<option value="">Todos los niveles</option>`;
 
-  data.forEach(n => {
+  data
+    .sort((a, b) => a.orden - b.orden)
+    .forEach(n => {
 
-    niveles[n.id] = n;
+      niveles[n.id] = n;
 
-    selectNivel.innerHTML += `
+      selectNivel.innerHTML += `
       <option value="${n.id}">
         ${n.nombre}
       </option>
     `;
 
-    filtroNivel.innerHTML += `
+      filtroNivel.innerHTML += `
       <option value="${n.id}">
         ${n.nombre}
       </option>
     `;
 
-  });
+    });
 
 }
 
@@ -287,15 +289,15 @@ function renderTabla() {
               <span class="
                 status-dot
                 ${m.estado
-                  ? "active"
-                  : "inactive"
-                }
+          ? "active"
+          : "inactive"
+        }
               ">
 
                 ${m.estado
-                  ? "Activo"
-                  : "Inactivo"
-                }
+          ? "Activo"
+          : "Inactivo"
+        }
 
               </span>
 
@@ -359,7 +361,7 @@ window.filtrar = renderTabla;
 // ABRIR MODAL
 // ============================================
 
-window.abrirModal = function(id = null) {
+window.abrirModal = function (id = null) {
 
   editId = id;
 
@@ -456,25 +458,119 @@ window.cerrarModal = () => {
 
 window.editar = id => abrirModal(id);
 
+
+// ============================================
+// FORMATEAR NOMBRE
+// ============================================
+
+function formatearNombre(texto) {
+
+  return texto
+    .toLowerCase()
+    .split(" ")
+    .filter(p => p.trim() !== "")
+    .map(p =>
+
+      p.charAt(0).toUpperCase() +
+      p.slice(1)
+
+    )
+    .join(" ");
+
+}
+
+// ============================================
+// GENERAR SIGLA
+// ============================================
+
+function generarSigla(nombre) {
+
+  const palabras =
+    nombre
+      .trim()
+      .split(" ")
+      .filter(
+        p => p !== ""
+      );
+
+  let sigla = "";
+
+  // ==========================
+  // UNA PALABRA
+  // ==========================
+
+  if (
+    palabras.length === 1
+  ) {
+
+    sigla =
+      palabras[0]
+        .substring(0, 3);
+
+  }
+
+  // ==========================
+  // VARIAS PALABRAS
+  // ==========================
+
+  else {
+
+    sigla =
+      palabras
+        .map(
+          p => p[0]
+        )
+        .join("");
+
+  }
+
+  return sigla.toUpperCase();
+
+}
+
+// ============================================
+// AUTOCOMPLETAR SIGLA
+// ============================================
+
+window.generarSiglaAutomatica =
+  function () {
+
+    const nombre =
+      document.getElementById(
+        "fNombre"
+      ).value;
+
+    document.getElementById(
+      "fSigla"
+    ).value =
+      generarSigla(nombre);
+
+  };
 // ============================================
 // GUARDAR
 // ============================================
 
-window.guardar = async function() {
+window.guardar = async function () {
+
+  const nombreFormateado =
+    formatearNombre(
+      document.getElementById(
+        "fNombre"
+      ).value
+    );
+
+  const siglaAuto =
+    generarSigla(
+      nombreFormateado
+    );
 
   const data = {
 
     nombre:
-      document.getElementById(
-        "fNombre"
-      ).value.trim(),
+      nombreFormateado,
 
     sigla:
-      document.getElementById(
-        "fSigla"
-      ).value
-        .trim()
-        .toUpperCase(),
+      siglaAuto,
 
     orden:
       parseInt(
@@ -567,7 +663,7 @@ window.guardar = async function() {
 // ELIMINAR
 // ============================================
 
-window.eliminar = async function(id) {
+window.eliminar = async function (id) {
 
   const ok =
     confirm(
@@ -599,7 +695,7 @@ window.eliminar = async function(id) {
 // ============================================
 
 window.toggleEstado =
-  async function(id) {
+  async function (id) {
 
     try {
 

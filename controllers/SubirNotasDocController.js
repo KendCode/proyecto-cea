@@ -6,21 +6,21 @@ import {
   auth
 
 }
-from "../firebase/auth.js";
+  from "../firebase/auth.js";
 
 import {
 
   onAuthStateChanged
 
 }
-from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+  from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 import {
 
   db
 
 }
-from "../firebase/firestore.js";
+  from "../firebase/firestore.js";
 
 import {
 
@@ -31,7 +31,7 @@ import {
   obtenerEstudiantes
 
 }
-from "../services/DocService.js";
+  from "../services/DocService.js";
 
 import {
 
@@ -45,7 +45,7 @@ import {
   serverTimestamp
 
 }
-from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+  from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
 
 // ==========================
@@ -60,7 +60,11 @@ let estudiantesActuales = [];
 
 let moduloActualId = null;
 
+let carrerasMapa = {};
 
+let nivelesMapa = {};
+
+let modulosGlobal = [];
 // ==========================
 // LOGIN
 // ==========================
@@ -112,29 +116,53 @@ async function cargarAsignaciones() {
     </option>
   `;
 
-  const carrerasUnicas =
-    [...new Set(
-      asignaciones.map(
-        a => a.carreraId
-      )
-    )];
+  // ==========================
+  // EVITAR DUPLICADOS
+  // ==========================
 
-  for (const carreraId of carrerasUnicas) {
+  const carrerasAgregadas =
+    new Set();
+
+  for (const a of asignaciones) {
+
+    // ==========================
+    // SI YA EXISTE
+    // ==========================
+
+    if (
+      carrerasAgregadas.has(
+        a.carreraId
+      )
+    ) continue;
+
+    carrerasAgregadas.add(
+      a.carreraId
+    );
+
+    // ==========================
+    // OBTENER CARRERA
+    // ==========================
 
     const carrera =
       await obtenerCarrera(
-        carreraId
+        a.carreraId
       );
 
-    if (carrera) {
+    if (!carrera) continue;
 
-      selCarrera.innerHTML += `
-        <option value="${carrera.id}">
-          ${carrera.nombre}
-        </option>
-      `;
+    // ==========================
+    // GUARDAR EN MAPA
+    // ==========================
 
-    }
+    carrerasMapa[
+      carrera.id
+    ] = carrera;
+
+    selCarrera.innerHTML += `
+      <option value="${carrera.id}">
+        ${carrera.nombre}
+      </option>
+    `;
 
   }
 
@@ -158,15 +186,18 @@ window.onCarreraChange =
         "selNivel"
       );
 
+    const selModulo =
+      document.getElementById(
+        "selModulo"
+      );
+
     selNivel.innerHTML = `
       <option value="">
         — Seleccionar —
       </option>
     `;
 
-    document.getElementById(
-      "selModulo"
-    ).innerHTML = `
+    selModulo.innerHTML = `
       <option value="">
         — Seleccionar —
       </option>
@@ -174,30 +205,89 @@ window.onCarreraChange =
 
     if (!carreraId) return;
 
-    const niveles =
+    // ==========================
+    // FILTRAR NIVELES
+    // ==========================
+
+    const asignacionesCarrera =
       asignaciones.filter(
         a =>
           a.carreraId === carreraId
       );
 
-    for (const n of niveles) {
+    // ==========================
+    // EVITAR DUPLICADOS
+    // ==========================
 
-      const nivel =
-        await obtenerNivel(
-          n.nivelId
-        );
+    const nivelesAgregados =
+      new Set();
 
-      if (nivel) {
+    const nivelesTemp = [];
 
-        selNivel.innerHTML += `
-          <option value="${nivel.id}">
-            ${nivel.nombre}
-          </option>
-        `;
+    for (const a of asignacionesCarrera) {
+
+      if (
+        nivelesAgregados.has(
+          a.nivelId
+        )
+      ) continue;
+
+      nivelesAgregados.add(
+        a.nivelId
+      );
+
+      // ==========================
+      // OBTENER NIVEL
+      // ==========================
+
+      let nivel =
+        nivelesMapa[
+        a.nivelId
+        ];
+
+      if (!nivel) {
+
+        nivel =
+          await obtenerNivel(
+            a.nivelId
+          );
+
+        if (nivel) {
+
+          nivelesMapa[
+            nivel.id
+          ] = nivel;
+
+        }
 
       }
 
+      if (!nivel) continue;
+
+      nivelesTemp.push(nivel);
+
     }
+    // ==========================
+    // ORDENAR NIVELES
+    // ==========================
+
+    nivelesTemp.sort(
+      (a, b) => (a.orden || 0) - (b.orden || 0)
+    );
+
+    // ==========================
+    // RENDER
+    // ==========================
+
+    nivelesTemp.forEach(nivel => {
+
+      selNivel.innerHTML += `
+    <option value="${nivel.id}">
+      ${nivel.nombre}
+    </option>
+  `;
+
+    });
 
   };
 
@@ -235,19 +325,35 @@ window.onNivelChange =
       !nivelId
     ) return;
 
-    const modulos =
+    // ==========================
+    // OBTENER MODULOS
+    // ==========================
+
+    modulosGlobal =
       await obtenerModulos(
         carreraId,
         nivelId
       );
 
-    modulos.forEach(m => {
+    // ==========================
+    // ORDENAR MODULOS
+    // ==========================
+
+    modulosGlobal.sort(
+      (a, b) => (a.orden || 0) - (b.orden || 0)
+    );
+
+    // ==========================
+    // RENDER
+    // ==========================
+
+    modulosGlobal.forEach(m => {
 
       selModulo.innerHTML += `
-        <option value="${m.id}">
-          ${m.nombre}
-        </option>
-      `;
+    <option value="${m.id}">
+      ${m.nombre}
+    </option>
+  `;
 
     });
 
@@ -355,7 +461,7 @@ async function cargarTablaNotas(
 
     tbody.innerHTML = `
       <tr>
-        <td colspan="6">
+        <td colspan="5">
           Sin estudiantes
         </td>
       </tr>
@@ -398,10 +504,18 @@ async function cargarTablaNotas(
         )
       );
 
-    const notaActual =
+    const calificacion =
       calSnap.exists()
-        ? calSnap.data().nota
-        : "";
+        ? calSnap.data()
+        : null;
+
+    const notaActual =
+      calificacion?.nota || "";
+
+    const estadoActual =
+      calificacion
+        ? "registrado"
+        : "pendiente";
 
     html += `
 
@@ -415,15 +529,12 @@ async function cargarTablaNotas(
 
           ${usuario.nombre || ""}
           ${usuario.ap_paterno || ""}
+          ${usuario.ap_materno || ""}
 
         </td>
 
         <td>
           ${usuario.ci || "—"}
-        </td>
-
-        <td>
-          ${notaActual || "Sin nota"}
         </td>
 
         <td>
@@ -433,8 +544,12 @@ async function cargarTablaNotas(
             min="0"
             max="100"
             value="${notaActual}"
+            placeholder="0–100"
             class="nota-input"
             id="nota-${e.id}"
+
+            ${calificacion ? "disabled" : ""}
+
           >
 
         </td>
@@ -448,7 +563,7 @@ async function cargarTablaNotas(
             "
           >
 
-            Pendiente
+            ${estadoActual}
 
           </span>
 
@@ -516,13 +631,48 @@ window.guardarTodas =
       const calId =
         `${e.id}_${moduloActualId}_${gestion}`;
 
-      await setDoc(
+      // ==========================
+      // VERIFICAR SI YA EXISTE
+      // ==========================
 
+      const calRef =
         doc(
           db,
           "calificaciones",
           calId
-        ),
+        );
+
+      const existeSnap =
+        await getDoc(
+          calRef
+        );
+
+      // ==========================
+      // SI YA EXISTE
+      // ==========================
+
+      if (
+        existeSnap.exists()
+      ) {
+
+        document.getElementById(
+          `estado-${e.id}`
+        ).innerHTML = `
+    <span style="color:var(--danger)">
+      Bloqueado
+    </span>
+  `;
+
+        continue;
+
+      }
+      // ==========================
+      // CREAR NUEVA CALIFICACION
+      // ==========================
+
+      await setDoc(
+
+        calRef,
 
         {
 
@@ -541,13 +691,29 @@ window.guardarTodas =
           gestion:
             gestion,
 
-          timestamp:
+          // ==========================
+          // ESTADO DE LA NOTA
+          // ==========================
+
+          estado:
+            "registrado",
+
+          // ==========================
+          // CONTROL
+          // ==========================
+
+          creadoPor:
+            docenteUid,
+
+          editable:
+            false,
+
+          fechaRegistro:
             serverTimestamp()
 
         }
 
       );
-
       document.getElementById(
         `estado-${e.id}`
       ).innerHTML = `

@@ -43,6 +43,10 @@ async function cargarDatos() {
         niveles =
             await obtenerNivelesMapa();
 
+        // ======================
+        // RENDER
+        // ======================
+
         renderTabla();
 
         actualizarStats();
@@ -52,6 +56,10 @@ async function cargarDatos() {
         cargarSelectCarreras();
 
         cargarSelectNiveles();
+
+        cargarFiltroCarreras();
+
+        cargarFiltroNiveles();
 
     } catch (error) {
 
@@ -448,8 +456,189 @@ function cargarSelectNiveles() {
         });
 
 }
+// ==========================
+// FILTRAR TABLA
+// ==========================
+window.filtrarTabla = function () {
 
+    const carreraFiltro =
+        document.getElementById(
+            "filtroCarrera"
+        ).value;
 
+    const nivelFiltro =
+        document.getElementById(
+            "filtroNivel"
+        ).value;
+
+    const gestionFiltro =
+        document.getElementById(
+            "filtroGestion"
+        ).value;
+
+    const tbody =
+        document.getElementById(
+            "tbodyEst"
+        );
+
+    tbody.innerHTML = "";
+
+    // FILTRAR
+    const filtrados =
+        estudiantes.filter(est => {
+
+            const carreraId =
+                est.carreraId.id;
+
+            const nivelId =
+                est.nivelId.id;
+
+            const cumpleCarrera =
+                !carreraFiltro ||
+                carreraId === carreraFiltro;
+
+            const cumpleNivel =
+                !nivelFiltro ||
+                nivelId === nivelFiltro;
+
+            const cumpleGestion =
+                !gestionFiltro ||
+                est.gestion === gestionFiltro;
+
+            return (
+                cumpleCarrera &&
+                cumpleNivel &&
+                cumpleGestion
+            );
+
+        });
+
+    // SI NO HAY DATOS
+    if (filtrados.length === 0) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8">
+                    No hay resultados
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+    // RENDER
+    filtrados.forEach((est, index) => {
+
+        const usuario =
+            usuarios[est.usuarioId] || {};
+
+        const carrera =
+            carreras[est.carreraId.id] || {};
+
+        const nivel =
+            niveles[est.nivelId.id] || {};
+
+        tbody.innerHTML += `
+            <tr>
+
+                <td>${index + 1}</td>
+
+                <td>
+                    ${usuario.nombre || ""}
+                    ${usuario.ap_paterno || ""}
+                </td>
+
+                <td>
+                    ${usuario.ci || ""}
+                </td>
+
+                <td>
+                    ${usuario.usuario || ""}
+                </td>
+
+                <td>
+                    ${carrera.nombre || ""}
+                </td>
+
+                <td>
+                    ${nivel.nombre || ""}
+                </td>
+
+                <td>
+                    ${est.gestion}
+                </td>
+
+                <td>
+                    ${usuario.estado
+                        ? "Activo"
+                        : "Inactivo"}
+                </td>
+
+            </tr>
+        `;
+
+    });
+
+};
+// ==========================
+// CARGAR FILTRO CARRERAS
+// ==========================
+function cargarFiltroCarreras() {
+
+    const select =
+        document.getElementById(
+            "filtroCarrera"
+        );
+
+    select.innerHTML = `
+        <option value="">
+            Todas las carreras
+        </option>
+    `;
+
+    Object.values(carreras)
+        .forEach(carrera => {
+
+            select.innerHTML += `
+                <option value="${carrera.id}">
+                    ${carrera.nombre}
+                </option>
+            `;
+
+        });
+
+}
+
+// ==========================
+// CARGAR FILTRO NIVELES
+// ==========================
+function cargarFiltroNiveles() {
+
+    const select =
+        document.getElementById(
+            "filtroNivel"
+        );
+
+    select.innerHTML = `
+        <option value="">
+            Todos los niveles
+        </option>
+    `;
+
+    Object.values(niveles)
+        .forEach(nivel => {
+
+            select.innerHTML += `
+                <option value="${nivel.id}">
+                    ${nivel.nombre}
+                </option>
+            `;
+
+        });
+
+}
 // ==========================
 // INICIAR
 // ==========================

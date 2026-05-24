@@ -148,38 +148,67 @@ export async function obtenerModulos(
 // ==========================
 // ESTUDIANTES
 // ==========================
+export async function obtenerEstudiantes(
 
+  carreraId,
+  nivelId
 
-export async function obtenerEstudiantes() {
+) {
 
-    const querySnapshot =
-        await getDocs(
-            collection(
-                db,
-                "estudiantes"
-            )
-        );
+  // ==========================
+  // QUERY FIREBASE
+  // ==========================
 
-    const estudiantes = [];
+  const q =
+    query(
 
-    querySnapshot.forEach(doc => {
+      collection(
+        db,
+        "estudiantes"
+      ),
 
-        estudiantes.push({
+      where(
+        "carreraId",
+        "==",
+        doc(
+          db,
+          "carreras",
+          carreraId
+        )
+      ),
 
-            id: doc.id,
+      where(
+        "nivelId",
+        "==",
+        doc(
+          db,
+          "niveles",
+          nivelId
+        )
+      )
 
-            ...doc.data()
+    );
 
-        });
+  const snapshot =
+    await getDocs(q);
+
+  const lista = [];
+
+  snapshot.forEach(docSnap => {
+
+    lista.push({
+
+      id: docSnap.id,
+
+      ...docSnap.data()
 
     });
 
-    return estudiantes;
+  });
+
+  return lista;
 
 }
-
-
-
 // ==========================
 // USUARIOS MAPA
 // ==========================

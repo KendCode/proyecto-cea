@@ -19,7 +19,451 @@
     .nota-r { background: rgba(239,68,68,.15);   color: var(--danger); }
   </style>
 </head>
+<style>
+  /* =========================
+   SIDEBAR
+========================= */
+
+#sidebar{
+
+  position:fixed;
+
+  top:0;
+  left:0;
+  bottom:0;
+
+  width:260px;
+
+  height:100vh;
+
+  background:var(--bg-surface);
+
+  border-right:1px solid var(--border);
+
+  display:flex;
+
+  flex-direction:column;
+
+  overflow:hidden;
+
+  z-index:1000;
+
+  transition:transform .3s ease;
+
+}
+
+/* =========================
+   CONTENIDO INTERNO
+========================= */
+
+.sidebar-content{
+
+  flex:1;
+
+  overflow-y:auto;
+
+  overflow-x:hidden;
+
+  padding-bottom:20px;
+
+}
+
+/* Scroll elegante */
+
+.sidebar-content::-webkit-scrollbar{
+
+  width:5px;
+
+}
+
+.sidebar-content::-webkit-scrollbar-thumb{
+
+  background:var(--border);
+
+  border-radius:20px;
+
+}
+
+/* =========================
+   BRAND
+========================= */
+
+.sidebar-brand{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  padding:22px;
+
+  border-bottom:1px solid var(--border);
+
+  text-decoration:none;
+
+  flex-shrink:0;
+
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.sidebar-footer{
+
+  padding:14px;
+
+  border-top:1px solid var(--border);
+
+  background:var(--bg-surface);
+
+  flex-shrink:0;
+
+}
+
+/* =========================
+   MAIN
+========================= */
+
+#main{
+
+  margin-left:260px;
+
+  min-height:100vh;
+
+  transition:margin-left .3s ease;
+
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+#topbar{
+
+  position:fixed;
+
+  top:0;
+  left:260px;
+  right:0;
+
+  height:68px;
+
+  background:var(--bg-surface);
+
+  border-bottom:1px solid var(--border);
+
+  display:flex;
+
+  align-items:center;
+
+  padding:0 24px;
+
+  z-index:900;
+
+  transition:left .3s ease;
+
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+.hamburger{
+
+  display:none;
+
+}
+
+#sidebar-overlay{
+
+  position:fixed;
+
+  inset:0;
+
+  background:rgba(0,0,0,.65);
+
+  backdrop-filter:blur(2px);
+
+  z-index:999;
+
+  opacity:0;
+
+  visibility:hidden;
+
+  transition:.25s;
+
+}
+
+/* =========================
+   TABLET Y MOVIL
+========================= */
+
+@media(max-width:991px){
+
+  #sidebar{
+
+    transform:translateX(-100%);
+
+    width:270px;
+
+    box-shadow:0 10px 40px rgba(0,0,0,.55);
+
+  }
+
+  #sidebar.open{
+
+    transform:translateX(0);
+
+  }
+
+  #sidebar-overlay.show{
+
+    opacity:1;
+
+    visibility:visible;
+
+  }
+
+  #main{
+
+    margin-left:0;
+
+  }
+
+  #topbar{
+
+    left:0;
+
+  }
+
+  .hamburger{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    width:40px;
+
+    height:40px;
+
+    margin-right:12px;
+
+    border-radius:10px;
+
+    border:1px solid var(--border);
+
+    background:transparent;
+
+    color:var(--txt-primary);
+
+    font-size:20px;
+
+    cursor:pointer;
+
+  }
+
+}
+
+/* =========================
+   CELULAR
+========================= */
+
+@media(max-width:576px){
+
+  #sidebar{
+
+    width:85%;
+
+    max-width:320px;
+
+  }
+
+  .page-content{
+
+    padding:15px;
+
+  }
+
+}
+</style>
 <body>
+  <!-- SIDEBAR -->
+<aside id="sidebar">
+
+  <!-- LOGO -->
+  <a href="dashboardDocente.html" class="sidebar-brand">
+
+    <div class="brand-icon">
+      <i class="bi bi-mortarboard-fill"></i>
+    </div>
+
+    <div class="brand-text">
+      <div class="name">CEA Docente</div>
+      <div class="sub">Sistema Académico</div>
+    </div>
+
+  </a>
+
+  <!-- MENU -->
+  <div class="nav-section">
+
+    <div class="nav-section-label">
+      Principal
+    </div>
+
+    <div class="nav-item-wrap">
+
+      <a href="dashboard.html"
+         class="nav-link-custom">
+
+        <i class="bi bi-grid-1x2-fill"></i>
+        <span>Dashboard</span>
+
+      </a>
+
+      <a href="niveles.html"
+         class="nav-link-custom">
+
+        <i class="bi bi-layers-fill"></i>
+        <span>Mis Niveles</span>
+
+      </a>
+
+      <a href="subirNotas.html"
+         class="nav-link-custom active">
+
+        <i class="bi bi-pencil-square"></i>
+        <span>Subir Notas</span>
+
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- ACADEMICO -->
+  <div class="nav-section">
+
+    <div class="nav-section-label">
+      Académico
+    </div>
+
+    <div class="nav-item-wrap">
+
+      <a href="#"
+         class="nav-link-custom">
+
+        <i class="bi bi-journals"></i>
+        <span>Módulos</span>
+
+      </a>
+
+      <a href="#"
+         class="nav-link-custom">
+
+        <i class="bi bi-people-fill"></i>
+        <span>Estudiantes</span>
+
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="sidebar-footer">
+
+    <div class="user-card">
+
+      <div class="user-avatar" id="avatarDocente">
+        D
+      </div>
+
+      <div class="user-info">
+
+        <div class="uname" id="nombreDocente">
+          Docente
+        </div>
+
+        <div class="urole">
+          Rol Docente
+        </div>
+
+      </div>
+
+    </div>
+
+    <button class="nav-link-custom"
+            id="btnLogout"
+            style="width:100%;margin-top:10px;border:none;background:none">
+
+      <i class="bi bi-box-arrow-left"></i>
+      <span>Cerrar Sesión</span>
+
+    </button>
+
+  </div>
+
+</aside>
+
+<!-- OVERLAY -->
+<div id="sidebar-overlay"></div>
+
+<!-- TOPBAR -->
+<header id="topbar">
+
+  <!-- MENU -->
+  <button class="hamburger" id="btnMenu">
+
+    <i class="bi bi-list"></i>
+
+  </button>
+
+  <!-- TITLE -->
+  <div>
+
+    <div class="topbar-title">
+
+      Panel Docente
+
+    </div>
+
+    <div class="topbar-sub">
+
+      Centro de Educación Alternativa
+
+    </div>
+
+  </div>
+
+  <!-- SEARCH -->
+  <div class="topbar-search">
+
+    <i class="bi bi-search"></i>
+
+    <input type="text"
+           placeholder="Buscar...">
+
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="topbar-actions">
+
+    <button class="icon-btn">
+
+      <i class="bi bi-bell"></i>
+
+      <span class="dot"></span>
+
+    </button>
+
+  </div>
+
+</header>
 <div id="main">
   <div class="page-content">
 
@@ -82,7 +526,6 @@
               <th>Estudiante</th>
               <th>CI</th>
               <th>Nota Actual</th>
-              <th>Nueva Nota (0–100)</th>
               <th>Estado</th>
             </tr>
           </thead>
@@ -106,7 +549,32 @@
 </div>
 
 
-<script type="module" src="../../controllers/SubirNotasDocController.js"></script>
 <style>.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script type="module" src="../../controllers/SubirNotasDocController.js"></script>
+<script>
+  // SIDEBAR RESPONSIVE
+
+const sidebar = document.getElementById("sidebar");
+
+const overlay = document.getElementById("sidebar-overlay");
+
+const btnMenu = document.getElementById("btnMenu");
+
+btnMenu.addEventListener("click", () => {
+
+  sidebar.classList.toggle("open");
+
+  overlay.classList.toggle("show");
+
+});
+
+overlay.addEventListener("click", () => {
+
+  sidebar.classList.remove("open");
+
+  overlay.classList.remove("show");
+
+});
+</script>
 </body>
 </html>

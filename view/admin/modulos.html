@@ -1,124 +1,139 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CEA — Módulos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../../assets/css/styles.css">
 </head>
+
 <body>
-<script src="../../assets/js/sidebar.js"></script>
-<script>renderLayout({ title: 'Módulos', subtitle: 'Materias y módulos por carrera y nivel', activeLink: 'modulos' });</script>
+  <script src="../../assets/js/sidebar.js"></script>
+  <script>renderLayout({ title: 'Módulos', subtitle: 'Materias y módulos por carrera y nivel', activeLink: 'modulos' });</script>
 
-<div id="main">
-  <div class="page-content">
+  <div id="main">
+    <div class="page-content">
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px">
-      <div class="stat-card">
-        <div class="icon-wrap ic-blue"><i class="bi bi-journals"></i></div>
-        <div class="stat-value" id="totalMod">—</div>
-        <div class="stat-label">Total Módulos</div>
-      </div>
-      <div class="stat-card">
-        <div class="icon-wrap ic-green"><i class="bi bi-check2-circle"></i></div>
-        <div class="stat-value" id="activos">—</div>
-        <div class="stat-label">Activos</div>
-      </div>
-      <div class="stat-card">
-        <div class="icon-wrap ic-purple"><i class="bi bi-building"></i></div>
-        <div class="stat-value" id="carrerasCount">—</div>
-        <div class="stat-label">Carreras</div>
-      </div>
-    </div>
-
-    <div class="panel-card">
-      <div class="section-header">
-        <div>
-          <div class="section-title">Lista de Módulos</div>
-          <div class="section-sub">Materias asignadas por carrera y nivel</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px">
+        <div class="stat-card">
+          <div class="icon-wrap ic-blue"><i class="bi bi-journals"></i></div>
+          <div class="stat-value" id="totalMod">—</div>
+          <div class="stat-label">Total Módulos</div>
         </div>
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <select class="filter-select" id="filtroCarrera" onchange="filtrar()">
-            <option value="">Todas las carreras</option>
-          </select>
-          <select class="filter-select" id="filtroNivel" onchange="filtrar()">
-            <option value="">Todos los niveles</option>
-          </select>
-          <select class="filter-select" id="filtroEstado" onchange="filtrar()">
-            <option value="">Todos</option>
-            <option value="true">Activos</option>
-            <option value="false">Inactivos</option>
-          </select>
-          <button class="btn btn-primary" onclick="abrirModal()">
-            <i class="bi bi-plus-lg"></i> Nuevo Módulo
-          </button>
+        <div class="stat-card">
+          <div class="icon-wrap ic-green"><i class="bi bi-check2-circle"></i></div>
+          <div class="stat-value" id="activos">—</div>
+          <div class="stat-label">Activos</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon-wrap ic-purple"><i class="bi bi-building"></i></div>
+          <div class="stat-value" id="carrerasCount">—</div>
+          <div class="stat-label">Carreras</div>
         </div>
       </div>
 
-      <div style="overflow-x:auto">
-        <table class="data-table">
-          <thead>
-            <tr><th>Ord.</th><th>Módulo</th><th>Sigla</th><th>Carrera</th><th>Nivel</th><th>Estado</th><th>Acciones</th></tr>
-          </thead>
-          <tbody id="tbodyMod"></tbody>
-        </table>
+      <div class="panel-card">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Lista de Módulos</div>
+            <div class="section-sub">Materias asignadas por carrera y nivel</div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <select class="filter-select" id="filtroCarrera" onchange="filtrar()">
+              <option value="">Todas las carreras</option>
+            </select>
+            <select class="filter-select" id="filtroNivel" onchange="filtrar()">
+              <option value="">Todos los niveles</option>
+            </select>
+            <select class="filter-select" id="filtroEstado" onchange="filtrar()">
+              <option value="">Todos</option>
+              <option value="true">Activos</option>
+              <option value="false">Inactivos</option>
+            </select>
+            <button class="btn btn-primary" onclick="abrirModal()">
+              <i class="bi bi-plus-lg"></i> Nuevo Módulo
+            </button>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Ord.</th>
+                <th>Módulo</th>
+                <th>Sigla</th>
+                <th>Carrera</th>
+                <th>Nivel</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyMod"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Modal -->
-<div class="modal-backdrop" id="modalModulo">
-  <div class="modal" style="max-width:560px">
-    <div class="modal-header">
-      <div class="modal-title" id="modalTitulo">Nuevo Módulo</div>
-      <button class="modal-close" onclick="cerrarModal()"><i class="bi bi-x-lg"></i></button>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Nombre del Módulo</label>
-      <input type="text" class="form-control" id="fNombre" placeholder="Ej: Programación I">
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Sigla</label>
-        <input type="text" class="form-control" id="fSigla" placeholder="PROG1">
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modalModulo">
+    <div class="modal" style="max-width:560px">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitulo">Nuevo Módulo</div>
+        <button class="modal-close" onclick="cerrarModal()"><i class="bi bi-x-lg"></i></button>
       </div>
       <div class="form-group">
-        <label class="form-label">Orden</label>
-        <input type="number" class="form-control" id="fOrden" placeholder="1" min="1">
+        <label class="form-label">Nombre del Módulo</label>
+        <input type="text" class="form-control" id="fNombre" oninput="generarSiglaAutomatica()" placeholder="Matemática I">
       </div>
-    </div>
-    <div class="form-row">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">
+            Sigla
+          </label>
+          <input type="text" class="form-control" id="fSigla" placeholder="Automático" readonly>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Orden</label>
+          <input type="number" class="form-control" id="fOrden" placeholder="1" min="1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Carrera</label>
+          <select class="form-control" id="fCarrera">
+            <option value="">Seleccionar...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nivel</label>
+          <select class="form-control" id="fNivel">
+            <option value="">Seleccionar...</option>
+          </select>
+        </div>
+      </div>
       <div class="form-group">
-        <label class="form-label">Carrera</label>
-        <select class="form-control" id="fCarrera">
-          <option value="">Seleccionar...</option>
+        <label class="form-label">Estado</label>
+        <select class="form-control" id="fEstado">
+          <option value="true">Activo</option>
+          <option value="false">Inactivo</option>
         </select>
       </div>
-      <div class="form-group">
-        <label class="form-label">Nivel</label>
-        <select class="form-control" id="fNivel">
-          <option value="">Seleccionar...</option>
-        </select>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="cerrarModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="guardar()"><i class="bi bi-floppy-fill"></i> Guardar</button>
       </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Estado</label>
-      <select class="form-control" id="fEstado">
-        <option value="true">Activo</option>
-        <option value="false">Inactivo</option>
-      </select>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="cerrarModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="guardar()"><i class="bi bi-floppy-fill"></i> Guardar</button>
     </div>
   </div>
-</div>
 
-<script src="../../controllers/modulosController.js" type="module"></script>
+  <script src="../../controllers/modulosController.js" type="module"></script>
 </body>
+
 </html>

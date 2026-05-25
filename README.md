@@ -127,7 +127,7 @@ Aquí puedes agregar imágenes reales del sistema:
 /assets/ranking.png
 ✨ Autor
 
-👤 Desarrollado por: [Tu Nombre]
+👤 Desarrollado por: KendCode
 🎓 Proyecto académico - Sistemas Informáticos
 📍 Bolivia
 

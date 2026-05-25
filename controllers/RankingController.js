@@ -36,11 +36,8 @@ async function cargarRanking(uid) {
     }
 
     // 🔥 CARRERA Y NIVEL
-    const carreraId =
-      estudiante.carreraId;
-
-    const nivelId =
-      estudiante.nivelId;
+    const carreraId = getId(est.carreraId || est.carrera);
+    const nivelId = getId(est.nivelId || est.nivel);
 
     // 🔥 TODOS LOS DATOS
     const data =

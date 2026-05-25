@@ -4,7 +4,7 @@ import {
     eliminarUsuario,
     actualizarUsuario
 }
-from "../services/usuariosService.js";
+    from "../services/usuariosService.js";
 
 // ==========================
 // VARIABLES GLOBALES
@@ -428,15 +428,15 @@ function renderUsuarios() {
                         <span class="
                             badge-estado
                             ${usuario.estado
-                                ? "badge-activo"
-                                : "badge-inactivo"
-                            }
+                    ? "badge-activo"
+                    : "badge-inactivo"
+                }
                         ">
 
                             ${usuario.estado
-                                ? "Activo"
-                                : "Inactivo"
-                            }
+                    ? "Activo"
+                    : "Inactivo"
+                }
 
                         </span>
 
@@ -450,20 +450,44 @@ function renderUsuarios() {
                                 class="btn-action btn-edit"
                                 onclick="editarUsuario('${usuario.uid}')"
                             >
-
                                 <i class="bi bi-pencil-square"></i>
-
                             </button>
-
+                                    
+                             <!-- ACTIVAR / DESACTIVAR -->
+                            <button
+                                class="btn-action"
+                                onclick="toggleEstado('${usuario.uid}')"
+                                title="${usuario.estado ? 'Desactivar' : 'Activar'} usuario"
+                                style="
+                                    background:transparent;
+                                    border:none;
+                                "
+                            >
+                                    
+                                <i
+                                    class="bi ${
+                                        usuario.estado
+                                            ? 'bi-person-x-fill'
+                                            : 'bi-person-check-fill'
+                                    }"
+                                    style="
+                                        color:${
+                                            usuario.estado
+                                                ? '#f59e0b'
+                                                : '#10b981'
+                                        };
+                                    "
+                                ></i>
+                                    
+                            </button>
+                                    
                             <button
                                 class="btn-action btn-delete"
                                 onclick="abrirEliminar('${usuario.uid}')"
                             >
-
                                 <i class="bi bi-trash-fill"></i>
-
                             </button>
-
+                                    
                         </div>
 
                     </td>
@@ -556,7 +580,53 @@ window.editarUsuario = (uid) => {
     modal.show();
 
 };
+// ==========================
+// CAMBIAR ESTADO RAPIDO
+// ==========================
+window.toggleEstado =
+    async function(uid) {
 
+        try {
+
+            const usuario =
+                usuariosGlobal.find(
+                    u => u.uid === uid
+                );
+
+            if (!usuario) return;
+
+            await actualizarUsuario(
+                uid,
+                {
+                    estado: !usuario.estado
+                }
+            );
+
+            Swal.fire({
+                icon: "success",
+                title:
+                    usuario.estado
+                        ? "Usuario desactivado"
+                        : "Usuario activado",
+                timer: 1500,
+                showConfirmButton: false
+            });
+
+            cargarUsuarios();
+
+        } catch (error) {
+
+            console.error(error);
+
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: error.message
+            });
+
+        }
+
+    };
 // ==========================
 // ELIMINAR
 // ==========================

@@ -1,22 +1,72 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CEA · Subir Notas</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../../assets/css/DocenteStyle.css">
   <style>
-    .nota-input { width: 80px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 7px 10px; color: var(--txt-primary); font-family: var(--mono); font-size: 14px; font-weight: 700; text-align: center; outline: none; transition: border-color .2s, box-shadow .2s; }
-    .nota-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
-    .nota-input.saved { border-color: var(--accent-3); }
-    .nota-badge { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 28px; border-radius: 7px; font-family: var(--mono); font-size: 13px; font-weight: 700; }
-    .nota-a { background: rgba(16,185,129,.15); color: var(--accent-3); }
-    .nota-b { background: rgba(59,130,246,.15);  color: var(--accent); }
-    .nota-c { background: rgba(245,158,11,.15);  color: var(--accent-4); }
-    .nota-r { background: rgba(239,68,68,.15);   color: var(--danger); }
+    .nota-input {
+      width: 80px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 7px 10px;
+      color: var(--txt-primary);
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .nota-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .nota-input.saved {
+      border-color: var(--accent-3);
+    }
+
+    .nota-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 28px;
+      border-radius: 7px;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .nota-a {
+      background: rgba(16, 185, 129, .15);
+      color: var(--accent-3);
+    }
+
+    .nota-b {
+      background: rgba(59, 130, 246, .15);
+      color: var(--accent);
+    }
+
+    .nota-c {
+      background: rgba(245, 158, 11, .15);
+      color: var(--accent-4);
+    }
+
+    .nota-r {
+      background: rgba(239, 68, 68, .15);
+      color: var(--danger);
+    }
   </style>
 </head>
 <style>
@@ -24,557 +74,561 @@
    SIDEBAR
 ========================= */
 
-#sidebar{
+  #sidebar {
 
-  position:fixed;
+    position: fixed;
 
-  top:0;
-  left:0;
-  bottom:0;
+    top: 0;
+    left: 0;
+    bottom: 0;
 
-  width:260px;
+    width: 260px;
 
-  height:100vh;
+    height: 100vh;
 
-  background:var(--bg-surface);
+    background: var(--bg-surface);
 
-  border-right:1px solid var(--border);
+    border-right: 1px solid var(--border);
 
-  display:flex;
+    display: flex;
 
-  flex-direction:column;
+    flex-direction: column;
 
-  overflow:hidden;
+    overflow: hidden;
 
-  z-index:1000;
+    z-index: 1000;
 
-  transition:transform .3s ease;
+    transition: transform .3s ease;
 
-}
+  }
 
-/* =========================
+  /* =========================
    CONTENIDO INTERNO
 ========================= */
 
-.sidebar-content{
+  .sidebar-content {
 
-  flex:1;
+    flex: 1;
 
-  overflow-y:auto;
+    overflow-y: auto;
 
-  overflow-x:hidden;
+    overflow-x: hidden;
 
-  padding-bottom:20px;
+    padding-bottom: 20px;
 
-}
+  }
 
-/* Scroll elegante */
+  /* Scroll elegante */
 
-.sidebar-content::-webkit-scrollbar{
+  .sidebar-content::-webkit-scrollbar {
 
-  width:5px;
+    width: 5px;
 
-}
+  }
 
-.sidebar-content::-webkit-scrollbar-thumb{
+  .sidebar-content::-webkit-scrollbar-thumb {
 
-  background:var(--border);
+    background: var(--border);
 
-  border-radius:20px;
+    border-radius: 20px;
 
-}
+  }
 
-/* =========================
+  /* =========================
    BRAND
 ========================= */
 
-.sidebar-brand{
+  .sidebar-brand {
 
-  display:flex;
+    display: flex;
 
-  align-items:center;
+    align-items: center;
 
-  gap:12px;
+    gap: 12px;
 
-  padding:22px;
+    padding: 22px;
 
-  border-bottom:1px solid var(--border);
+    border-bottom: 1px solid var(--border);
 
-  text-decoration:none;
+    text-decoration: none;
 
-  flex-shrink:0;
+    flex-shrink: 0;
 
-}
+  }
 
-/* =========================
+  /* =========================
    FOOTER
 ========================= */
 
-.sidebar-footer{
+  .sidebar-footer {
 
-  padding:14px;
+    padding: 14px;
 
-  border-top:1px solid var(--border);
+    border-top: 1px solid var(--border);
 
-  background:var(--bg-surface);
+    background: var(--bg-surface);
 
-  flex-shrink:0;
+    flex-shrink: 0;
 
-}
+  }
 
-/* =========================
+  /* =========================
    MAIN
 ========================= */
 
-#main{
+  #main {
 
-  margin-left:260px;
+    margin-left: 260px;
 
-  min-height:100vh;
+    min-height: 100vh;
 
-  transition:margin-left .3s ease;
+    transition: margin-left .3s ease;
 
-}
+  }
 
-/* =========================
+  /* =========================
    TOPBAR
 ========================= */
 
-#topbar{
+  #topbar {
 
-  position:fixed;
+    position: fixed;
 
-  top:0;
-  left:260px;
-  right:0;
+    top: 0;
+    left: 260px;
+    right: 0;
 
-  height:68px;
+    height: 68px;
 
-  background:var(--bg-surface);
+    background: var(--bg-surface);
 
-  border-bottom:1px solid var(--border);
+    border-bottom: 1px solid var(--border);
 
-  display:flex;
+    display: flex;
 
-  align-items:center;
+    align-items: center;
 
-  padding:0 24px;
+    padding: 0 24px;
 
-  z-index:900;
+    z-index: 900;
 
-  transition:left .3s ease;
+    transition: left .3s ease;
 
-}
+  }
 
-/* =========================
+  /* =========================
    RESPONSIVE
 ========================= */
 
-.hamburger{
+  .hamburger {
 
-  display:none;
+    display: none;
 
-}
+  }
 
-#sidebar-overlay{
+  #sidebar-overlay {
 
-  position:fixed;
+    position: fixed;
 
-  inset:0;
+    inset: 0;
 
-  background:rgba(0,0,0,.65);
+    background: rgba(0, 0, 0, .65);
 
-  backdrop-filter:blur(2px);
+    backdrop-filter: blur(2px);
 
-  z-index:999;
+    z-index: 999;
 
-  opacity:0;
+    opacity: 0;
 
-  visibility:hidden;
+    visibility: hidden;
 
-  transition:.25s;
+    transition: .25s;
 
-}
+  }
 
-/* =========================
+  /* =========================
    TABLET Y MOVIL
 ========================= */
 
-@media(max-width:991px){
+  @media(max-width:991px) {
 
-  #sidebar{
+    #sidebar {
 
-    transform:translateX(-100%);
+      transform: translateX(-100%);
 
-    width:270px;
+      width: 270px;
 
-    box-shadow:0 10px 40px rgba(0,0,0,.55);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, .55);
+
+    }
+
+    #sidebar.open {
+
+      transform: translateX(0);
+
+    }
+
+    #sidebar-overlay.show {
+
+      opacity: 1;
+
+      visibility: visible;
+
+    }
+
+    #main {
+
+      margin-left: 0;
+
+    }
+
+    #topbar {
+
+      left: 0;
+
+    }
+
+    .hamburger {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      width: 40px;
+
+      height: 40px;
+
+      margin-right: 12px;
+
+      border-radius: 10px;
+
+      border: 1px solid var(--border);
+
+      background: transparent;
+
+      color: var(--txt-primary);
+
+      font-size: 20px;
+
+      cursor: pointer;
+
+    }
 
   }
 
-  #sidebar.open{
-
-    transform:translateX(0);
-
-  }
-
-  #sidebar-overlay.show{
-
-    opacity:1;
-
-    visibility:visible;
-
-  }
-
-  #main{
-
-    margin-left:0;
-
-  }
-
-  #topbar{
-
-    left:0;
-
-  }
-
-  .hamburger{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    width:40px;
-
-    height:40px;
-
-    margin-right:12px;
-
-    border-radius:10px;
-
-    border:1px solid var(--border);
-
-    background:transparent;
-
-    color:var(--txt-primary);
-
-    font-size:20px;
-
-    cursor:pointer;
-
-  }
-
-}
-
-/* =========================
+  /* =========================
    CELULAR
 ========================= */
 
-@media(max-width:576px){
+  @media(max-width:576px) {
 
-  #sidebar{
+    #sidebar {
 
-    width:85%;
+      width: 85%;
 
-    max-width:320px;
+      max-width: 320px;
+
+    }
+
+    .page-content {
+
+      padding: 15px;
+
+    }
 
   }
-
-  .page-content{
-
-    padding:15px;
-
-  }
-
-}
 </style>
+
 <body>
   <!-- SIDEBAR -->
-<aside id="sidebar">
+  <aside id="sidebar">
 
-  <!-- LOGO -->
-  <a href="dashboardDocente.html" class="sidebar-brand">
+    <!-- LOGO -->
+    <a href="dashboardDocente.html" class="sidebar-brand">
 
-    <div class="brand-icon">
-      <i class="bi bi-mortarboard-fill"></i>
-    </div>
-
-    <div class="brand-text">
-      <div class="name">CEA Docente</div>
-      <div class="sub">Sistema Académico</div>
-    </div>
-
-  </a>
-
-  <!-- MENU -->
-  <div class="nav-section">
-
-    <div class="nav-section-label">
-      Principal
-    </div>
-
-    <div class="nav-item-wrap">
-
-      <a href="dashboard.html"
-         class="nav-link-custom">
-
-        <i class="bi bi-grid-1x2-fill"></i>
-        <span>Dashboard</span>
-
-      </a>
-
-      <a href="niveles.html"
-         class="nav-link-custom">
-
-        <i class="bi bi-layers-fill"></i>
-        <span>Mis Niveles</span>
-
-      </a>
-
-      <a href="subirNotas.html"
-         class="nav-link-custom active">
-
-        <i class="bi bi-pencil-square"></i>
-        <span>Subir Notas</span>
-
-      </a>
-
-    </div>
-
-  </div>
-
-  <!-- ACADEMICO -->
-  <div class="nav-section">
-
-    <div class="nav-section-label">
-      Académico
-    </div>
-
-    <div class="nav-item-wrap">
-
-      <a href="#"
-         class="nav-link-custom">
-
-        <i class="bi bi-journals"></i>
-        <span>Módulos</span>
-
-      </a>
-
-      <a href="#"
-         class="nav-link-custom">
-
-        <i class="bi bi-people-fill"></i>
-        <span>Estudiantes</span>
-
-      </a>
-
-    </div>
-
-  </div>
-
-  <!-- FOOTER -->
-  <div class="sidebar-footer">
-
-    <div class="user-card">
-
-      <div class="user-avatar" id="avatarDocente">
-        D
+      <div class="brand-icon">
+        <i class="bi bi-mortarboard-fill"></i>
       </div>
 
-      <div class="user-info">
+      <div class="brand-text">
+        <div class="name">CEA Docente</div>
+        <div class="sub">Sistema Académico</div>
+      </div>
 
-        <div class="uname" id="nombreDocente">
-          Docente
-        </div>
+    </a>
 
-        <div class="urole">
-          Rol Docente
-        </div>
+    <!-- MENU -->
+    <div class="nav-section">
+
+      <div class="nav-section-label">
+        Principal
+      </div>
+
+      <div class="nav-item-wrap">
+
+        <a href="dashboard.html" class="nav-link-custom">
+
+          <i class="bi bi-grid-1x2-fill"></i>
+          <span>Dashboard</span>
+
+        </a>
+
+        <a href="niveles.html" class="nav-link-custom">
+
+          <i class="bi bi-layers-fill"></i>
+          <span>Mis Niveles</span>
+
+        </a>
+
+        <a href="subirNotas.html" class="nav-link-custom active">
+
+          <i class="bi bi-pencil-square"></i>
+          <span>Subir Notas</span>
+
+        </a>
 
       </div>
 
     </div>
 
-    <button class="nav-link-custom"
-            id="btnLogout"
-            style="width:100%;margin-top:10px;border:none;background:none">
+    <!-- ACADEMICO -->
+    <div class="nav-section">
 
-      <i class="bi bi-box-arrow-left"></i>
-      <span>Cerrar Sesión</span>
-
-    </button>
-
-  </div>
-
-</aside>
-
-<!-- OVERLAY -->
-<div id="sidebar-overlay"></div>
-
-<!-- TOPBAR -->
-<header id="topbar">
-
-  <!-- MENU -->
-  <button class="hamburger" id="btnMenu">
-
-    <i class="bi bi-list"></i>
-
-  </button>
-
-  <!-- TITLE -->
-  <div>
-
-    <div class="topbar-title">
-
-      Panel Docente
-
-    </div>
-
-    <div class="topbar-sub">
-
-      Centro de Educación Alternativa
-
-    </div>
-
-  </div>
-
-  <!-- SEARCH -->
-  <div class="topbar-search">
-
-    <i class="bi bi-search"></i>
-
-    <input type="text"
-           placeholder="Buscar...">
-
-  </div>
-
-  <!-- ACTIONS -->
-  <div class="topbar-actions">
-
-    <button class="icon-btn">
-
-      <i class="bi bi-bell"></i>
-
-      <span class="dot"></span>
-
-    </button>
-
-  </div>
-
-</header>
-<div id="main">
-  <div class="page-content">
-
-    <!-- Filtros -->
-    <div class="panel-card" style="margin-bottom:22px;animation:fadeUp .4s ease">
-      <div class="section-header" style="margin-bottom:18px">
-        <div>
-          <div class="section-title"><i class="bi bi-pencil-square" style="color:var(--accent)"></i> Subir / Editar Notas</div>
-          <div class="section-sub">Selecciona carrera, nivel y módulo para ingresar calificaciones</div>
-        </div>
+      <div class="nav-section-label">
+        Académico
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;align-items:end">
-        <div class="form-group" style="margin:0">
-          <label class="form-label">Carrera</label>
-          <select class="form-control" id="selCarrera" onchange="onCarreraChange()">
-            <option value="">— Seleccionar —</option>
-          </select>
-        </div>
-        <div class="form-group" style="margin:0">
-          <label class="form-label">Nivel</label>
-          <select class="form-control" id="selNivel" onchange="onNivelChange()">
-            <option value="">— Seleccionar —</option>
-          </select>
-        </div>
-        <div class="form-group" style="margin:0">
-          <label class="form-label">Módulo</label>
-          <select class="form-control" id="selModulo" onchange="onModuloChange()">
-            <option value="">— Seleccionar —</option>
-          </select>
-        </div>
-        <div class="form-group" style="margin:0">
-          <label class="form-label">Gestión</label>
-          <select class="form-control" id="selGestion">
-            <option value="2026">2026</option>
-            <option value="2025">2025</option>
-            <option value="2024">2024</option>
-          </select>
-        </div>
-      </div>
-    </div>
+      <div class="nav-item-wrap">
 
-    <!-- Tabla de notas -->
-    <div class="panel-card" id="tablaNota" style="display:none">
-      <div class="section-header">
-        <div>
-          <div class="section-title" id="tituloTabla">— Notas</div>
-          <div class="section-sub" id="subTabla"></div>
-        </div>
-        <button class="btn btn-primary" onclick="guardarTodas()" id="btnGuardar">
-          <i class="bi bi-check2-all"></i> Guardar Todas
+        <a href="#" class="nav-link-custom">
+
+          <i class="bi bi-journals"></i>
+          <span>Módulos</span>
+
+        </a>
+        <button class="nav-link-custom" id="btnLogout" style="width:100%;margin-top:10px;border:none;background:none">
+          <i class="bi bi-box-arrow-left"></i>
+          <span>Cerrar Sesión</span>
         </button>
       </div>
 
-      <div style="overflow-x:auto">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Estudiante</th>
-              <th>CI</th>
-              <th>Nota Actual</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody id="notasBody"></tbody>
-        </table>
-      </div>
-
-      <div id="progresoBar" style="margin-top:16px;display:none">
-        <div style="font-size:12px;color:var(--txt-muted);margin-bottom:6px" id="progText"></div>
-        <div class="prog-bar"><div class="prog-fill" id="progFill" style="background:var(--accent);width:0%;transition:width .3s"></div></div>
-      </div>
     </div>
 
-    <!-- Placeholder -->
-    <div id="placeholderTabla" class="empty-state" style="padding:80px 20px">
-      <i class="bi bi-pencil-square"></i>
-      <p>Selecciona Carrera → Nivel → Módulo para ver los estudiantes y subir notas</p>
+    <!-- FOOTER -->
+    <div class="sidebar-footer">
+
+      <div class="user-card">
+
+        <div class="user-avatar" id="avatarDocente">
+          D
+        </div>
+
+        <div class="user-info">
+
+          <div class="uname" id="nombreDocente">
+            Docente
+          </div>
+
+          <div class="urole">
+            Rol Docente
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
 
+  </aside>
+
+  <!-- OVERLAY -->
+  <div id="sidebar-overlay"></div>
+
+  <!-- TOPBAR -->
+  <header id="topbar">
+
+    <!-- MENU -->
+    <button class="hamburger" id="btnMenu">
+
+      <i class="bi bi-list"></i>
+
+    </button>
+
+    <!-- TITLE -->
+    <div>
+
+      <div class="topbar-title">
+
+        Panel Docente
+
+      </div>
+
+      <div class="topbar-sub">
+
+        Centro de Educación Alternativa
+
+      </div>
+
+    </div>
+
+    <!-- SEARCH -->
+    <div class="topbar-search">
+
+      <i class="bi bi-search"></i>
+
+      <input type="text" placeholder="Buscar...">
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="topbar-actions">
+
+      <button class="icon-btn">
+
+        <i class="bi bi-bell"></i>
+
+        <span class="dot"></span>
+
+      </button>
+
+    </div>
+
+  </header>
+  <div id="main">
+    <div class="page-content">
+
+      <!-- Filtros -->
+      <div class="panel-card" style="margin-bottom:22px;animation:fadeUp .4s ease">
+        <div class="section-header" style="margin-bottom:18px">
+          <div>
+            <div class="section-title"><i class="bi bi-pencil-square" style="color:var(--accent)"></i> Subir / Editar
+              Notas</div>
+            <div class="section-sub">Selecciona carrera, nivel y módulo para ingresar calificaciones</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;align-items:end">
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Carrera</label>
+            <select class="form-control" id="selCarrera" onchange="onCarreraChange()">
+              <option value="">— Seleccionar —</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Nivel</label>
+            <select class="form-control" id="selNivel" onchange="onNivelChange()">
+              <option value="">— Seleccionar —</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Módulo</label>
+            <select class="form-control" id="selModulo" onchange="onModuloChange()">
+              <option value="">— Seleccionar —</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Gestión</label>
+            <select class="form-control" id="selGestion">
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de notas -->
+      <div class="panel-card" id="tablaNota" style="display:none">
+        <div class="section-header">
+          <div>
+            <div class="section-title" id="tituloTabla">— Notas</div>
+            <div class="section-sub" id="subTabla"></div>
+          </div>
+          <button class="btn btn-primary" onclick="guardarTodas()" id="btnGuardar">
+            <i class="bi bi-check2-all"></i> Guardar Todas
+          </button>
+        </div>
+
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Estudiante</th>
+                <th>CI</th>
+                <th>Nota Actual</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="notasBody"></tbody>
+          </table>
+        </div>
+
+        <div id="progresoBar" style="margin-top:16px;display:none">
+          <div style="font-size:12px;color:var(--txt-muted);margin-bottom:6px" id="progText"></div>
+          <div class="prog-bar">
+            <div class="prog-fill" id="progFill" style="background:var(--accent);width:0%;transition:width .3s"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Placeholder -->
+      <div id="placeholderTabla" class="empty-state" style="padding:80px 20px">
+        <i class="bi bi-pencil-square"></i>
+        <p>Selecciona Carrera → Nivel → Módulo para ver los estudiantes y subir notas</p>
+      </div>
+
+    </div>
   </div>
-</div>
 
 
-<style>.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}</style>
-<script type="module" src="../../controllers/SubirNotasDocController.js"></script>
-<script>
-  // SIDEBAR RESPONSIVE
+  <style>
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, .3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .6s linear infinite
+    }
 
-const sidebar = document.getElementById("sidebar");
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+  </style>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-const overlay = document.getElementById("sidebar-overlay");
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="module" src="../../controllers/SubirNotasDocController.js"></script>
+  <script>
+    // SIDEBAR RESPONSIVE
 
-const btnMenu = document.getElementById("btnMenu");
+    const sidebar = document.getElementById("sidebar");
 
-btnMenu.addEventListener("click", () => {
+    const overlay = document.getElementById("sidebar-overlay");
 
-  sidebar.classList.toggle("open");
+    const btnMenu = document.getElementById("btnMenu");
 
-  overlay.classList.toggle("show");
+    btnMenu.addEventListener("click", () => {
 
-});
+      sidebar.classList.toggle("open");
 
-overlay.addEventListener("click", () => {
+      overlay.classList.toggle("show");
 
-  sidebar.classList.remove("open");
+    });
 
-  overlay.classList.remove("show");
+    overlay.addEventListener("click", () => {
 
-});
-</script>
+      sidebar.classList.remove("open");
+
+      overlay.classList.remove("show");
+
+    });
+  </script>
 </body>
+
 </html>

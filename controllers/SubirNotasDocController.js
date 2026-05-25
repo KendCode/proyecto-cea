@@ -1,13 +1,5 @@
 
 // controllers/SubirNotasController.js
-
-import {
-
-  auth
-
-}
-  from "../firebase/auth.js";
-
 import {
 
   onAuthStateChanged
@@ -47,6 +39,76 @@ import {
 }
   from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
+import {
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+import {
+  auth
+} from "../firebase/auth.js";
+
+// ==========================
+// CERRAR SESION
+// ==========================
+document
+  .getElementById("btnLogout")
+  .addEventListener(
+    "click",
+    async () => {
+
+      const result =
+        await Swal.fire({
+
+          title:
+            "¿Cerrar sesión?",
+
+          text:
+            "Tu sesión actual se cerrará.",
+
+          icon:
+            "question",
+
+          showCancelButton:
+            true,
+
+          confirmButtonText:
+            "Sí, cerrar",
+
+          cancelButtonText:
+            "Cancelar",
+
+          confirmButtonColor:
+            "#ef4444",
+
+          cancelButtonColor:
+            "#64748b",
+
+          background:
+            "#0f172a",
+
+          color:
+            "#fff"
+
+        });
+
+      // ==========================
+      // CONFIRMAR
+      // ==========================
+      if (result.isConfirmed) {
+
+        await signOut(auth);
+
+        localStorage.removeItem(
+          "usuario"
+        );
+
+        window.location.href =
+          "../auth/login.html";
+
+      }
+
+    }
+  );
 
 // ==========================
 // VARIABLES

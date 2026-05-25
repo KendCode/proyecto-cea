@@ -1,115 +1,300 @@
-console.log("CONTROLADOR CARGADO");
-
 import {
   signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+}
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 import {
   collection,
   query,
   where,
   getDocs
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+}
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
 import { auth } from "../firebase/auth.js";
 import { db } from "../firebase/firestore.js";
 
+// ==========================
+// FORM LOGIN
+// ==========================
+
 const formLogin =
-  document.getElementById("formLogin");
+  document.getElementById(
+    "formLogin"
+  );
 
-console.log(formLogin);
+// ==========================
+// ALERTA BOOTSTRAP
+// ==========================
 
-formLogin.addEventListener("submit", async (e) => {
+function mostrarAlerta(
+  mensaje,
+  tipo = "danger"
+) {
 
-  e.preventDefault();
-
-  console.log("FORMULARIO ENVIADO");
-
-  const usuario =
-    document.getElementById("usuario").value;
-
-  const password =
-    document.getElementById("password").value;
-
-  console.log(usuario);
-  console.log(password);
-
-  try {
-
-    const q = query(
-      collection(db, "usuarios"),
-      where("usuario", "==", usuario)
+  const container =
+    document.getElementById(
+      "alertContainer"
     );
 
-    const querySnapshot =
-      await getDocs(q);
+  const alerta =
+    document.createElement("div");
 
-    console.log(querySnapshot);
+  alerta.className =
+    `alert alert-${tipo} alert-dismissible fade show shadow`;
 
-    if(querySnapshot.empty){
+  alerta.role = "alert";
 
-      alert("Usuario no encontrado");
-      return;
+  alerta.innerHTML = `
+
+    <div
+      style="
+        display:flex;
+        align-items:center;
+        gap:10px;
+      "
+    >
+
+      <i class="bi ${
+        tipo === "success"
+          ? "bi-check-circle-fill"
+          : tipo === "warning"
+          ? "bi-exclamation-triangle-fill"
+          : "bi-x-circle-fill"
+      }"></i>
+
+      <span>${mensaje}</span>
+
+    </div>
+
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+    ></button>
+
+  `;
+
+  container.appendChild(alerta);
+
+  // AUTO CERRAR
+  setTimeout(() => {
+
+    alerta.classList.remove("show");
+
+    alerta.classList.add("hide");
+
+    setTimeout(() => {
+
+      alerta.remove();
+
+    }, 300);
+
+  }, 4000);
+
+}
+
+// ==========================
+// LOGIN
+// ==========================
+
+formLogin.addEventListener(
+  "submit",
+  async (e) => {
+
+    e.preventDefault();
+
+    const usuario =
+      document.getElementById(
+        "usuario"
+      ).value.trim();
+
+    const password =
+      document.getElementById(
+        "password"
+      ).value.trim();
+
+    try {
+
+      // ==========================
+      // BUSCAR USUARIO
+      // ==========================
+
+      const q = query(
+
+        collection(
+          db,
+          "usuarios"
+        ),
+
+        where(
+          "usuario",
+          "==",
+          usuario
+        )
+
+      );
+
+      const querySnapshot =
+        await getDocs(q);
+
+      // ==========================
+      // NO EXISTE
+      // ==========================
+
+      if (
+        querySnapshot.empty
+      ) {
+
+        mostrarAlerta(
+          "Usuario no encontrado",
+          "warning"
+        );
+
+        return;
+
+      }
+
+      let datosUsuario;
+
+      querySnapshot.forEach(
+        (doc) => {
+
+          datosUsuario =
+            doc.data();
+
+        }
+      );
+
+      // ==========================
+      // VALIDAR ESTADO
+      // ==========================
+
+      if (
+        !datosUsuario.estado
+      ) {
+
+        mostrarAlerta(
+          "Usuario inactivo. Contacte al administrador.",
+          "danger"
+        );
+
+        return;
+
+      }
+
+      // ==========================
+      // LOGIN FIREBASE
+      // ==========================
+
+      await signInWithEmailAndPassword(
+
+        auth,
+
+        datosUsuario.correo,
+
+        password
+
+      );
+
+      // ==========================
+      // GUARDAR LOCAL
+      // ==========================
+
+      localStorage.setItem(
+
+        "usuario",
+
+        JSON.stringify(
+          datosUsuario
+        )
+
+      );
+
+      mostrarAlerta(
+        "Inicio de sesión exitoso",
+        "success"
+      );
+
+      // ==========================
+      // REDIRECCION
+      // ==========================
+
+      setTimeout(() => {
+
+        switch (
+          datosUsuario.rol
+        ) {
+
+          case "administrador":
+
+            window.location.href =
+              "../admin/dashboard.html";
+
+          break;
+
+          case "docente":
+
+            window.location.href =
+              "../docente/dashboard.html";
+
+          break;
+
+          case "estudiante":
+
+            window.location.href =
+              "../estudiante/dashboard.html";
+
+          break;
+
+        }
+
+      }, 1000);
 
     }
 
-    let datosUsuario;
+    catch (error) {
 
-    querySnapshot.forEach((doc) => {
+      console.error(error);
 
-      datosUsuario = doc.data();
+      let mensaje =
+        "Error al iniciar sesión";
 
-    });
+      // ==========================
+      // MENSAJES FIREBASE
+      // ==========================
 
-    console.log(datosUsuario);
+      switch(error.code){
 
-    const correo =
-      datosUsuario.correo;
+        case "auth/wrong-password":
 
-    await signInWithEmailAndPassword(
-      auth,
-      correo,
-      password
-    );
+          mensaje =
+            "Contraseña incorrecta";
 
-    //alert("Bienvenido");
+        break;
 
-    localStorage.setItem(
-      "usuario",
-      JSON.stringify(datosUsuario)
-    );
+        case "auth/invalid-credential":
 
-    switch(datosUsuario.rol){
+          mensaje =
+            "Usuario o contraseña incorrectos";
 
-      case "administrador":
+        break;
 
-        window.location.href =
-          "../admin/dashboard.html";
+        case "auth/too-many-requests":
 
-      break;
+          mensaje =
+            "Demasiados intentos. Intente más tarde";
 
-      case "docente":
+        break;
 
-        window.location.href =
-          "../docente/dashboard.html";
+      }
 
-      break;
-
-      case "estudiante":
-
-        window.location.href =
-          "../estudiante/dashboard.html";
-
-      break;
+      mostrarAlerta(
+        mensaje,
+        "danger"
+      );
 
     }
-
-  } catch(error){
-
-    console.log(error);
-
-    alert(error.message);
 
   }
-
-});
+);

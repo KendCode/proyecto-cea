@@ -50,9 +50,6 @@ function renderLayout({ title, subtitle, activeLink }) {
         <a href="calificaciones.html" class="nav-link-custom ${activeLink==='calificaciones'?'active':''}">
           <i class="bi bi-star-fill"></i> Calificaciones
         </a>
-        <a href="importarExcel.html" class="nav-link-custom ${activeLink==='importar'?'active':''}">
-          <i class="bi bi-file-earmark-spreadsheet-fill"></i> Importar Excel
-        </a>
       </div>
     </div>
 

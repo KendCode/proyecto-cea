@@ -20,7 +20,14 @@
 </head>
 
 <body>
-
+    <!-- ALERTAS -->
+    <div id="alertContainer" style="
+    position:fixed;
+    top:20px;
+    right:20px;
+    z-index:9999;
+    min-width:320px;
+  "></div>
     <div class="login-wrapper">
 
         <!-- ══════════════════════════════════════
@@ -114,29 +121,27 @@
         crossorigin="anonymous"></script>
 
     <script>
-    /* ── Toggle mostrar/ocultar contraseña ── */
-    const togglePwd = document.getElementById('togglePwd');
-    const pwdInput = document.getElementById('password');
-    const eyeIcon = document.getElementById('eyeIcon');
+        /* ── Toggle mostrar/ocultar contraseña ── */
+        const togglePwd = document.getElementById('togglePwd');
+        const pwdInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
 
-    togglePwd.addEventListener('click', () => {
+        togglePwd.addEventListener('click', () => {
 
-        const isPassword = pwdInput.type === 'password';
+            const isPassword = pwdInput.type === 'password';
 
-        pwdInput.type = isPassword ? 'text' : 'password';
+            pwdInput.type = isPassword ? 'text' : 'password';
 
-        eyeIcon.className =
-            isPassword
-                ? 'bi bi-eye-slash'
-                : 'bi bi-eye';
+            eyeIcon.className =
+                isPassword
+                    ? 'bi bi-eye-slash'
+                    : 'bi bi-eye';
 
-    });
-</script>
+        });
+    </script>
 
-<script
-    type="module"
-    src="../../controllers/authController.js">
-</script>
+    <script type="module" src="../../controllers/authController.js">
+    </script>
 </body>
 
 </html>

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CEA · Mis Niveles</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../../assets/css/DocenteStyle.css">
 </head>
@@ -14,488 +17,480 @@
    SIDEBAR
 ========================= */
 
-#sidebar{
+  #sidebar {
 
-  position:fixed;
+    position: fixed;
 
-  top:0;
-  left:0;
-  bottom:0;
+    top: 0;
+    left: 0;
+    bottom: 0;
 
-  width:260px;
+    width: 260px;
 
-  height:100vh;
+    height: 100vh;
 
-  background:var(--bg-surface);
+    background: var(--bg-surface);
 
-  border-right:1px solid var(--border);
+    border-right: 1px solid var(--border);
 
-  display:flex;
+    display: flex;
 
-  flex-direction:column;
+    flex-direction: column;
 
-  overflow:hidden;
+    overflow: hidden;
 
-  z-index:1000;
+    z-index: 1000;
 
-  transition:transform .3s ease;
+    transition: transform .3s ease;
 
-}
+  }
 
-/* =========================
+  /* =========================
    CONTENIDO INTERNO
 ========================= */
 
-.sidebar-content{
+  .sidebar-content {
 
-  flex:1;
+    flex: 1;
 
-  overflow-y:auto;
+    overflow-y: auto;
 
-  overflow-x:hidden;
+    overflow-x: hidden;
 
-  padding-bottom:20px;
+    padding-bottom: 20px;
 
-}
+  }
 
-/* Scroll elegante */
+  /* Scroll elegante */
 
-.sidebar-content::-webkit-scrollbar{
+  .sidebar-content::-webkit-scrollbar {
 
-  width:5px;
+    width: 5px;
 
-}
+  }
 
-.sidebar-content::-webkit-scrollbar-thumb{
+  .sidebar-content::-webkit-scrollbar-thumb {
 
-  background:var(--border);
+    background: var(--border);
 
-  border-radius:20px;
+    border-radius: 20px;
 
-}
+  }
 
-/* =========================
+  /* =========================
    BRAND
 ========================= */
 
-.sidebar-brand{
+  .sidebar-brand {
 
-  display:flex;
+    display: flex;
 
-  align-items:center;
+    align-items: center;
 
-  gap:12px;
+    gap: 12px;
 
-  padding:22px;
+    padding: 22px;
 
-  border-bottom:1px solid var(--border);
+    border-bottom: 1px solid var(--border);
 
-  text-decoration:none;
+    text-decoration: none;
 
-  flex-shrink:0;
+    flex-shrink: 0;
 
-}
+  }
 
-/* =========================
+  /* =========================
    FOOTER
 ========================= */
 
-.sidebar-footer{
+  .sidebar-footer {
 
-  padding:14px;
+    padding: 14px;
 
-  border-top:1px solid var(--border);
+    border-top: 1px solid var(--border);
 
-  background:var(--bg-surface);
+    background: var(--bg-surface);
 
-  flex-shrink:0;
+    flex-shrink: 0;
 
-}
+  }
 
-/* =========================
+  /* =========================
    MAIN
 ========================= */
 
-#main{
+  #main {
 
-  margin-left:260px;
+    margin-left: 260px;
 
-  min-height:100vh;
+    min-height: 100vh;
 
-  transition:margin-left .3s ease;
+    transition: margin-left .3s ease;
 
-}
+  }
 
-/* =========================
+  /* =========================
    TOPBAR
 ========================= */
 
-#topbar{
+  #topbar {
 
-  position:fixed;
+    position: fixed;
 
-  top:0;
-  left:260px;
-  right:0;
+    top: 0;
+    left: 260px;
+    right: 0;
 
-  height:68px;
+    height: 68px;
 
-  background:var(--bg-surface);
+    background: var(--bg-surface);
 
-  border-bottom:1px solid var(--border);
+    border-bottom: 1px solid var(--border);
 
-  display:flex;
+    display: flex;
 
-  align-items:center;
+    align-items: center;
 
-  padding:0 24px;
+    padding: 0 24px;
 
-  z-index:900;
+    z-index: 900;
 
-  transition:left .3s ease;
+    transition: left .3s ease;
 
-}
+  }
 
-/* =========================
+  /* =========================
    RESPONSIVE
 ========================= */
 
-.hamburger{
+  .hamburger {
 
-  display:none;
+    display: none;
 
-}
+  }
 
-#sidebar-overlay{
+  #sidebar-overlay {
 
-  position:fixed;
+    position: fixed;
 
-  inset:0;
+    inset: 0;
 
-  background:rgba(0,0,0,.65);
+    background: rgba(0, 0, 0, .65);
 
-  backdrop-filter:blur(2px);
+    backdrop-filter: blur(2px);
 
-  z-index:999;
+    z-index: 999;
 
-  opacity:0;
+    opacity: 0;
 
-  visibility:hidden;
+    visibility: hidden;
 
-  transition:.25s;
+    transition: .25s;
 
-}
+  }
 
-/* =========================
+  /* =========================
    TABLET Y MOVIL
 ========================= */
 
-@media(max-width:991px){
+  @media(max-width:991px) {
 
-  #sidebar{
+    #sidebar {
 
-    transform:translateX(-100%);
+      transform: translateX(-100%);
 
-    width:270px;
+      width: 270px;
 
-    box-shadow:0 10px 40px rgba(0,0,0,.55);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, .55);
+
+    }
+
+    #sidebar.open {
+
+      transform: translateX(0);
+
+    }
+
+    #sidebar-overlay.show {
+
+      opacity: 1;
+
+      visibility: visible;
+
+    }
+
+    #main {
+
+      margin-left: 0;
+
+    }
+
+    #topbar {
+
+      left: 0;
+
+    }
+
+    .hamburger {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      width: 40px;
+
+      height: 40px;
+
+      margin-right: 12px;
+
+      border-radius: 10px;
+
+      border: 1px solid var(--border);
+
+      background: transparent;
+
+      color: var(--txt-primary);
+
+      font-size: 20px;
+
+      cursor: pointer;
+
+    }
 
   }
 
-  #sidebar.open{
-
-    transform:translateX(0);
-
-  }
-
-  #sidebar-overlay.show{
-
-    opacity:1;
-
-    visibility:visible;
-
-  }
-
-  #main{
-
-    margin-left:0;
-
-  }
-
-  #topbar{
-
-    left:0;
-
-  }
-
-  .hamburger{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    width:40px;
-
-    height:40px;
-
-    margin-right:12px;
-
-    border-radius:10px;
-
-    border:1px solid var(--border);
-
-    background:transparent;
-
-    color:var(--txt-primary);
-
-    font-size:20px;
-
-    cursor:pointer;
-
-  }
-
-}
-
-/* =========================
+  /* =========================
    CELULAR
 ========================= */
 
-@media(max-width:576px){
+  @media(max-width:576px) {
 
-  #sidebar{
+    #sidebar {
 
-    width:85%;
+      width: 85%;
 
-    max-width:320px;
+      max-width: 320px;
+
+    }
+
+    .page-content {
+
+      padding: 15px;
+
+    }
 
   }
-
-  .page-content{
-
-    padding:15px;
-
-  }
-
-}
 </style>
+
 <body>
   <!-- SIDEBAR -->
-<aside id="sidebar">
+  <aside id="sidebar">
 
-  <!-- LOGO -->
-  <a href="dashboard.html" class="sidebar-brand">
+    <!-- LOGO -->
+    <a href="dashboard.html" class="sidebar-brand">
 
-    <div class="brand-icon">
-      <i class="bi bi-mortarboard-fill"></i>
-    </div>
-
-    <div class="brand-text">
-      <div class="name">CEA Docente</div>
-      <div class="sub">Sistema Académico</div>
-    </div>
-
-  </a>
-
-  <!-- MENU -->
-  <div class="nav-section">
-
-    <div class="nav-section-label">
-      Principal
-    </div>
-
-    <div class="nav-item-wrap">
-
-      <a href="dashboard.html"
-         class="nav-link-custom">
-
-        <i class="bi bi-grid-1x2-fill"></i>
-        <span>Dashboard</span>
-
-      </a>
-
-      <a href="niveles.html"
-         class="nav-link-custom active">
-
-        <i class="bi bi-layers-fill"></i>
-        <span>Mis Niveles</span>
-
-      </a>
-
-      <a href="subirNotas.html"
-         class="nav-link-custom">
-
-        <i class="bi bi-pencil-square"></i>
-        <span>Subir Notas</span>
-
-      </a>
-
-    </div>
-
-  </div>
-
-  <!-- ACADEMICO -->
-  <div class="nav-section">
-
-    <div class="nav-section-label">
-      Académico
-    </div>
-
-    <div class="nav-item-wrap">
-
-      <a href="#"
-         class="nav-link-custom">
-
-        <i class="bi bi-journals"></i>
-        <span>Módulos</span>
-
-      </a>
-
-      <a href="#"
-         class="nav-link-custom">
-
-        <i class="bi bi-people-fill"></i>
-        <span>Estudiantes</span>
-
-      </a>
-
-    </div>
-
-  </div>
-
-  <!-- FOOTER -->
-  <div class="sidebar-footer">
-
-    <div class="user-card">
-
-      <div class="user-avatar" id="avatarDocente">
-        D
+      <div class="brand-icon">
+        <i class="bi bi-mortarboard-fill"></i>
       </div>
 
-      <div class="user-info">
+      <div class="brand-text">
+        <div class="name">CEA Docente</div>
+        <div class="sub">Sistema Académico</div>
+      </div>
 
-        <div class="uname" id="nombreDocente">
-          Docente
-        </div>
+    </a>
 
-        <div class="urole">
-          Rol Docente
-        </div>
+    <!-- MENU -->
+    <div class="nav-section">
+
+      <div class="nav-section-label">
+        Principal
+      </div>
+
+      <div class="nav-item-wrap">
+
+        <a href="dashboard.html" class="nav-link-custom">
+
+          <i class="bi bi-grid-1x2-fill"></i>
+          <span>Dashboard</span>
+
+        </a>
+
+        <a href="niveles.html" class="nav-link-custom active">
+
+          <i class="bi bi-layers-fill"></i>
+          <span>Mis Niveles</span>
+
+        </a>
+
+        <a href="subirNotas.html" class="nav-link-custom">
+
+          <i class="bi bi-pencil-square"></i>
+          <span>Subir Notas</span>
+
+        </a>
 
       </div>
 
     </div>
 
-    <button class="nav-link-custom"
-            id="btnLogout"
-            style="width:100%;margin-top:10px;border:none;background:none">
+    <!-- ACADEMICO -->
+    <div class="nav-section">
 
-      <i class="bi bi-box-arrow-left"></i>
-      <span>Cerrar Sesión</span>
+      <div class="nav-section-label">
+        Académico
+      </div>
+
+      <div class="nav-item-wrap">
+
+        <a href="#" class="nav-link-custom">
+
+          <i class="bi bi-journals"></i>
+          <span>Módulos</span>
+
+        </a>
+
+        <a href="#" class="nav-link-custom">
+
+          <i class="bi bi-people-fill"></i>
+          <span>Estudiantes</span>
+
+        </a>
+        <button class="nav-link-custom" id="btnLogout" style="width:100%;margin-top:10px;border:none;background:none">
+          <i class="bi bi-box-arrow-left"></i>
+          <span>Cerrar Sesión</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="sidebar-footer">
+
+      <div class="user-card">
+
+        <div class="user-avatar" id="avatarDocente">
+          D
+        </div>
+
+        <div class="user-info">
+
+          <div class="uname" id="nombreDocente">
+            Docente
+          </div>
+
+          <div class="urole">
+            Rol Docente
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- OVERLAY -->
+  <div id="sidebar-overlay"></div>
+
+  <!-- TOPBAR -->
+  <header id="topbar">
+
+    <!-- MENU -->
+    <button class="hamburger" id="btnMenu">
+
+      <i class="bi bi-list"></i>
 
     </button>
 
-  </div>
+    <!-- TITLE -->
+    <div>
 
-</aside>
+      <div class="topbar-title">
 
-<!-- OVERLAY -->
-<div id="sidebar-overlay"></div>
+        Panel Docente
 
-<!-- TOPBAR -->
-<header id="topbar">
+      </div>
 
-  <!-- MENU -->
-  <button class="hamburger" id="btnMenu">
+      <div class="topbar-sub">
 
-    <i class="bi bi-list"></i>
+        Centro de Educación Alternativa
 
-  </button>
-
-  <!-- TITLE -->
-  <div>
-
-    <div class="topbar-title">
-
-      Panel Docente
+      </div>
 
     </div>
 
-    <div class="topbar-sub">
+    <!-- SEARCH -->
+    <div class="topbar-search">
 
-      Centro de Educación Alternativa
+      <i class="bi bi-search"></i>
+
+      <input type="text" placeholder="Buscar...">
 
     </div>
 
-  </div>
+    <!-- ACTIONS -->
+    <div class="topbar-actions">
 
-  <!-- SEARCH -->
-  <div class="topbar-search">
+      <button class="icon-btn">
 
-    <i class="bi bi-search"></i>
+        <i class="bi bi-bell"></i>
 
-    <input type="text"
-           placeholder="Buscar...">
+        <span class="dot"></span>
 
-  </div>
+      </button>
 
-  <!-- ACTIONS -->
-  <div class="topbar-actions">
-
-    <button class="icon-btn">
-
-      <i class="bi bi-bell"></i>
-
-      <span class="dot"></span>
-
-    </button>
-
-  </div>
-
-</header>
-<div id="main">
-  <div class="page-content">
-
-    <!-- Header info -->
-    <div style="margin-bottom:24px;animation:fadeUp .4s ease">
-      <div style="font-size:22px;font-weight:800;letter-spacing:-.4px;margin-bottom:4px">Mis Niveles Asignados</div>
-      <div style="color:var(--txt-muted);font-size:13px">Niveles y carreras donde tienes clases asignadas</div>
     </div>
 
-    <!-- Grid niveles -->
-    <div id="nivelesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px">
-      <div class="empty-state" style="grid-column:1/-1"><i class="bi bi-hourglass-split"></i><p>Cargando niveles...</p></div>
+  </header>
+  <div id="main">
+    <div class="page-content">
+
+      <!-- Header info -->
+      <div style="margin-bottom:24px;animation:fadeUp .4s ease">
+        <div style="font-size:22px;font-weight:800;letter-spacing:-.4px;margin-bottom:4px">Mis Niveles Asignados</div>
+        <div style="color:var(--txt-muted);font-size:13px">Niveles y carreras donde tienes clases asignadas</div>
+      </div>
+
+      <!-- Grid niveles -->
+      <div id="nivelesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px">
+        <div class="empty-state" style="grid-column:1/-1"><i class="bi bi-hourglass-split"></i>
+          <p>Cargando niveles...</p>
+        </div>
+      </div>
+
     </div>
-
   </div>
-</div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script type="module" src="../../controllers/NivelesDocController.js"></script>
-<script>
-  // SIDEBAR RESPONSIVE
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="module" src="../../controllers/NivelesDocController.js"></script>
+  
+  <script>
+    // SIDEBAR RESPONSIVE
 
-const sidebar = document.getElementById("sidebar");
+    const sidebar = document.getElementById("sidebar");
 
-const overlay = document.getElementById("sidebar-overlay");
+    const overlay = document.getElementById("sidebar-overlay");
 
-const btnMenu = document.getElementById("btnMenu");
+    const btnMenu = document.getElementById("btnMenu");
 
-btnMenu.addEventListener("click", () => {
+    btnMenu.addEventListener("click", () => {
 
-  sidebar.classList.toggle("open");
+      sidebar.classList.toggle("open");
 
-  overlay.classList.toggle("show");
+      overlay.classList.toggle("show");
 
-});
+    });
 
-overlay.addEventListener("click", () => {
+    overlay.addEventListener("click", () => {
 
-  sidebar.classList.remove("open");
+      sidebar.classList.remove("open");
 
-  overlay.classList.remove("show");
+      overlay.classList.remove("show");
 
-});
-</script>
+    });
+  </script>
 </body>
-</html>     
+
+</html>

@@ -192,10 +192,37 @@
 
 <script type="module">
 const TIPOS = [
-  { id:'estudiantes',    label:'Estudiantes',    icon:'bi-person-badge-fill', color:'--accent',   cols:['usuarioId','carreraId','nivelId','gestion'] },
-  { id:'docentes',       label:'Docentes',       icon:'bi-person-workspace',  color:'--accent-3',  cols:['usuarioId','carreraId','nivelId'] },
-  { id:'calificaciones', label:'Calificaciones', icon:'bi-star-fill',         color:'--accent-4', cols:['estudianteId','docenteId','moduloId','nota','gestion'] },
-  { id:'usuarios',       label:'Usuarios',       icon:'bi-people-fill',       color:'--accent-2',  cols:['usuario','nombre','ap_paterno','ap_materno','ci','correo','nro_celular','rol','fecha_nac','sexo'] },
+  {
+    id:'estudiantes',
+    label:'Estudiantes',
+    icon:'bi-mortarboard-fill',
+    color:'--accent',
+    cols:[
+      'paterno',
+      'materno',
+      'nombres',
+      'ci',
+      'fecha_nacimiento',
+      'genero',
+      'celular'
+    ]
+  },
+
+  {
+    id:'docentes',
+    label:'Docentes',
+    icon:'bi-person-workspace',
+    color:'--accent-3',
+    cols:[
+      'paterno',
+      'materno',
+      'nombres',
+      'ci',
+      'fecha_nacimiento',
+      'genero',
+      'celular'
+    ]
+  }
 ];
 
 let tipoActivo = null;

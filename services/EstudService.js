@@ -15,7 +15,7 @@ export async function obtenerDatosEstudiante(uid) {
 
   const q = query(
     collection(db, "estudiantes"),
-    where("usuarioId", "==", uid)
+    where("usuarioId", "==", uid),
   );
 
   const snapshot =
@@ -37,7 +37,9 @@ export async function obtenerEstudiante(uid) {
 
     const q = query(
         collection(db, "estudiantes"),
-        where("usuarioId", "==", uid)
+        where("usuarioId", "==", uid),
+         // Solo estudiantes activos
+        where("estado", "==", true)
     );
 
     const snap = await getDocs(q);

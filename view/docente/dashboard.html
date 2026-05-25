@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CEA · Panel Docente</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../../assets/css/DocenteStyle.css">
 </head>
@@ -14,581 +17,588 @@
    SIDEBAR
 ========================= */
 
-#sidebar{
+  #sidebar {
 
-  position:fixed;
+    position: fixed;
 
-  top:0;
-  left:0;
-  bottom:0;
+    top: 0;
+    left: 0;
+    bottom: 0;
 
-  width:260px;
+    width: 260px;
 
-  height:100vh;
+    height: 100vh;
 
-  background:var(--bg-surface);
+    background: var(--bg-surface);
 
-  border-right:1px solid var(--border);
+    border-right: 1px solid var(--border);
 
-  display:flex;
+    display: flex;
 
-  flex-direction:column;
+    flex-direction: column;
 
-  overflow:hidden;
+    overflow: hidden;
 
-  z-index:1000;
+    z-index: 1000;
 
-  transition:transform .3s ease;
+    transition: transform .3s ease;
 
-}
+  }
 
-/* =========================
+  /* =========================
    CONTENIDO INTERNO
 ========================= */
 
-.sidebar-content{
+  .sidebar-content {
 
-  flex:1;
+    flex: 1;
 
-  overflow-y:auto;
+    overflow-y: auto;
 
-  overflow-x:hidden;
+    overflow-x: hidden;
 
-  padding-bottom:20px;
+    padding-bottom: 20px;
 
-}
+  }
 
-/* Scroll elegante */
+  /* Scroll elegante */
 
-.sidebar-content::-webkit-scrollbar{
+  .sidebar-content::-webkit-scrollbar {
 
-  width:5px;
+    width: 5px;
 
-}
+  }
 
-.sidebar-content::-webkit-scrollbar-thumb{
+  .sidebar-content::-webkit-scrollbar-thumb {
 
-  background:var(--border);
+    background: var(--border);
 
-  border-radius:20px;
+    border-radius: 20px;
 
-}
+  }
 
-/* =========================
+  /* =========================
    BRAND
 ========================= */
 
-.sidebar-brand{
+  .sidebar-brand {
 
-  display:flex;
+    display: flex;
 
-  align-items:center;
+    align-items: center;
 
-  gap:12px;
+    gap: 12px;
 
-  padding:22px;
+    padding: 22px;
 
-  border-bottom:1px solid var(--border);
+    border-bottom: 1px solid var(--border);
 
-  text-decoration:none;
+    text-decoration: none;
 
-  flex-shrink:0;
+    flex-shrink: 0;
 
-}
+  }
 
-/* =========================
+  /* =========================
    FOOTER
 ========================= */
 
-.sidebar-footer{
+  .sidebar-footer {
 
-  padding:14px;
+    padding: 14px;
 
-  border-top:1px solid var(--border);
+    border-top: 1px solid var(--border);
 
-  background:var(--bg-surface);
+    background: var(--bg-surface);
 
-  flex-shrink:0;
+    flex-shrink: 0;
 
-}
+  }
 
-/* =========================
+  /* =========================
    MAIN
 ========================= */
 
-#main{
+  #main {
 
-  margin-left:260px;
+    margin-left: 260px;
 
-  min-height:100vh;
+    min-height: 100vh;
 
-  transition:margin-left .3s ease;
+    transition: margin-left .3s ease;
 
-}
+  }
 
-/* =========================
+  /* =========================
    TOPBAR
 ========================= */
 
-#topbar{
+  #topbar {
 
-  position:fixed;
+    position: fixed;
 
-  top:0;
-  left:260px;
-  right:0;
+    top: 0;
+    left: 260px;
+    right: 0;
 
-  height:68px;
+    height: 68px;
 
-  background:var(--bg-surface);
+    background: var(--bg-surface);
 
-  border-bottom:1px solid var(--border);
+    border-bottom: 1px solid var(--border);
 
-  display:flex;
+    display: flex;
 
-  align-items:center;
+    align-items: center;
 
-  padding:0 24px;
+    padding: 0 24px;
 
-  z-index:900;
+    z-index: 900;
 
-  transition:left .3s ease;
+    transition: left .3s ease;
 
-}
+  }
 
-/* =========================
+  /* =========================
    RESPONSIVE
 ========================= */
 
-.hamburger{
+  .hamburger {
 
-  display:none;
+    display: none;
 
-}
+  }
 
-#sidebar-overlay{
+  #sidebar-overlay {
 
-  position:fixed;
+    position: fixed;
 
-  inset:0;
+    inset: 0;
 
-  background:rgba(0,0,0,.65);
+    background: rgba(0, 0, 0, .65);
 
-  backdrop-filter:blur(2px);
+    backdrop-filter: blur(2px);
 
-  z-index:999;
+    z-index: 999;
 
-  opacity:0;
+    opacity: 0;
 
-  visibility:hidden;
+    visibility: hidden;
 
-  transition:.25s;
+    transition: .25s;
 
-}
+  }
 
-/* =========================
+  /* =========================
    TABLET Y MOVIL
 ========================= */
 
-@media(max-width:991px){
+  @media(max-width:991px) {
 
-  #sidebar{
+    #sidebar {
 
-    transform:translateX(-100%);
+      transform: translateX(-100%);
 
-    width:270px;
+      width: 270px;
 
-    box-shadow:0 10px 40px rgba(0,0,0,.55);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, .55);
+
+    }
+
+    #sidebar.open {
+
+      transform: translateX(0);
+
+    }
+
+    #sidebar-overlay.show {
+
+      opacity: 1;
+
+      visibility: visible;
+
+    }
+
+    #main {
+
+      margin-left: 0;
+
+    }
+
+    #topbar {
+
+      left: 0;
+
+    }
+
+    .hamburger {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      width: 40px;
+
+      height: 40px;
+
+      margin-right: 12px;
+
+      border-radius: 10px;
+
+      border: 1px solid var(--border);
+
+      background: transparent;
+
+      color: var(--txt-primary);
+
+      font-size: 20px;
+
+      cursor: pointer;
+
+    }
 
   }
 
-  #sidebar.open{
-
-    transform:translateX(0);
-
-  }
-
-  #sidebar-overlay.show{
-
-    opacity:1;
-
-    visibility:visible;
-
-  }
-
-  #main{
-
-    margin-left:0;
-
-  }
-
-  #topbar{
-
-    left:0;
-
-  }
-
-  .hamburger{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    width:40px;
-
-    height:40px;
-
-    margin-right:12px;
-
-    border-radius:10px;
-
-    border:1px solid var(--border);
-
-    background:transparent;
-
-    color:var(--txt-primary);
-
-    font-size:20px;
-
-    cursor:pointer;
-
-  }
-
-}
-
-/* =========================
+  /* =========================
    CELULAR
 ========================= */
 
-@media(max-width:576px){
+  @media(max-width:576px) {
 
-  #sidebar{
+    #sidebar {
 
-    width:85%;
+      width: 85%;
 
-    max-width:320px;
+      max-width: 320px;
+
+    }
+
+    .page-content {
+
+      padding: 15px;
+
+    }
 
   }
-
-  .page-content{
-
-    padding:15px;
-
-  }
-
-}
 </style>
+
 <body>
- <!-- SIDEBAR -->
-<aside id="sidebar">
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
 
-  <!-- LOGO -->
-  <a href="dashboard.html" class="sidebar-brand">
+    <!-- LOGO -->
+    <a href="dashboard.html" class="sidebar-brand">
 
-    <div class="brand-icon">
-      <i class="bi bi-mortarboard-fill"></i>
+      <div class="brand-icon">
+        <i class="bi bi-mortarboard-fill"></i>
+      </div>
+
+      <div class="brand-text">
+        <div class="name">CEA Docente</div>
+        <div class="sub">Sistema Académico</div>
+      </div>
+
+    </a>
+
+    <!-- MENU -->
+    <div class="nav-section">
+
+      <div class="nav-section-label">
+        Principal
+      </div>
+
+      <div class="nav-item-wrap">
+
+        <a href="dashboard.html" class="nav-link-custom active">
+
+          <i class="bi bi-grid-1x2-fill"></i>
+          <span>Dashboard</span>
+
+        </a>
+
+        <a href="niveles.html" class="nav-link-custom">
+
+          <i class="bi bi-layers-fill"></i>
+          <span>Mis Niveles</span>
+
+        </a>
+
+        <a href="subirNotas.html" class="nav-link-custom">
+
+          <i class="bi bi-pencil-square"></i>
+          <span>Subir Notas</span>
+
+        </a>
+
+      </div>
+
     </div>
 
-    <div class="brand-text">
-      <div class="name">CEA Docente</div>
-      <div class="sub">Sistema Académico</div>
-    </div>
+    <!-- ACADEMICO -->
+    <div class="nav-section">
 
-  </a>
+      <div class="nav-section-label">
+        Académico
+      </div>
 
-  <!-- MENU -->
-  <div class="nav-section">
+      <div class="nav-item-wrap">
 
-    <div class="nav-section-label">
-      Principal
-    </div>
+        <a href="#" class="nav-link-custom">
 
-    <div class="nav-item-wrap">
+          <i class="bi bi-journals"></i>
+          <span>Módulos</span>
 
-      <a href="dashboard.html"
-         class="nav-link-custom active">
+        </a>
 
-        <i class="bi bi-grid-1x2-fill"></i>
-        <span>Dashboard</span>
-
-      </a>
-
-      <a href="niveles.html"
-         class="nav-link-custom">
-
-        <i class="bi bi-layers-fill"></i>
-        <span>Mis Niveles</span>
-
-      </a>
-
-      <a href="subirNotas.html"
-         class="nav-link-custom">
-
-        <i class="bi bi-pencil-square"></i>
-        <span>Subir Notas</span>
-
-      </a>
-
-    </div>
-
-  </div>
-
-  <!-- ACADEMICO -->
-  <div class="nav-section">
-
-    <div class="nav-section-label">
-      Académico
-    </div>
-
-    <div class="nav-item-wrap">
-
-      <a href="#"
-         class="nav-link-custom">
-
-        <i class="bi bi-journals"></i>
-        <span>Módulos</span>
-
-      </a>
-
-      <a href="#"
+        <!-- <a href="#"
          class="nav-link-custom">
 
         <i class="bi bi-people-fill"></i>
         <span>Estudiantes</span>
 
-      </a>
-
-    </div>
-
-  </div>
-
-  <!-- FOOTER -->
-  <div class="sidebar-footer">
-
-    <div class="user-card">
-
-      <div class="user-avatar" id="avatarDocente">
-        D
-      </div>
-
-      <div class="user-info">
-
-        <div class="uname" id="nombreDocente">
-          Docente
-        </div>
-
-        <div class="urole">
-          Rol Docente
-        </div>
-
+      </a> -->
+        <button class="nav-link-custom" id="btnLogout" style="width:100%;margin-top:10px;border:none;background:none">
+          <i class="bi bi-box-arrow-left"></i>
+          <span>Cerrar Sesión</span>
+        </button>
       </div>
 
     </div>
 
-    <button class="nav-link-custom"
-            id="btnLogout"
-            style="width:100%;margin-top:10px;border:none;background:none">
+    <!-- FOOTER -->
+    <div class="sidebar-footer">
 
-      <i class="bi bi-box-arrow-left"></i>
-      <span>Cerrar Sesión</span>
+      <div class="user-card">
 
-    </button>
+        <div class="user-avatar" id="avatarDocente">
+          D
+        </div>
 
-  </div>
+        <div class="user-info">
 
-</aside>
+          <div class="uname" id="nombreDocente">
+            Docente
+          </div>
 
-<!-- OVERLAY -->
-<div id="sidebar-overlay"></div>
+          <div class="urole">
+            Rol Docente
+          </div>
 
-<!-- TOPBAR -->
-<header id="topbar">
+        </div>
 
-  <!-- MENU -->
-  <button class="hamburger" id="btnMenu">
+      </div>
 
-    <i class="bi bi-list"></i>
 
-  </button>
-
-  <!-- TITLE -->
-  <div>
-
-    <div class="topbar-title">
-
-      Panel Docente
 
     </div>
 
-    <div class="topbar-sub">
+  </aside>
 
-      Centro de Educación Alternativa
+  <!-- OVERLAY -->
+  <div id="sidebar-overlay"></div>
 
-    </div>
+  <!-- TOPBAR -->
+  <header id="topbar">
 
-  </div>
+    <!-- MENU -->
+    <button class="hamburger" id="btnMenu">
 
-  <!-- SEARCH -->
-  <div class="topbar-search">
-
-    <i class="bi bi-search"></i>
-
-    <input type="text"
-           placeholder="Buscar...">
-
-  </div>
-
-  <!-- ACTIONS -->
-  <div class="topbar-actions">
-
-    <button class="icon-btn">
-
-      <i class="bi bi-bell"></i>
-
-      <span class="dot"></span>
+      <i class="bi bi-list"></i>
 
     </button>
 
-  </div>
+    <!-- TITLE -->
+    <div>
 
-</header>
-<div id="main">
-  <div class="page-content">
+      <div class="topbar-title">
 
-    <!-- Welcome Banner -->
-    <div id="welcomeBanner" style="
+        Panel Docente
+
+      </div>
+
+      <div class="topbar-sub">
+
+        Centro de Educación Alternativa
+
+      </div>
+
+    </div>
+
+    <!-- SEARCH -->
+    <div class="topbar-search">
+
+      <i class="bi bi-search"></i>
+
+      <input type="text" id="searchGlobal" placeholder="Buscar...">
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="topbar-actions">
+
+      <button class="icon-btn">
+
+        <i class="bi bi-bell"></i>
+
+        <span class="dot"></span>
+
+      </button>
+
+    </div>
+
+  </header>
+  <div id="main">
+    <div class="page-content">
+
+      <!-- Welcome Banner -->
+      <div id="welcomeBanner" style="
       background: linear-gradient(135deg, rgba(59,130,246,.15) 0%, rgba(139,92,246,.12) 100%);
       border: 1px solid rgba(59,130,246,.25); border-radius: var(--radius);
       padding: 24px 26px; margin-bottom: 26px; display:flex; align-items:center; gap:20px;
       animation: fadeUp .5s ease;
     ">
-      <div style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-size:24px;color:#fff;flex-shrink:0;">
-        <i class="bi bi-person-workspace"></i>
-      </div>
-      <div>
-        <div style="font-size:20px;font-weight:800;letter-spacing:-.4px;" id="welcomeName">Bienvenido, Docente</div>
-        <div style="font-size:13px;color:var(--txt-muted);margin-top:3px;">Gestión académica <span class="gestion-tag" id="gestionTag">2026</span></div>
-      </div>
-      <div style="margin-left:auto;display:flex;gap:10px;flex-wrap:wrap;">
-        <a href="subirNotas.html" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Subir Notas</a>
-        <a href="niveles.html" class="btn btn-ghost"><i class="bi bi-layers-fill"></i> Mis Niveles</a>
-      </div>
-    </div>
-
-    <!-- Stats -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:28px;">
-      <div class="stat-card" style="animation-delay:.05s">
-        <div class="icon-wrap ic-blue"><i class="bi bi-building"></i></div>
-        <div class="stat-value" id="statCarreras">—</div>
-        <div class="stat-label">Carreras Asignadas</div>
-      </div>
-      <div class="stat-card" style="animation-delay:.10s">
-        <div class="icon-wrap ic-purple"><i class="bi bi-layers-fill"></i></div>
-        <div class="stat-value" id="statNiveles">—</div>
-        <div class="stat-label">Niveles</div>
-      </div>
-      <div class="stat-card" style="animation-delay:.15s">
-        <div class="icon-wrap ic-green"><i class="bi bi-journals"></i></div>
-        <div class="stat-value" id="statModulos">—</div>
-        <div class="stat-label">Módulos a Calificar</div>
-      </div>
-      <div class="stat-card" style="animation-delay:.20s">
-        <div class="icon-wrap ic-amber"><i class="bi bi-people-fill"></i></div>
-        <div class="stat-value" id="statEstudiantes">—</div>
-        <div class="stat-label">Estudiantes</div>
-      </div>
-    </div>
-
-    <!-- Carreras & Módulos -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;" id="gridCarrerasMod">
-
-      <!-- Carreras -->
-      <div class="panel-card">
-        <div class="section-header">
-          <div>
-            <div class="section-title"><i class="bi bi-building" style="color:var(--accent)"></i> Mis Carreras</div>
-            <div class="section-sub">Carreras donde tienes asignación</div>
-          </div>
+        <div
+          style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-size:24px;color:#fff;flex-shrink:0;">
+          <i class="bi bi-person-workspace"></i>
         </div>
-        <div id="carrerasList">
-          <div class="empty-state"><i class="bi bi-hourglass-split"></i><p>Cargando...</p></div>
-        </div>
-      </div>
-
-      <!-- Módulos pendientes -->
-      <div class="panel-card" style="animation-delay:.2s">
-        <div class="section-header">
-          <div>
-            <div class="section-title"><i class="bi bi-journals" style="color:var(--accent-2)"></i> Módulos Asignados</div>
-            <div class="section-sub">Lista de módulos que debes calificar</div>
-          </div>
-          <a href="subirNotas.html" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i> Ingresar</a>
-        </div>
-        <div id="modulosList">
-          <div class="empty-state"><i class="bi bi-hourglass-split"></i><p>Cargando...</p></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Estudiantes de mis niveles -->
-    <div class="panel-card" style="animation-delay:.25s">
-      <div class="section-header">
         <div>
-          <div class="section-title"><i class="bi bi-people-fill" style="color:var(--accent-3)"></i> Estudiantes en Mis Niveles</div>
-          <div class="section-sub">Estudiantes inscritos en los niveles que impartes</div>
+          <div style="font-size:20px;font-weight:800;letter-spacing:-.4px;" id="welcomeName">Bienvenido, Docente</div>
+          <div style="font-size:13px;color:var(--txt-muted);margin-top:3px;">Gestión académica <span class="gestion-tag"
+              id="gestionTag">2026</span></div>
         </div>
-        <a href="subirNotas.html" class="btn btn-sm btn-success"><i class="bi bi-star-fill"></i> Calificar</a>
+        <div style="margin-left:auto;display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="subirNotas.html" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Subir Notas</a>
+          <a href="niveles.html" class="btn btn-ghost"><i class="bi bi-layers-fill"></i> Mis Niveles</a>
+        </div>
       </div>
-      <div style="overflow-x:auto">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Estudiante</th>
-              <th>Carrera</th>
-              <th>Nivel</th>
-              <th>Gestión</th>
-              <th>Acción</th>
-            </tr>
-          </thead>
-          <tbody id="estudiantesBody">
-            <tr><td colspan="6" class="text-center" style="padding:40px;color:var(--txt-muted)">Cargando estudiantes...</td></tr>
-          </tbody>
-        </table>
+
+      <!-- Stats -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:28px;">
+        <div class="stat-card" style="animation-delay:.05s">
+          <div class="icon-wrap ic-blue"><i class="bi bi-building"></i></div>
+          <div class="stat-value" id="statCarreras">—</div>
+          <div class="stat-label">Carreras Asignadas</div>
+        </div>
+        <div class="stat-card" style="animation-delay:.10s">
+          <div class="icon-wrap ic-purple"><i class="bi bi-layers-fill"></i></div>
+          <div class="stat-value" id="statNiveles">—</div>
+          <div class="stat-label">Niveles</div>
+        </div>
+        <div class="stat-card" style="animation-delay:.15s">
+          <div class="icon-wrap ic-green"><i class="bi bi-journals"></i></div>
+          <div class="stat-value" id="statModulos">—</div>
+          <div class="stat-label">Módulos a Calificar</div>
+        </div>
+        <div class="stat-card" style="animation-delay:.20s">
+          <div class="icon-wrap ic-amber"><i class="bi bi-people-fill"></i></div>
+          <div class="stat-value" id="statEstudiantes">—</div>
+          <div class="stat-label">Estudiantes</div>
+        </div>
       </div>
+
+      <!-- Carreras & Módulos -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;" id="gridCarrerasMod">
+
+        <!-- Carreras -->
+        <div class="panel-card">
+          <div class="section-header">
+            <div>
+              <div class="section-title"><i class="bi bi-building" style="color:var(--accent)"></i> Mis Carreras</div>
+              <div class="section-sub">Carreras donde tienes asignación</div>
+            </div>
+          </div>
+          <div id="carrerasList">
+            <div class="empty-state"><i class="bi bi-hourglass-split"></i>
+              <p>Cargando...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Módulos pendientes -->
+        <div class="panel-card" style="animation-delay:.2s">
+          <div class="section-header">
+            <div>
+              <div class="section-title"><i class="bi bi-journals" style="color:var(--accent-2)"></i> Módulos Asignados
+              </div>
+              <div class="section-sub">Lista de módulos que debes calificar</div>
+            </div>
+            <a href="subirNotas.html" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i> Ingresar</a>
+          </div>
+          <div id="modulosList">
+            <div class="empty-state"><i class="bi bi-hourglass-split"></i>
+              <p>Cargando...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estudiantes de mis niveles -->
+      <div class="panel-card" style="animation-delay:.25s">
+        <div class="section-header">
+          <div>
+            <div class="section-title"><i class="bi bi-people-fill" style="color:var(--accent-3)"></i> Estudiantes en
+              Mis Niveles</div>
+            <div class="section-sub">Estudiantes inscritos en los niveles que impartes</div>
+          </div>
+          <a href="subirNotas.html" class="btn btn-sm btn-success"><i class="bi bi-star-fill"></i> Calificar</a>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Estudiante</th>
+                <th>Carrera</th>
+                <th>Nivel</th>
+                <th>Gestión</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="estudiantesBody">
+              <tr>
+                <td colspan="6" class="text-center" style="padding:40px;color:var(--txt-muted)">Cargando estudiantes...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
-
   </div>
-</div>
 
-<script type="module" src="../../controllers/DocController.js">
-</script>
-<script>
-  // SIDEBAR RESPONSIVE
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-const sidebar = document.getElementById("sidebar");
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-const overlay = document.getElementById("sidebar-overlay");
+  <script type="module" src="../../controllers/DocController.js"></script>
+  <script>
+    // SIDEBAR RESPONSIVE
 
-const btnMenu = document.getElementById("btnMenu");
+    const sidebar = document.getElementById("sidebar");
 
-btnMenu.addEventListener("click", () => {
+    const overlay = document.getElementById("sidebar-overlay");
 
-  sidebar.classList.toggle("open");
+    const btnMenu = document.getElementById("btnMenu");
 
-  overlay.classList.toggle("show");
+    btnMenu.addEventListener("click", () => {
 
-});
+      sidebar.classList.toggle("open");
 
-overlay.addEventListener("click", () => {
+      overlay.classList.toggle("show");
 
-  sidebar.classList.remove("open");
+    });
 
-  overlay.classList.remove("show");
+    overlay.addEventListener("click", () => {
 
-});
-</script>
+      sidebar.classList.remove("open");
+
+      overlay.classList.remove("show");
+
+    });
+  </script>
 </body>
+
 </html>

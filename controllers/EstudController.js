@@ -50,7 +50,7 @@ async function cargarDashboard(uid) {
     const usuario =
       await obtenerUsuario(uid);
 
-    console.log("USUARIO:", usuario);
+    //console.log("USUARIO:", usuario);
 
     if (!usuario) return;
 
@@ -62,7 +62,7 @@ async function cargarDashboard(uid) {
     const estudiante =
       await obtenerEstudiante(uid);
 
-    console.log("ESTUDIANTE:", estudiante);
+    //console.log("ESTUDIANTE:", estudiante);
 
     if (!estudiante) return;
     // =========================
@@ -74,18 +74,18 @@ async function cargarDashboard(uid) {
 
     const nivelId =
       estudiante.nivelId.id;
-    console.log("CARRERA ID:", carreraId); console.log("NIVEL ID:", nivelId);
+    //console.log("CARRERA ID:", carreraId); //console.log("NIVEL ID:", nivelId);
     // =========================
     // DATOS
     // =========================
 
     const carrera =
       await obtenerCarrera(carreraId);
-    console.log("CARRERA:", carrera);
+    //console.log("CARRERA:", carrera);
 
     const nivel =
       await obtenerNivel(nivelId);
-    console.log("NIVEL:", nivel);
+    //console.log("NIVEL:", nivel);
 
     const modulos =
       await obtenerModulos(

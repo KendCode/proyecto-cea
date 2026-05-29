@@ -1,41 +1,41 @@
 // controllers/HistorialController.js
 
 import { auth }
-    from "../firebase/auth.js";
+  from "../firebase/auth.js";
 
 import {
-    onAuthStateChanged
+  onAuthStateChanged
 }
-    from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+  from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 import {
 
-    obtenerEstudiante,
-    obtenerCalificaciones,
-    obtenerModulos
+  obtenerEstudiante,
+  obtenerCalificaciones,
+  obtenerModulos
 
 }
-    from "../services/EstudService.js";
+  from "../services/EstudService.js";
 
 
 onAuthStateChanged(
-    auth,
-    async user => {
+  auth,
+  async user => {
 
-        if (!user) {
+    if (!user) {
 
-            location.href =
-                "../auth/login.html";
+      location.href =
+        "../auth/login.html";
 
-            return;
-
-        }
-
-        await cargarHistorial(
-            user.uid
-        );
+      return;
 
     }
+
+    await cargarHistorial(
+      user.uid
+    );
+
+  }
 );
 
 function getId(ref) {
@@ -162,5 +162,75 @@ async function cargarHistorial(uid) {
     `;
 
   });
+  // =========================
+  // RESUMEN GENERAL
+  // =========================
 
+  const notasValidas =
+    notas.filter(
+      n => n.nota !== undefined
+    );
+
+  let promedio = 0;
+
+  if (notasValidas.length > 0) {
+
+    const total =
+      notasValidas.reduce(
+        (acc, n) =>
+          acc + Number(n.nota),
+        0
+      );
+
+    promedio =
+      (
+        total /
+        notasValidas.length
+      ).toFixed(1);
+
+  }
+
+  const aprobados =
+    notasValidas.filter(
+      n => Number(n.nota) >= 51
+    ).length;
+
+  const reprobados =
+    notasValidas.filter(
+      n => Number(n.nota) < 51
+    ).length;
+
+  const pendientes =
+    modulos.length -
+    notasValidas.length;
+
+
+  // =========================
+  // INSERTAR EN HTML
+  // =========================
+
+  document.getElementById(
+    "resPromedio"
+  ).textContent = promedio;
+
+  document.getElementById(
+    "resAprobados"
+  ).textContent = aprobados;
+
+  document.getElementById(
+    "resReprobados"
+  ).textContent = reprobados;
+
+  document.getElementById(
+    "resPendientes"
+  ).textContent = pendientes;
+
+
+  // =========================
+  // MOSTRAR BANNER
+  // =========================
+
+  document.getElementById(
+    "resumenBanner"
+  ).style.display = "grid";
 }

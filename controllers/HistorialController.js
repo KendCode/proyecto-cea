@@ -45,38 +45,62 @@ function getId(ref) {
 
 async function cargarHistorial(uid) {
 
-  const est = await obtenerEstudiante(uid);
+  const est =
+    await obtenerEstudiante(uid);
+
   if (!est) return;
 
-  const carreraId = est.carrera.includes("/")
-    ? est.carrera.split("/").pop()
-    : est.carrera;
+  const carreraId =
+    est.carreraId.id;
 
-  const nivelId = est.nivel.includes("/")
-    ? est.nivel.split("/").pop()
-    : est.nivel;
+  const nivelId =
+    est.nivelId.id;
 
-  const modulos = await obtenerModulos(carreraId, nivelId);
-  const notas = await obtenerCalificaciones(est.id);
+  const modulos =
+    await obtenerModulos(
+      carreraId,
+      nivelId
+    );
 
-  const container = document.getElementById("historialContainer");
+  const notas =
+    await obtenerCalificaciones(est.id);
+
+  const container =
+    document.getElementById(
+      "historialContainer"
+    );
+
   container.innerHTML = "";
 
   if (!modulos.length) {
+
     container.innerHTML = `
       <tr>
-        <td colspan="4">No hay módulos asignados</td>
+        <td colspan="4">
+          No hay módulos asignados
+        </td>
       </tr>
     `;
+
     return;
+
   }
 
-  modulos.sort((a, b) => a.orden - b.orden);
+  modulos.sort(
+    (a, b) => a.orden - b.orden
+  );
 
   modulos.forEach((m, i) => {
 
-    const notaObj = notas.find(n => n.moduloId === m.id);
-    const nota = notaObj ? Number(notaObj.nota) : null;
+    const notaObj =
+      notas.find(
+        n => n.moduloId === m.id
+      );
+
+    const nota =
+      notaObj
+        ? Number(notaObj.nota)
+        : null;
 
     let estado = "";
     let estadoClass = "";
@@ -84,32 +108,42 @@ async function cargarHistorial(uid) {
     let icono = "";
 
     if (nota === null) {
+
       estado = "Sin calificar";
       estadoClass = "estado-sin-nota";
       notaClass = "np-sin";
       icono = "bi-dash-circle";
+
     }
 
     else if (nota >= 51) {
+
       estado = "Aprobado";
       estadoClass = "estado-aprobado";
       notaClass = "np-b";
       icono = "bi-check-circle-fill";
+
     }
 
     else {
+
       estado = "Reprobado";
       estadoClass = "estado-reprobado";
       notaClass = "np-r";
       icono = "bi-x-circle-fill";
+
     }
 
     container.innerHTML += `
       <tr>
 
-        <td>${m.orden || i + 1}</td>
+        <td>
+          ${m.orden || i + 1}
+        </td>
 
-        <td>${m.nombre}</td>
+        <td>
+          ${m.nombre}
+        </td>
 
         <td>
           <span class="nota-pill ${notaClass}">
@@ -126,5 +160,7 @@ async function cargarHistorial(uid) {
 
       </tr>
     `;
+
   });
+
 }

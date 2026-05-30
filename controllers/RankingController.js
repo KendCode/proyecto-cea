@@ -1,11 +1,11 @@
 import {
-  obtenerRanking,
-  obtenerDatosEstudiante
+  obtenerEstudiante,
+  obtenerEstudiantesPorCarreraNivel,
+  obtenerCalificacionesPorEstudiante,
+  obtenerUsuario
 } from "../services/EstudService.js";
 
-import {
-  auth
-} from "../firebase/auth.js";
+import { auth } from "../firebase/auth.js";
 
 import {
   onAuthStateChanged
@@ -17,119 +17,188 @@ const rankingList =
 const podium =
   document.getElementById("podiumContainer");
 
+function getId(ref) {
 
-// 🔥 CARGAR RANKING
+  if (!ref) return null;
+
+  if (typeof ref === "string") {
+
+    return ref.includes("/")
+      ? ref.split("/").pop()
+      : ref;
+  }
+
+  return ref.id;
+}
+
 async function cargarRanking(uid) {
 
   try {
 
-    // 🔥 DATOS DEL ESTUDIANTE
+    // ESTUDIANTE LOGUEADO
     const estudiante =
-      await obtenerDatosEstudiante(uid);
+      await obtenerEstudiante(uid);
 
     if (!estudiante) {
 
       rankingList.innerHTML =
-        "No existe estudiante";
+        "<p>No existe estudiante</p>";
 
       return;
     }
 
-    // 🔥 CARRERA Y NIVEL
-    const carreraId = getId(est.carreraId || est.carrera);
-    const nivelId = getId(est.nivelId || est.nivel);
+    const carreraId =
+      getId(estudiante.carreraId);
 
-    // 🔥 TODOS LOS DATOS
-    const data =
-      await obtenerRanking();
+    const nivelId =
+      getId(estudiante.nivelId);
 
-    // 🔥 FILTRAR
-    const filtrados =
-      data.filter(est =>
-
-        est.carreraId === carreraId &&
-        est.nivelId === nivelId
-
+    // TODOS LOS ESTUDIANTES DEL MISMO NIVEL
+    const estudiantes =
+      await obtenerEstudiantesPorCarreraNivel(
+        carreraId,
+        nivelId
       );
 
-    // 🔥 ORDENAR
-    filtrados.sort((a, b) =>
+    const ranking = [];
 
-      b.sumatoria - a.sumatoria
+    for (const est of estudiantes) {
 
+      const notas =
+        await obtenerCalificacionesPorEstudiante(
+          est.id
+        );
+
+      let total = 0;
+
+      notas.forEach(n => {
+        total += Number(n.nota || 0);
+      });
+
+      const usuario =
+        await obtenerUsuario(
+          est.usuarioId
+        );
+
+      ranking.push({
+
+        nombre: usuario
+          ? `${usuario.nombre} ${usuario.ap_paterno}`
+          : "Sin nombre",
+
+        total,
+
+        cantidad: notas.length,
+
+        promedio:
+          notas.length > 0
+            ? (total / notas.length).toFixed(1)
+            : 0,
+
+        porcentaje:
+          ((total / 500) * 100).toFixed(1)
+
+      });
+    }
+
+    // ORDENAR
+    ranking.sort(
+      (a, b) => b.total - a.total
     );
 
-    // 🔥 TOP 3
-    const top3 =
-      filtrados.slice(0, 3);
+    // TOP 3
+    const primero = ranking[0];
+    const segundo = ranking[1];
+    const tercero = ranking[2];
 
-    const [first, second, third] =
-      top3;
-
-    // 🔥 PODIUM
     podium.innerHTML = `
-    
+
       <div class="podium-card podium-2">
-        <div>${second?.nombre || "-"}</div>
-        <div>${second?.sumatoria || 0}</div>
+        <span class="podium-medal">🥈</span>
+        <div class="podium-name">
+          ${segundo?.nombre || "-"}
+        </div>
+        <div class="podium-pts">
+          ${segundo?.total || 0} pts
+        </div>
       </div>
 
       <div class="podium-card podium-1">
-        <div>${first?.nombre || "-"}</div>
-        <div>${first?.sumatoria || 0}</div>
+        <span class="podium-medal">🥇</span>
+        <div class="podium-name">
+          ${primero?.nombre || "-"}
+        </div>
+        <div class="podium-pts">
+          ${primero?.total || 0} pts
+        </div>
       </div>
 
       <div class="podium-card podium-3">
-        <div>${third?.nombre || "-"}</div>
-        <div>${third?.sumatoria || 0}</div>
+        <span class="podium-medal">🥉</span>
+        <div class="podium-name">
+          ${tercero?.nombre || "-"}
+        </div>
+        <div class="podium-pts">
+          ${tercero?.total || 0} pts
+        </div>
       </div>
 
     `;
 
-    // 🔥 LISTA
-    rankingList.innerHTML =
-      filtrados.map((e, i) => `
-      
+    // LISTA
+    rankingList.innerHTML = "";
+
+    ranking.forEach((item, index) => {
+
+      rankingList.innerHTML += `
+
         <div class="rank-row">
 
-          <div>${i + 1}</div>
+          <div style="width:40px">
+            ${index + 1}
+          </div>
 
-          <div>${e.nombre}</div>
+          <div style="flex:1">
+            ${item.nombre}
+          </div>
 
-          <div>${e.sumatoria} pts</div>
+          <div style="min-width:180px">
+            Promedio:
+            ${item.promedio}
+          </div>
 
-          <div>${e.porcentaje}%</div>
+          <div style="width:80px;text-align:right">
+            ${item.total}
+          </div>
 
         </div>
-      
-      `).join("");
 
-  } catch (error) {
+      `;
+    });
+
+  }
+
+  catch (error) {
 
     console.error(
       "Error ranking:",
       error
     );
-
   }
 }
 
+onAuthStateChanged(
+  auth,
+  (user) => {
 
-// 🔥 ESPERAR LOGIN
-onAuthStateChanged(auth, (user) => {
+    if (!user) {
 
-  if (user) {
+      window.location.href =
+        "../auth/login.html";
+
+      return;
+    }
 
     cargarRanking(user.uid);
-
-  } else {
-
-    console.log(
-      "No hay sesión"
-    );
-
-    window.location.href =
-      "../../index.html";
   }
-
-});
+);

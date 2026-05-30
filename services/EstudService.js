@@ -184,3 +184,44 @@ export async function obtenerUsuario(uid) {
   };
 
 }
+export async function obtenerEstudiantesPorCarreraNivel(
+  carreraId,
+  nivelId
+) {
+
+  const q = query(
+    collection(db, "estudiantes"),
+    where("carreraId", "==", doc(db, "carreras", carreraId)),
+    where("nivelId", "==", doc(db, "niveles", nivelId))
+  );
+
+  const snap =
+    await getDocs(q);
+
+  return snap.docs.map(d => ({
+    id: d.id,
+    ...d.data()
+  }));
+}
+
+export async function obtenerCalificacionesPorEstudiante(
+  estudianteId
+) {
+
+  const q = query(
+    collection(db, "calificaciones"),
+    where(
+      "estudianteId",
+      "==",
+      estudianteId
+    )
+  );
+
+  const snap =
+    await getDocs(q);
+
+  return snap.docs.map(d => ({
+    id: d.id,
+    ...d.data()
+  }));
+}

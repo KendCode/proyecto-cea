@@ -720,7 +720,31 @@ a {
 
     margin-bottom: 6px;
 }
+.nav-link-custom {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: none;
+      background: transparent;
+      color: rgba(255, 255, 255, .82);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: .25s ease;
+    }
 
+    .nav-link-custom:hover {
+      background: rgba(239, 68, 68, .15);
+      color: #ef4444;
+      transform: translateX(4px);
+    }
+
+    .nav-link-custom i {
+      font-size: 18px;
+    }
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 768px) {

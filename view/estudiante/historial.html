@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -62,12 +61,12 @@
         Mi Historial
       </a>
 
-      <!-- <a href="ranking.html">
+      <a href="ranking.html">
         <i class="bi bi-trophy-fill"></i>
         Ranking
       </a>
 
-      <a href="perfil.html">
+      <!-- <a href="perfil.html">
         <i class="bi bi-person-circle"></i>
         Mi Perfil
       </a>
@@ -76,12 +75,11 @@
         <i class="bi bi-bell-fill"></i>
         Notificaciones
       </a> -->
-
-      <a href="#" id="logoutBtn">
-        <i class="bi bi-box-arrow-right"></i>
+      <button class="nav-link-custom" id="btnLogout" style="width:100%;margin-top:10px;border:none;background:none">
+        <i class="bi bi-box-arrow-left"></i>
         Cerrar Sesión
-      </a>
-
+      </button>
+      
     </nav>
 
   </aside>
@@ -228,6 +226,7 @@
 
     });
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="module" src="../../controllers/HistorialController.js"></script>
 </body>
 

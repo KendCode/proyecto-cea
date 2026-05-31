@@ -351,24 +351,65 @@ async function cargarDashboard(uid) {
 }
 
 
-// =========================
-// LOGOUT
-// =========================
-
+// ==========================
+// CERRAR SESION
+// ==========================
 document
-  .getElementById("logoutBtn")
+  .getElementById("btnLogout")
   .addEventListener(
     "click",
     async () => {
 
-      await signOut(auth);
+      const result =
+        await Swal.fire({
 
-      localStorage.removeItem(
-        "usuario"
-      );
+          title:
+            "¿Cerrar sesión?",
 
-      window.location.href =
-        "../auth/login.html";
+          text:
+            "Tu sesión actual se cerrará.",
+
+          icon:
+            "question",
+
+          showCancelButton:
+            true,
+
+          confirmButtonText:
+            "Sí, cerrar",
+
+          cancelButtonText:
+            "Cancelar",
+
+          confirmButtonColor:
+            "#ef4444",
+
+          cancelButtonColor:
+            "#64748b",
+
+          background:
+            "#0f172a",
+
+          color:
+            "#fff"
+
+        });
+
+      // ==========================
+      // CONFIRMAR
+      // ==========================
+      if (result.isConfirmed) {
+
+        await signOut(auth);
+
+        localStorage.removeItem(
+          "usuario"
+        );
+
+        window.location.href =
+          "../auth/login.html";
+
+      }
 
     }
   );

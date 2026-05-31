@@ -1,673 +1,643 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="auto">
+<html lang="es" data-bs-theme="auto">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="" />
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors" />
-    <title>CEA Abya Yala</title>
-    <!-- Favicons — añade tus propios archivos en /img/favicons/ cuando los tengas -->
-    <!-- <link rel="icon" href="img/favicons/favicon.ico" /> -->
-    <meta name="theme-color" content="#712cf9" />
-    <!-- Theme switcher: debe cargar ANTES del CSS para evitar flash de tema incorrecto -->
-    <script src="assets/js/color-modes.js"></script>
-    <!-- Bootstrap 5.3.8 CSS (CDN) — hash verificado en getbootstrap.com -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- Estilos propios -->
-    <link href="assets/css/carousel.css" rel="stylesheet" />
-    <link href="assets/css/main.css" rel="stylesheet" />
-</head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Centro de Educación Alternativa Abya Yala — Formación técnica y humanística en Viacha, Bolivia." />
+  <title>CEA Abya Yala</title>
+  <meta name="theme-color" content="#0d2340" />
 
-<!-- ============================================================
-     BODY
-     ============================================================ -->
+  <!-- Theme switcher: carga ANTES del CSS -->
+  <script src="assets/js/color-modes.js"></script>
+
+  <!-- Bootstrap 5.3.8 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Estilos propios -->
+  <link href="assets/css/carousel.css" rel="stylesheet" />
+  <link href="assets/css/main.css" rel="stylesheet" />
+</head>
 
 <body>
 
-    <!-- --------------------------------------------------------
-       SVG SPRITE (hidden) — icons used throughout the page
-       -------------------------------------------------------- -->
-    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-        <symbol id="check2" viewBox="0 0 16 16">
-            <path
-                d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
-        </symbol>
-        <symbol id="circle-half" viewBox="0 0 16 16">
-            <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z" />
-        </symbol>
-        <symbol id="moon-stars-fill" viewBox="0 0 16 16">
-            <path
-                d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z" />
-            <path
-                d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z" />
-        </symbol>
-        <symbol id="sun-fill" viewBox="0 0 16 16">
-            <path
-                d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z" />
-        </symbol>
-    </svg>
+  <!-- SVG SPRITE (hidden) -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+    <symbol id="check2" viewBox="0 0 16 16">
+      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+    </symbol>
+    <symbol id="circle-half" viewBox="0 0 16 16">
+      <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z" />
+    </symbol>
+    <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+      <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z" />
+      <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z" />
+    </symbol>
+    <symbol id="sun-fill" viewBox="0 0 16 16">
+      <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z" />
+    </symbol>
+  </svg>
 
-    <!-- --------------------------------------------------------
-       THEME TOGGLE — fixed bottom-right corner
-       -------------------------------------------------------- -->
-    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-        <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
-            aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
-            <svg class="bi my-1 theme-icon-active" aria-hidden="true">
-                <use href="#circle-half"></use>
-            </svg>
-            <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+  <!-- THEME TOGGLE -->
+  <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+    <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
+      aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
+      <svg class="bi my-1 theme-icon-active" aria-hidden="true"><use href="#circle-half"></use></svg>
+      <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+      <li>
+        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+          <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="#sun-fill"></use></svg>
+          Claro
+          <svg class="bi ms-auto d-none" aria-hidden="true"><use href="#check2"></use></svg>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+          <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="#moon-stars-fill"></use></svg>
+          Oscuro
+          <svg class="bi ms-auto d-none" aria-hidden="true"><use href="#check2"></use></svg>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+          <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="#circle-half"></use></svg>
+          Auto
+          <svg class="bi ms-auto d-none" aria-hidden="true"><use href="#check2"></use></svg>
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ====================================================
+       HEADER / NAVBAR
+  ===================================================== -->
+  <header id="inicio">
+    <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
+      <div class="container">
+
+        <!-- LOGO + NOMBRE -->
+        <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+          <img src="assets/img/logos/logoSinFondoCea.png" alt="Logo CEA" class="logo-navbar">
+          <span class="titulo-navbar">C.E.A. "ABYA YALA"</span>
+        </a>
+
+        <!-- HAMBURGUESA -->
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+          aria-label="Abrir menú">
+          <span class="navbar-toggler-icon"></span>
         </button>
 
-        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-            <li>
-                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
-                    aria-pressed="false">
-                    <svg class="bi me-2 opacity-50" aria-hidden="true">
-                        <use href="#sun-fill"></use>
-                    </svg>
-                    Light
-                    <svg class="bi ms-auto d-none" aria-hidden="true">
-                        <use href="#check2"></use>
-                    </svg>
-                </button>
+        <!-- MENÚ -->
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-center align-items-lg-center gap-lg-1">
+
+            <li class="nav-item">
+              <a class="nav-link active" href="#inicio">
+                <i class="bi bi-house-door-fill me-1"></i>Inicio
+              </a>
             </li>
-            <li>
-                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"
-                    aria-pressed="false">
-                    <svg class="bi me-2 opacity-50" aria-hidden="true">
-                        <use href="#moon-stars-fill"></use>
-                    </svg>
-                    Dark
-                    <svg class="bi ms-auto d-none" aria-hidden="true">
-                        <use href="#check2"></use>
-                    </svg>
-                </button>
+            <li class="nav-item">
+              <a class="nav-link" href="#nosotros">
+                <i class="bi bi-people-fill me-1"></i>Nosotros
+              </a>
             </li>
-            <li>
-                <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto"
-                    aria-pressed="true">
-                    <svg class="bi me-2 opacity-50" aria-hidden="true">
-                        <use href="#circle-half"></use>
-                    </svg>
-                    Auto
-                    <svg class="bi ms-auto d-none" aria-hidden="true">
-                        <use href="#check2"></use>
-                    </svg>
-                </button>
+            <li class="nav-item">
+              <a class="nav-link" href="#carreras">
+                <i class="bi bi-mortarboard-fill me-1"></i>Carreras
+              </a>
             </li>
-        </ul>
+            <li class="nav-item">
+              <a class="nav-link" href="#contacto">
+                <i class="bi bi-envelope-fill me-1"></i>Contacto
+              </a>
+            </li>
+
+            <!-- LOGIN -->
+            <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+              <a href="view/auth/login.html" class="btn btn-login px-4 rounded-pill fw-semibold">
+                <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar Sesión
+              </a>
+            </li>
+
+          </ul>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+
+  <!-- ====================================================
+       MAIN
+  ===================================================== -->
+  <main>
+
+    <!-- CAROUSEL -->
+    <div id="myCarousel" class="carousel slide mb-0" data-bs-ride="carousel">
+
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+
+      <div class="carousel-inner">
+
+        <div class="carousel-item active">
+          <img src="assets/img/home/portada.png" alt="CEA Abya Yala — Portada" class="d-block w-100 img-carousel">
+          <div class="carousel-caption text-start">
+            <h5>Formación para el Futuro</h5>
+            <p class="d-none d-md-block">Educación técnica y humanística de calidad en Viacha, Bolivia.</p>
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <img src="assets/img/home/portada.png" alt="CEA Abya Yala — Carreras" class="d-block w-100 img-carousel">
+          <div class="carousel-caption text-start">
+            <h5>10 Carreras Técnicas</h5>
+            <p class="d-none d-md-block">Aprende una profesión con docentes especializados y experiencia práctica.</p>
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <img src="assets/img/home/portada.png" alt="CEA Abya Yala — Comunidad" class="d-block w-100 img-carousel">
+          <div class="carousel-caption text-start">
+            <h5>Comunidad Educativa</h5>
+            <p class="d-none d-md-block">Comprometidos con el desarrollo integral de jóvenes y adultos.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+      </button>
+
+    </div><!-- /#myCarousel -->
+
+    <!-- STATS STRIP -->
+    <div class="stats-strip" style="background: linear-gradient(90deg, #0d2340, #1a4a8a); color: #fff; padding: 1.5rem 0;">
+      <div class="container">
+        <div class="row text-center g-3">
+          <div class="col-6 col-md-3">
+            <div style="font-size:1.8rem; font-weight:800; font-family:'Playfair Display',serif; color:#f7c948;">10</div>
+            <div style="font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase; opacity:0.8;">Carreras</div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div style="font-size:1.8rem; font-weight:800; font-family:'Playfair Display',serif; color:#f7c948;">+500</div>
+            <div style="font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase; opacity:0.8;">Estudiantes</div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div style="font-size:1.8rem; font-weight:800; font-family:'Playfair Display',serif; color:#f7c948;">5</div>
+            <div style="font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase; opacity:0.8;">Días / semana</div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div style="font-size:1.8rem; font-weight:800; font-family:'Playfair Display',serif; color:#f7c948;">100%</div>
+            <div style="font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase; opacity:0.8;">Compromiso</div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- --------------------------------------------------------
-       HEADER — fixed navbar
-       -------------------------------------------------------- -->
-    <!-- ========================================================
-     HEADER RESPONSIVE
-======================================================== -->
-    <header id="inicio">
-
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
-
-            <div class="container">
-
-                <!-- LOGO + NOMBRE -->
-                <a class="navbar-brand d-flex align-items-center gap-2" href="#">
-
-                    <img src="assets/img/logos/logoSinFondoCea.png" alt="Logo CEA" class="logo-navbar">
-
-                    <span class="titulo-navbar">
-                        C.E.A. "ABYA YALA"
-                    </span>
-
-                </a>
-
-                <!-- BOTÓN HAMBURGUESA -->
-                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
-                    aria-label="Toggle navigation">
-
-                    <span class="navbar-toggler-icon"></span>
-
-                </button>
-
-                <!-- MENÚ -->
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-center align-items-lg-center">
-
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#inicio">
-
-                                <i class="bi bi-house-door-fill me-1"></i>
-                                Inicio
-
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#nosotros">
-
-                                <i class="bi bi-people-fill me-1"></i>
-                                Nosotros
-
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#carreras">
-
-                                <i class="bi bi-mortarboard-fill me-1"></i>
-                                Carreras
-
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#contacto">
-
-                                <i class="bi bi-envelope-fill me-1"></i>
-                                Contacto
-
-                            </a>
-                        </li>
-
-                        <!-- LOGIN -->
-                        <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-
-                            <a href="view/auth/login.html" class="btn btn-warning px-3 rounded-pill fw-semibold">
-
-                                <i class="bi bi-box-arrow-in-right me-1"></i>
-                                Iniciar Sesión
-
-                            </a>
-
-                        </li>
-
-                    </ul>
-
-                </div>
-
-            </div>
-
-        </nav>
-    </header>
-
-    <!-- ============================================================
-       MAIN CONTENT
-       ============================================================ -->
-    <main>
-
-        <!-- --------------------------------------------------------
-         CAROUSEL
-         -------------------------------------------------------- -->
-
-        <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
-
-            <!-- Slide indicators -->
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            </div>
-
-            <!-- Slides -->
-            <div class="carousel-inner">
-
-                <!-- Slide 1 -->
-                <div class="carousel-item active">
-                    <img src="assets/img/home/portada.png" alt="Portada Centro Abya Yala"
-                        class="d-block w-100 img-carousel">
-                </div>
-
-                <!-- Slide 2 -->
-                <div class="carousel-item">
-                    <img src="assets/img/home/portada.png" alt="Portada Centro Abya Yala"
-                        class="d-block w-100 img-carousel">
-                </div>
-
-                <!-- Slide 3 -->
-                <div class="carousel-item">
-                    <img src="assets/img/home/portada.png" alt="Portada Centro Abya Yala"
-                        class="d-block w-100 img-carousel">
-                </div>
-
-            </div><!-- /.carousel-inner -->
-            <!-- Controls -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-
-        </div><!-- /#myCarousel -->
-
-        <!-- --------------------------------------------------------
+    <!-- ====================================================
          CARRERAS
-         -------------------------------------------------------- -->
-        <hr class="featurette-divider" id="carreras">
-        <div class="text-center mb-5">
-            <h1 class="fw-bold" style="object-fit: cover;">Carreras</h1>
+    ===================================================== -->
+    <hr class="featurette-divider" id="carreras">
+
+    <div class="container marketing">
+
+      <!-- ── TÍTULO GENERAL ── -->
+      <div class="text-center mb-5">
+        <span class="section-badge"><i class="bi bi-mortarboard-fill me-1"></i>Oferta Educativa</span>
+        <h1 class="section-title mt-2">Nuestras <span>Carreras</span></h1>
+        <p class="section-subtitle mt-2">Elige tu camino profesional con formación de calidad.</p>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           BLOQUE 1 — CARRERAS TÉCNICAS
+      ══════════════════════════════════════════ -->
+      <div class="carreras-bloque mb-5">
+
+        <!-- Encabezado del bloque -->
+        <div class="carreras-bloque-header carreras-bloque-tecnica mb-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="carreras-bloque-icon">
+              <i class="bi bi-tools"></i>
+            </div>
+            <div>
+              <h3 class="carreras-bloque-titulo mb-0">Carreras Técnicas</h3>
+              <p class="carreras-bloque-desc mb-0">Formación práctica orientada al mundo laboral y productivo.</p>
+            </div>
+            <span class="ms-auto badge-count">10 carreras</span>
+          </div>
         </div>
-        <div class="container marketing">
 
-            <!-- CARRERAS -->
-            <div class="row">
+        <!-- Todas las carreras técnicas en un solo row: 4 columnas en PC, 3 en tablet, 2 en móvil -->
+        <div class="row g-3 carreras-grid">
 
-                <div class="col-lg-4">
-                    <img src="assets/img/carreras/medicina.jpg" alt="Imagen de perfil" class="rounded-circle"
-                        width="140" height="140" style="object-fit: cover;">
-                    </svg>
-                    <h2 class="fw-normal">Medicina Tradicional</h2>
-                    <!-- <p>Some representative placeholder content for the three columns of text below the carousel. This is
-                        the first column.</p>
-                    <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p> -->
-                </div>
-
-                <div class="col-lg-4">
-                    <img src="assets/img/carreras/sistemas.jpg" alt="Imagen de perfil" class="rounded-circle"
-                        width="140" height="140" style="object-fit: cover;">
-                    <h2 class="fw-normal">Sistemas Informáticos</h2>
-                </div>
-
-                <div class="col-lg-4">
-                    <img src="assets/img/carreras/electronica.jpg" alt="Imagen de perfil" class="rounded-circle"
-                        width="140" height="140" style="object-fit: cover;">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="var(--bs-secondary-color)" />
-                    </svg>
-                    <h2 class="fw-normal">Electrónica</h2>
-                </div>
-
-            </div><!-- /.row (3 columns) -->
-            <!-- CARRERAS -->
-            <div class="row">
-
-                <div class="col-lg-4">
-                    <img src="assets/img/carreras/parvularia.jpg" alt="Imagen de perfil" class="rounded-circle"
-                        width="140" height="140" style="object-fit: cover;">
-                    </svg>
-                    <h2 class="fw-normal">Parvularia</h2>
-                </div>
-
-                <div class="col-lg-4">
-                    <img src="assets/img/carreras/secretariado.jpg" alt="Imagen de perfil" class="rounded-circle"
-                        width="140" height="140" style="object-fit: cover;">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="var(--bs-secondary-color)" />
-                    </svg>
-                    <h2 class="fw-normal">Secretariado Ejecutivo</h2>
-                </div>
-
-                <div class="col-lg-4">
-                    <img src="assets/img/carreras/procurador.jpg" alt="Imagen de perfil" class="rounded-circle"
-                        width="140" height="140" style="object-fit: cover;">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="var(--bs-secondary-color)" />
-                    </svg>
-                    <h2 class="fw-normal">Procurador Legal de Derecho</h2>
-                </div>
-
-            </div><!-- /.row (3 columns) -->
-            <!-- CARRERAS -->
-            <div class="row">
-
-                <div class="col-lg-4">
-                    <img src="assets/img/carreras/construccion.jpg" alt="Imagen de perfil" class="rounded-circle"
-                        width="140" height="140" style="object-fit: cover;">
-                    </svg>
-                    <h2 class="fw-normal">Construcción Civil</h2>
-                </div>
-
-                <div class="col-lg-4">
-                    <img src="assets/img/carreras/mecanica.jpg" alt="Imagen de perfil" class="rounded-circle"
-                        width="140" height="140" style="object-fit: cover;">
-                    </svg>
-                    <h2 class="fw-normal">Mecánica Automotriz</h2>
-                </div>
-
-                <div class="col-lg-4">
-                    <img src="assets/img/carreras/gastronomia.jpg" alt="Imagen de perfil" class="rounded-circle"
-                        width="140" height="140" style="object-fit: cover;">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="var(--bs-secondary-color)" />
-                    </svg>
-                    <h2 class="fw-normal">Gastronomia</h2>
-                </div>
-
-            </div><!-- /.row (3 columns) -->
-            <!-- CARRERAS -->
-            <div class="row">
-
-                <div class="col-lg-4">
-                    <img src="assets/img/carreras/eduPrimaria.jpg" alt="Imagen de perfil" class="rounded-circle"
-                        width="140" height="140" style="object-fit: cover;">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="var(--bs-secondary-color)" />
-                    </svg>
-                    <h2 class="fw-normal">Educación Primaria</h2>
-                </div>
-
-                <div class="col-lg-4">
-                    <img src="assets/img/carreras/eduSec.jpg" alt="Imagen de perfil" class="rounded-circle" width="140"
-                        height="140" style="object-fit: cover;">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="var(--bs-secondary-color)" />
-                    </svg>
-                    <h2 class="fw-normal">Educación Secundaria</h2>
-                </div>
-
-                <div class="col-lg-4">
-                    <img src="assets/img/carreras/eduTecTec.jpg" alt="Imagen de perfil" class="rounded-circle"
-                        width="140" height="140" style="object-fit: cover;">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="var(--bs-secondary-color)" />
-                    </svg>
-                    <h2 class="fw-normal">Educación Técnica Tecnológica</h2>
-                </div>
-
-            </div><!-- /.row (3 columns) -->
-
-            <!-- FEATURETTES -->
-            <hr class="featurette-divider" id="nosotros" />
-            <div class="text-center mb-5">
-                <h1 class="fw-bold" style="object-fit: cover;">Nosotros</h1>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="carrera-card">
+              <div class="img-wrap">
+                <img src="assets/img/carreras/medicina.jpg" alt="Medicina Tradicional">
+              </div>
+              <div class="carrera-icon-badge"><i class="bi bi-heart-pulse-fill"></i></div>
+              <h2>Medicina Tradicional</h2>
             </div>
-            <!-- Featurette 1 — text left, image right -->
-            <div class="row featurette">
-                <div class="col-md-7">
-                    <h2 class="featurette-heading fw-normal lh-1">
-                        Centro de Educación Alternativa “Abya Yala”
-                        <span class="text-body-secondary"> Formación técnica y humanística.</span>
-                    </h2>
-                    <p class="lead">El Centro de Educación Alternativa “Abya Yala” brinda oportunidades
-                        de formación a jóvenes y adultos, promoviendo una educación de
-                        calidad basada en valores, responsabilidad y desarrollo integral.</p>
-                </div>
-                <div class="col-md-5">
-                    <img src="assets/img/logos/logoSinFondoCea.png" alt="Imagen"
-                        class="featurette-image img-fluid mx-auto d-block" width="500" height="500"
-                        style="object-fit: contain;">
-                </div>
+          </div>
+
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="carrera-card">
+              <div class="img-wrap">
+                <img src="assets/img/carreras/sistemas.jpg" alt="Sistemas Informáticos">
+              </div>
+              <div class="carrera-icon-badge"><i class="bi bi-pc-display-horizontal"></i></div>
+              <h2>Sistemas Informáticos</h2>
             </div>
+          </div>
 
-            <hr class="featurette-divider" />
-
-            <!-- Featurette 2 — text right, image left -->
-            <div class="row featurette">
-                <div class="col-md-7 order-md-2">
-                    <h2 class="featurette-heading fw-normal lh-1">
-                        Participación en Desfiles Institucionales
-                        <span class="text-body-secondary">Cultura, civismo y compromiso.</span>
-                    </h2>
-                    <p class="lead">Nuestra institución participa activamente en desfiles y actos
-                        cívicos, fortaleciendo el espíritu de unidad, identidad cultural
-                        y compromiso con la comunidad educativa y la sociedad.</p>
-                </div>
-                <div class="col-md-5 order-md-1">
-                    <img src="assets/img/home/desfile.jpg" alt="Imagen"
-                        class="featurette-image img-fluid mx-auto d-block" width="500" height="500"
-                        style="object-fit: contain; border-radius: 10px;">
-                </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="carrera-card">
+              <div class="img-wrap">
+                <img src="assets/img/carreras/electronica.jpg" alt="Electrónica">
+              </div>
+              <div class="carrera-icon-badge"><i class="bi bi-cpu-fill"></i></div>
+              <h2>Electrónica</h2>
             </div>
+          </div>
 
-            <hr class="featurette-divider" />
-
-            <!-- Featurette 3 — text left, image right -->
-            <div class="row featurette">
-                <div class="col-md-7">
-                    <h2 class="featurette-heading fw-normal lh-1">
-                        Feria Educativa y Productiva
-                        <span class="text-body-secondary">Innovación y aprendizaje práctico.</span>
-                    </h2>
-                    <p class="lead">El Centro de Educación Alternativa “Abya Yala” organiza ferias educativas donde
-                        los estudiantes presentan proyectos, emprendimientos y trabajos
-                        prácticos desarrollados durante su formación académica y técnica.</p>
-                </div>
-                <div class="col-md-5">
-                    <img src="assets/img/home/feria.jpg" alt="Imagen" class="featurette-image img-fluid mx-auto d-block"
-                        width="500" height="500" style="object-fit: contain; border-radius: 10px;">
-                </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="carrera-card">
+              <div class="img-wrap">
+                <img src="assets/img/carreras/parvularia.jpg" alt="Parvularia">
+              </div>
+              <div class="carrera-icon-badge"><i class="bi bi-emoji-smile-fill"></i></div>
+              <h2>Parvularia</h2>
             </div>
+          </div>
 
-        </div><!-- /.container.marketing -->
-        <!-- ========================================================
-             CONTACTO
-        ======================================================== -->
-        <hr class="featurette-divider" id="contacto" />
-        <section id="contacto" class="py-5">
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="carrera-card">
+              <div class="img-wrap">
+                <img src="assets/img/carreras/secretariado.jpg" alt="Secretariado Ejecutivo">
+              </div>
+              <div class="carrera-icon-badge"><i class="bi bi-briefcase-fill"></i></div>
+              <h2>Secretariado Ejecutivo</h2>
+            </div>
+          </div>
 
-            <div class="container">
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="carrera-card">
+              <div class="img-wrap">
+                <img src="assets/img/carreras/procurador.jpg" alt="Procurador Legal">
+              </div>
+              <div class="carrera-icon-badge"><i class="bi bi-journal-text"></i></div>
+              <h2>Procurador Legal de Derecho</h2>
+            </div>
+          </div>
 
-                <!-- TÍTULO -->
-                <div class="text-center mb-5">
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="carrera-card">
+              <div class="img-wrap">
+                <img src="assets/img/carreras/construccion.jpg" alt="Construcción Civil">
+              </div>
+              <div class="carrera-icon-badge"><i class="bi bi-building-fill"></i></div>
+              <h2>Construcción Civil</h2>
+            </div>
+          </div>
 
-                    <h2 class="fw-bold">
-                        Contacto
-                    </h2>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="carrera-card">
+              <div class="img-wrap">
+                <img src="assets/img/carreras/mecanica.jpg" alt="Mecánica Automotriz">
+              </div>
+              <div class="carrera-icon-badge"><i class="bi bi-gear-wide-connected"></i></div>
+              <h2>Mecánica Automotriz</h2>
+            </div>
+          </div>
 
-                    <p class="text-body-secondary">
-                        ¿Tienes dudas o quieres más información? Contáctanos.
-                    </p>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="carrera-card">
+              <div class="img-wrap">
+                <img src="assets/img/carreras/gastronomia.jpg" alt="Gastronomía">
+              </div>
+              <div class="carrera-icon-badge"><i class="bi bi-egg-fried"></i></div>
+              <h2>Gastronomía</h2>
+            </div>
+          </div>
 
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="carrera-card">
+              <div class="img-wrap">
+                <img src="assets/img/carreras/eduTecTec.jpg" alt="Educación Técnica Tecnológica">
+              </div>
+              <div class="carrera-icon-badge"><i class="bi bi-cpu"></i></div>
+              <h2>Educación Técnica Tecnológica</h2>
+            </div>
+          </div>
+
+        </div><!-- /.carreras-grid -->
+
+      </div><!-- /.carreras-bloque TÉCNICAS -->
+
+      <!-- Separador entre bloques -->
+      <div class="carreras-separador my-5">
+        <span class="carreras-separador-line"></span>
+        <span class="carreras-separador-dot"></span>
+        <span class="carreras-separador-line"></span>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           BLOQUE 2 — CARRERAS DE EDUCACIÓN
+      ══════════════════════════════════════════ -->
+      <div class="carreras-bloque mb-2">
+
+        <!-- Encabezado del bloque -->
+        <div class="carreras-bloque-header carreras-bloque-educacion mb-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="carreras-bloque-icon edu">
+              <i class="bi bi-book-half"></i>
+            </div>
+            <div>
+              <h3 class="carreras-bloque-titulo mb-0">Carreras de Educación</h3>
+              <p class="carreras-bloque-desc mb-0">Formación docente para transformar la educación boliviana.</p>
+            </div>
+            <span class="ms-auto badge-count badge-count-edu">2 Niveles</span>
+          </div>
+        </div>
+
+        <!-- 2 carreras centradas, mismo tamaño que las técnicas -->
+        <div class="row g-3 carreras-grid justify-content-center">
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="carrera-card carrera-card-edu">
+              <div class="img-wrap img-wrap-edu">
+                <img src="assets/img/carreras/eduPrimaria.jpg" alt="Educación Primaria">
+              </div>
+              <div class="carrera-icon-badge carrera-icon-edu"><i class="bi bi-book-fill"></i></div>
+              <h2>Educación Primaria</h2>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="carrera-card carrera-card-edu">
+              <div class="img-wrap img-wrap-edu">
+                <img src="assets/img/carreras/eduSec.jpg" alt="Educación Secundaria">
+              </div>
+              <div class="carrera-icon-badge carrera-icon-edu"><i class="bi bi-mortarboard-fill"></i></div>
+              <h2>Educación Secundaria</h2>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.carreras-bloque EDUCACIÓN -->
+
+      <!-- ====================================================
+           NOSOTROS
+      ===================================================== -->
+      <hr class="featurette-divider" id="nosotros" />
+
+      <div class="text-center mb-5">
+        <span class="section-badge"><i class="bi bi-people-fill me-1"></i>Quiénes Somos</span>
+        <h1 class="section-title mt-2">Nosotros</h1>
+        <p class="section-subtitle mt-2">Conoce nuestra historia, misión y compromiso educativo.</p>
+      </div>
+
+      <!-- Featurette 1 -->
+      <div class="row featurette align-items-center">
+        <div class="col-md-7">
+          <h2 class="featurette-heading fw-normal lh-1">
+            Centro de Educación Alternativa "Abya Yala"
+            <span class="text-body-secondary d-block mt-1" style="font-size:1.4rem;">Formación técnica y humanística.</span>
+          </h2>
+          <p class="lead">El Centro de Educación Alternativa "Abya Yala" brinda oportunidades
+            de formación a jóvenes y adultos, promoviendo una educación de
+            calidad basada en valores, responsabilidad y desarrollo integral.</p>
+          <div class="d-flex gap-3 mt-4 flex-wrap">
+            <div class="d-flex align-items-center gap-2" style="color: var(--cea-sky);">
+              <i class="bi bi-patch-check-fill fs-5"></i>
+              <span style="font-size:0.9rem; font-weight:600;">Certificación Oficial</span>
+            </div>
+            <div class="d-flex align-items-center gap-2" style="color: var(--cea-sky);">
+              <i class="bi bi-people-fill fs-5"></i>
+              <span style="font-size:0.9rem; font-weight:600;">Docentes Especializados</span>
+            </div>
+            <div class="d-flex align-items-center gap-2" style="color: var(--cea-sky);">
+              <i class="bi bi-calendar3 fs-5"></i>
+              <span style="font-size:0.9rem; font-weight:600;">Horarios Flexibles</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <img src="assets/img/logos/logoSinFondoCea.png" alt="Logo CEA Abya Yala"
+            class="featurette-image img-fluid mx-auto d-block" width="500" height="500"
+            style="object-fit: contain;">
+        </div>
+      </div>
+
+      <hr class="featurette-divider" />
+
+      <!-- Featurette 2 -->
+      <div class="row featurette align-items-center">
+        <div class="col-md-7 order-md-2">
+          <h2 class="featurette-heading fw-normal lh-1">
+            Participación en Desfiles Institucionales
+            <span class="text-body-secondary d-block mt-1" style="font-size:1.4rem;">Cultura, civismo y compromiso.</span>
+          </h2>
+          <p class="lead">Nuestra institución participa activamente en desfiles y actos
+            cívicos, fortaleciendo el espíritu de unidad, identidad cultural
+            y compromiso con la comunidad educativa y la sociedad.</p>
+        </div>
+        <div class="col-md-5 order-md-1">
+          <img src="assets/img/home/desfile.jpg" alt="Desfile institucional CEA"
+            class="featurette-image img-fluid mx-auto d-block" width="500" height="500"
+            style="object-fit: cover; border-radius: 12px;">
+        </div>
+      </div>
+
+      <hr class="featurette-divider" />
+
+      <!-- Featurette 3 -->
+      <div class="row featurette align-items-center">
+        <div class="col-md-7">
+          <h2 class="featurette-heading fw-normal lh-1">
+            Feria Educativa y Productiva
+            <span class="text-body-secondary d-block mt-1" style="font-size:1.4rem;">Innovación y aprendizaje práctico.</span>
+          </h2>
+          <p class="lead">El Centro de Educación Alternativa "Abya Yala" organiza ferias educativas donde
+            los estudiantes presentan proyectos, emprendimientos y trabajos
+            prácticos desarrollados durante su formación académica y técnica.</p>
+        </div>
+        <div class="col-md-5">
+          <img src="assets/img/home/feria.jpg" alt="Feria educativa CEA"
+            class="featurette-image img-fluid mx-auto d-block" width="500" height="500"
+            style="object-fit: cover; border-radius: 12px;">
+        </div>
+      </div>
+
+    </div><!-- /.container.marketing -->
+
+    <!-- ====================================================
+         CONTACTO
+    ===================================================== -->
+    
+    <hr class="featurette-divider" />
+    <section class="py-5 bg-body-secondary" id="contacto">
+
+      <div class="container">
+
+        <div class="text-center mb-5">
+          <span class="section-badge"><i class="bi bi-envelope-fill me-1"></i>Escríbenos</span>
+          <h2 class="section-title mt-2">Contacto</h2>
+          <p class="section-subtitle mt-2">¿Tienes dudas o quieres más información? Estamos para ayudarte.</p>
+        </div>
+
+        <div class="row g-4 align-items-stretch">
+
+          <!-- INFORMACIÓN -->
+          <div class="col-12 col-lg-5">
+            <div class="contact-box h-100">
+
+              <div class="contact-item">
+                <div class="contact-icon text-primary"><i class="bi bi-geo-alt-fill"></i></div>
+                <div>
+                  <h6>Dirección</h6>
+                  <p class="mb-0">Carretera a Viacha, Unidad Educativa Viliroco Distrito 6<br>Viacha, Bolivia</p>
                 </div>
+              </div>
 
-                <!-- CONTENIDO -->
-                <div class="row g-4 align-items-stretch">
-
-                    <!-- INFORMACIÓN -->
-                    <div class="col-12 col-lg-5">
-
-                        <div class="contact-box h-100">
-
-                            <!-- Dirección -->
-                            <div class="contact-item">
-
-                                <div class="contact-icon text-primary">
-                                    <i class="bi bi-geo-alt-fill"></i>
-                                </div>
-
-                                <div>
-                                    <h6 class="fw-bold mb-1">Dirección</h6>
-
-                                    <p class="text-body-secondary mb-0">
-                                        Carretera a Viacha, Unidad Educativa Viliroco Distrito 6 <br>
-                                        Viacha, Bolivia
-                                    </p>
-                                </div>
-
-                            </div>
-
-                            <!-- WhatsApp -->
-                            <div class="contact-item">
-
-                                <div class="contact-icon text-success">
-                                    <i class="bi bi-whatsapp"></i>
-                                </div>
-
-                                <div>
-                                    <h6 class="fw-bold mb-1">WhatsApp</h6>
-
-                                    <a href="https://wa.me/59171265932"
-                                        class="text-decoration-none text-body-secondary">
-
-                                        +591 71265932
-
-                                    </a>
-                                </div>
-
-                            </div>
-
-                            <!-- Facebook -->
-                            <div class="contact-item">
-
-                                <div class="contact-icon text-primary">
-                                    <i class="bi bi-facebook"></i>
-                                </div>
-
-                                <div>
-                                    <h6 class="fw-bold mb-1">Facebook</h6>
-
-                                    <a href="https://www.facebook.com/p/CEA-Abya-Yala-61584201192653/" target="_blank"
-                                        class="text-decoration-none text-body-secondary">
-
-                                        CEA Abya Yala
-
-                                    </a>
-                                </div>
-
-                            </div>
-
-                            <!-- TikTok -->
-                            <div class="contact-item">
-
-                                <div class="contact-icon text-dark">
-                                    <i class="bi bi-tiktok"></i>
-                                </div>
-
-                                <div>
-                                    <h6 class="fw-bold mb-1">TikTok</h6>
-
-                                    <a href="https://www.tiktok.com/@c.e.a.abyayala" target="_blank"
-                                        class="text-decoration-none text-body-secondary">
-
-                                        @c.e.a.abyayala
-
-                                    </a>
-                                </div>
-
-                            </div>
-
-                            <!-- Horario -->
-                            <div class="contact-item border-0 pb-0">
-
-                                <div class="contact-icon text-warning">
-                                    <i class="bi bi-clock-fill"></i>
-                                </div>
-
-                                <div>
-                                    <h6 class="fw-bold mb-1">Horario</h6>
-
-                                    <p class="text-body-secondary mb-0">
-                                        Miercoles a Viernes: 19:00 – 21:30
-                                        <br>
-                                        Sábados: 13:00 – 17:00
-                                        <br>
-                                        Domingos: 09:00 – 12:00
-                                    </p>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <!-- MAPA -->
-                    <div class="col-12 col-lg-7">
-
-                        <div class="map-container">
-
-                            <!-- MAPA -->
-                            <div class="map-container">
-
-                                <iframe src="https://www.google.com/maps?q=Colegio+Viliroco&output=embed"
-                                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                                    title="Ubicación Colegio Viliroco">
-                                </iframe>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
+              <div class="contact-item">
+                <div class="contact-icon text-success"><i class="bi bi-whatsapp"></i></div>
+                <div>
+                  <h6>WhatsApp</h6>
+                  <a href="https://wa.me/59171265932">+591 71265932</a>
                 </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon text-primary"><i class="bi bi-facebook"></i></div>
+                <div>
+                  <h6>Facebook</h6>
+                  <a href="https://www.facebook.com/p/CEA-Abya-Yala-61584201192653/" target="_blank">CEA Abya Yala</a>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon text-dark"><i class="bi bi-tiktok"></i></div>
+                <div>
+                  <h6>TikTok</h6>
+                  <a href="https://www.tiktok.com/@c.e.a.abyayala" target="_blank">@c.e.a.abyayala</a>
+                </div>
+              </div>
+
+              <div class="contact-item border-0 pb-0 mb-0">
+                <div class="contact-icon text-warning"><i class="bi bi-clock-fill"></i></div>
+                <div>
+                  <h6>Horario</h6>
+                  <p class="mb-0">
+                    Miércoles a Viernes: 19:00 – 21:30<br>
+                    Sábados: 13:00 – 17:00<br>
+                    Domingos: 09:00 – 12:00
+                  </p>
+                </div>
+              </div>
 
             </div>
+          </div>
 
-        </section>
-        <!-- --------------------------------------------------------
+          <!-- MAPA -->
+          <div class="col-12 col-lg-7">
+            <div class="map-container">
+              <iframe src="https://www.google.com/maps?q=Colegio+Viliroco&output=embed"
+                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                title="Ubicación Colegio Viliroco">
+              </iframe>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================
          FOOTER
-         -------------------------------------------------------- -->
-        <footer class="bg-dark text-light py-4 mt-5">
-            <div class="container">
+    ===================================================== -->
+    <footer class="py-4 mt-0">
+      <div class="container">
+        <div class="row align-items-center text-center text-md-start">
 
-                <div class="row align-items-center text-center text-md-start">
-
-                    <!-- Logo y texto -->
-                    <div class="col-12 col-md-8 mb-3 mb-md-0">
-
-                        <div class="d-flex flex-column flex-md-row align-items-center">
-
-                            <a href="#" class="me-md-3 mb-2 mb-md-0 text-decoration-none">
-                                <img src="assets/img/logos/logoSinFondoCea.png" alt="Logo" width="55" height="55"
-                                    style="object-fit: contain;">
-                            </a>
-
-                            <span class="text-light">
-                                © 2026 Centro Educativo Abya Yala - Todos los derechos reservados
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                    <!-- Redes sociales -->
-                    <div class="col-12 col-md-4">
-
-                        <ul class="nav justify-content-center justify-content-md-end list-unstyled d-flex">
-
-                            <li class="ms-3">
-                                <a class="text-light" href="https://www.facebook.com/p/CEA-Abya-Yala-61584201192653/">
-
-                                    <i class="bi bi-facebook fs-4"></i>
-
-                                </a>
-                            </li>
-
-                            <li class="ms-3">
-                                <a class="text-light" href="https://www.tiktok.com/@c.e.a.abyayala">
-
-                                    <i class="bi bi-tiktok fs-4"></i>
-
-                                </a>
-                            </li>
-
-                            <li class="ms-3">
-                                <a class="text-light" href="https://wa.me/59171265932">
-
-                                    <i class="bi bi-whatsapp fs-4"></i>
-
-                                </a>
-                            </li>
-
-                        </ul>
-
-                    </div>
-
+          <div class="col-12 col-md-8 mb-3 mb-md-0">
+            <div class="d-flex flex-column flex-md-row align-items-center gap-3">
+              <a href="#" class="text-decoration-none">
+                <img src="assets/img/logos/logoSinFondoCea.png" alt="Logo CEA" width="52" height="52"
+                  style="object-fit: contain;">
+              </a>
+              <div>
+                <div style="font-family:'Playfair Display',serif; color:#fff; font-size:1rem; font-weight:700;">
+                  C.E.A. "ABYA YALA"
                 </div>
-
+                <div class="text-light" style="font-size:0.82rem;">
+                  © 2026 Centro de Educación Alternativa Abya Yala — Todos los derechos reservados
+                </div>
+              </div>
             </div>
-        </footer>
-    </main><!-- /main -->
+          </div>
 
-    <!-- ============================================================
-       SCRIPTS — Bootstrap 5 CDN + custom JS
-       ============================================================ -->
-    <!-- Bootstrap 5.3.8 JS bundle (incluye Popper) — hash verificado en getbootstrap.com -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
-    <script src="assets/js/main.js"></script>
+          <div class="col-12 col-md-4">
+            <ul class="nav justify-content-center justify-content-md-end list-unstyled d-flex gap-2 mb-0">
+              <li>
+                <a class="text-light d-flex align-items-center justify-content-center rounded-circle"
+                  style="width:38px;height:38px;background:rgba(255,255,255,0.12);transition:background .2s;"
+                  href="https://www.facebook.com/p/CEA-Abya-Yala-61584201192653/"
+                  onmouseover="this.style.background='rgba(255,255,255,0.25)'"
+                  onmouseout="this.style.background='rgba(255,255,255,0.12)'"
+                  aria-label="Facebook">
+                  <i class="bi bi-facebook fs-5"></i>
+                </a>
+              </li>
+              <li>
+                <a class="text-light d-flex align-items-center justify-content-center rounded-circle"
+                  style="width:38px;height:38px;background:rgba(255,255,255,0.12);transition:background .2s;"
+                  href="https://www.tiktok.com/@c.e.a.abyayala"
+                  onmouseover="this.style.background='rgba(255,255,255,0.25)'"
+                  onmouseout="this.style.background='rgba(255,255,255,0.12)'"
+                  aria-label="TikTok">
+                  <i class="bi bi-tiktok fs-5"></i>
+                </a>
+              </li>
+              <li>
+                <a class="text-light d-flex align-items-center justify-content-center rounded-circle"
+                  style="width:38px;height:38px;background:rgba(255,255,255,0.12);transition:background .2s;"
+                  href="https://wa.me/59171265932"
+                  onmouseover="this.style.background='rgba(255,255,255,0.25)'"
+                  onmouseout="this.style.background='rgba(255,255,255,0.12)'"
+                  aria-label="WhatsApp">
+                  <i class="bi bi-whatsapp fs-5"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+  <script src="assets/js/main.js"></script>
 
 </body>
-
 </html>

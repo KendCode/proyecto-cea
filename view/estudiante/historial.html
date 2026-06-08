@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,7 +13,35 @@
   <link rel="stylesheet" href="../../assets/css/EstudianteStyle.css">
   <link rel="stylesheet" href="../../assets/css/Historial.css">
 </head>
-
+<style>
+  /* Your custom styles here */
+  .topbar {
+    height: 75px;
+    background: #0d1117;
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(0, 0, 0, .05);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .menu-btn {
+    width: 46px;
+    height: 46px;
+    border: none;
+    border-radius: 14px;
+    background-color: #0d1117;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    color: white;
+    border: 1px solid rgb(128, 128, 128);
+    transition: all .2s ease;
+}
+</style>
 <body>
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
@@ -79,7 +108,7 @@
         <i class="bi bi-box-arrow-left"></i>
         Cerrar Sesión
       </button>
-      
+
     </nav>
 
   </aside>
@@ -87,16 +116,35 @@
   <!-- OVERLAY -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
+  <!-- BOTON MENU -->
+   <!-- MENU -->
+   
+  <!-- <button id="openSidebar" style="position:fixed;top:15px;left:15px;width:50px;height:50px;z-index:2000;border:none;border-radius:12px;background:#0f172a;color:white;">
+    <i class="bi bi-list"></i>
+  </button> -->
+
+
   <main id="main">
+    <!-- TOPBAR -->
+    <header class="topbar">
+
+      <button class="menu-btn" id="openSidebar">
+        <i class="bi bi-list"></i>
+      </button>
+
+      <div class="topbar-title">
+        <div style="font-size:22px;font-weight:800;letter-spacing:-.4px">Mi Historial Académico</div>
+          <div style="color:var(--txt-muted);font-size:13px;margin-top:3px">Todas tus calificaciones organizadas por
+            gestión
+          </div>
+      </div>
+
+    </header>
     <div class="page-content">
 
       <div
         style="margin-bottom:24px;animation:fadeUp .4s ease;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-        <div>
-          <div style="font-size:22px;font-weight:800;letter-spacing:-.4px">Mi Historial Académico</div>
-          <div style="color:var(--txt-muted);font-size:13px;margin-top:3px">Todas tus calificaciones organizadas por
-            gestión</div>
-        </div>
+        
         <div style="display:flex;gap:10px">
           <!-- <select class="filter-select" id="filtroGestion" onchange="filtrar()">
             <option value="">Todas las gestiones</option>
@@ -228,6 +276,7 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="module" src="../../controllers/HistorialController.js"></script>
+
 </body>
 
 </html>

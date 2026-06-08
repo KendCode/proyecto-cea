@@ -153,28 +153,99 @@ async function cargarRanking(uid) {
 
       rankingList.innerHTML += `
 
-        <div class="rank-row">
-
-          <div style="width:40px">
-            ${index + 1}
+          <div
+            class="card mb-3 border-0 shadow-sm ranking-card"
+            style="
+              background:#1e293b;
+              color:white;
+              border-radius:16px;
+            "
+          >
+              
+            <div class="card-body">
+              
+              <div class="row align-items-center g-3">
+              
+                <!-- POSICION -->
+                <div class="col-3 col-md-1 text-center">
+              
+                  <div
+                    class="fw-bold fs-4"
+                    style="color:#60a5fa;"
+                  >
+                    #${index + 1}
+                  </div>
+              
+                </div>
+              
+                <!-- NOMBRE -->
+                <div class="col-9 col-md-4">
+              
+                  <div
+                    class="fw-bold"
+                    style="font-size:15px;"
+                  >
+                    ${item.nombre}
+                  </div>
+              
+                  <small style="color:#cbd5e1;">
+                    ${item.porcentaje}%
+                  </small>
+              
+                </div>
+              
+                <!-- BARRA -->
+                <div class="col-12 col-md-5">
+              
+                  <div
+                    class="progress"
+                    style="
+                      height:12px;
+                      background:#334155;
+                    "
+                  >
+              
+                    <div
+                      class="progress-bar"
+                      style="
+                        width:${item.porcentaje}%;
+                        background:linear-gradient(
+                          135deg,
+                          #10b981,
+                          #3b82f6
+                        );
+                      "
+                    >
+                    </div>
+              
+                  </div>
+              
+                </div>
+              
+                <!-- PUNTOS -->
+                <div
+                  class="col-12 col-md-2 text-md-end text-center"
+                >
+              
+                  <span
+                    class="badge rounded-pill fs-6"
+                    style="
+                      background:#0ea5e9;
+                      color:white;
+                    "
+                  >
+                    ${item.total} pts
+                  </span>
+              
+                </div>
+              
+              </div>
+              
+            </div>
+              
           </div>
-
-          <div style="flex:1">
-            ${item.nombre}
-          </div>
-
-          <div style="min-width:180px">
-            Promedio:
-            ${item.promedio}
-          </div>
-
-          <div style="width:80px;text-align:right">
-            ${item.total}
-          </div>
-
-        </div>
-
-      `;
+              
+          `;
     });
 
   }

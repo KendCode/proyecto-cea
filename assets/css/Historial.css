@@ -448,11 +448,23 @@ a {
 
 /* RESPONSIVE */
 
-@media(max-width:991px) {
+@media (max-width: 991px){
 
-    #gridPrincipal {
-        grid-template-columns: 1fr;
-    }
+  #sidebar{
+    transform: translateX(-100%);
+  }
+
+  #sidebar.active{
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay{
+    display:none;
+  }
+
+  .sidebar-overlay.active{
+    display:block;
+  }
 
 }
 
@@ -832,4 +844,11 @@ a {
         background: #dc2626;
         color: white;
     }
+}
+.sidebar{
+  left:-290px;
+}
+
+.sidebar.active{
+  left:0;
 }

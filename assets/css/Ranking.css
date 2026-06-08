@@ -247,34 +247,37 @@ a {
 #main {
     min-height: 100vh;
     transition: .3s;
-    padding-top: 28px;
+    padding-top: 0px;
 }
 
 /* ================= TOPBAR ================= */
 
 .topbar {
     height: 75px;
-    background: rgba(0, 174, 255, 0.85);
+    background: #0d1117;
     backdrop-filter: blur(15px);
     border-bottom: 1px solid rgba(0, 0, 0, .05);
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 0 24px;
+    padding: 0 2px;
     position: sticky;
     top: 0;
     z-index: 100;
-}
+  }
 
 .menu-btn {
     width: 46px;
     height: 46px;
     border: none;
     border-radius: 14px;
-    background: white;
+    background-color: #0d1117;
     font-size: 22px;
     cursor: pointer;
     box-shadow: var(--shadow);
+    color: white;
+    border: 1px solid rgb(128, 128, 128);
+    transition: all .2s ease;
 }
 
 .topbar-title h3 {
@@ -448,28 +451,46 @@ a {
 
 /* RESPONSIVE */
 
-@media(max-width:991px) {
+@media (max-width: 991px){
 
-    #gridPrincipal {
-        grid-template-columns: 1fr;
-    }
+  #sidebar{
+    transform: translateX(-100%);
+  }
+
+  #sidebar.active{
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay{
+    display:none;
+  }
+
+  .sidebar-overlay.active{
+    display:block;
+  }
 
 }
 
-@media(min-width:992px) {
+@media(min-width:992px){
 
-    .sidebar {
-        left: 0;
+    .sidebar{
+        transform:none !important;
     }
 
-    #main {
-        margin-left: 280px;
+    #main{
+        margin-left:280px;
     }
 
-    .menu-btn,
-    .sidebar-close,
-    .sidebar-overlay {
-        display: none;
+    .menu-btn{
+        display:none;
+    }
+
+    .sidebar-close{
+        display:none;
+    }
+
+    .sidebar-overlay{
+        display:none !important;
     }
 
 }
@@ -928,4 +949,55 @@ a {
   font-family: var(--mono);
   font-weight: 800;
   font-size: 14px;
+}
+.ranking-card{
+    transition:.3s ease;
+}
+
+.ranking-card:hover{
+    transform:translateY(-3px);
+}
+
+@media (max-width:768px){
+
+    .ranking-card .card-body{
+        padding:14px;
+    }
+
+    .ranking-card .fw-bold{
+        font-size:14px !important;
+    }
+
+    .progress{
+        margin-top:8px;
+    }
+
+    .badge{
+        width:100%;
+        padding:10px;
+    }
+
+}
+.podium-wrap{
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+@media(max-width:768px){
+
+  .podium-wrap{
+      flex-direction:column;
+      align-items:stretch;
+  }
+
+  .podium-card,
+  .podium-1,
+  .podium-2,
+  .podium-3{
+      width:100%;
+  }
+
 }

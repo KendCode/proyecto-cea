@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión Académica</title>
+
+    <link rel="stylesheet" href="../../assets/css/Gestion.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Overlay Responsive -->
+    <div id="sidebar-overlay"></div>
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar">
+
+        <a href="#" class="sidebar-brand">
+
+            <div class="brand-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+
+            <div class="brand-text">
+                <div class="name">
+                    CEA Abya Yala
+                </div>
+
+                <div class="sub">
+                    Sistema Académico
+                </div>
+            </div>
+
+        </a>
+
+        <div class="nav-section">
+
+            <div class="nav-section-label">
+                MENÚ PRINCIPAL
+            </div>
+
+            <div class="nav-item-wrap">
+
+                <a href="dashboard.html" class="nav-link-custom">
+
+                    <i class="fas fa-chart-line"></i>
+                    Dashboard
+
+                </a>
+
+                <a href="estudiantes.html" class="nav-link-custom">
+
+                    <i class="fas fa-users"></i>
+                    Estudiantes
+
+                </a>
+
+                <a href="calificaciones.html" class="nav-link-custom">
+
+                    <i class="fas fa-file-alt"></i>
+                    Calificaciones
+
+                </a>
+
+                <a href="gestionAcademica.html" class="nav-link-custom active">
+
+                    <i class="fas fa-graduation-cap"></i>
+                    Gestión Académica
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <!-- TOPBAR -->
+    <header id="topbar">
+
+        <button class="hamburger" id="btnMenu">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div>
+
+            <div class="topbar-title">
+                Gestión Académica
+            </div>
+
+            <div class="topbar-sub">
+                Promociones, reprobaciones y egresados
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- CONTENIDO -->
+    <main id="main">
+
+        <div class="page-content">
+
+            <!-- RESUMEN -->
+
+            <div class="dashboard-grid">
+
+                <div class="stat-card">
+
+                    <div class="icon-wrap ic-blue">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+
+                    <div class="stat-value" id="gestionActual">
+
+                        I-2026
+
+                    </div>
+
+                    <div class="stat-label">
+                        Gestión Activa
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="icon-wrap ic-green">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+
+                    <div class="stat-value" id="promovidos">
+
+                        0
+
+                    </div>
+
+                    <div class="stat-label">
+                        Promovidos
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="icon-wrap ic-red">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+
+                    <div class="stat-value" id="reprobados">
+
+                        0
+
+                    </div>
+
+                    <div class="stat-label">
+                        Reprobados
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="icon-wrap ic-purple">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+
+                    <div class="stat-value" id="egresados">
+
+                        0
+
+                    </div>
+
+                    <div class="stat-label">
+                        Egresados
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ACCIONES -->
+
+            <div class="panel-card mt-4">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <div class="section-title">
+                            Acciones Académicas
+                        </div>
+
+                        <div class="section-sub">
+                            Administración de periodos y promociones
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="acciones-grid">
+
+                    <button id="btnAbrirGestion" class="btn btn-success">
+
+                        <i class="fas fa-lock-open"></i>
+                        Abrir Gestión
+
+                    </button>
+
+                    <button id="btnCerrarGestion" class="btn btn-danger">
+
+                        <i class="fas fa-lock"></i>
+                        Cerrar Gestión
+
+                    </button>
+
+                    <button id="btnProcesarPromociones" class="btn btn-primary">
+
+                        <i class="fas fa-graduation-cap"></i>
+                        Procesar Promociones
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- TABLA -->
+
+            <div class="panel-card mt-4">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <div class="section-title">
+                            Historial de Promociones
+                        </div>
+
+                        <div class="section-sub">
+                            Últimos movimientos realizados
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="table-responsive">
+
+                    <table class="data-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Estudiante</th>
+                                <th>Nivel Anterior</th>
+                                <th>Nuevo Nivel</th>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="tablaPromociones">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+    <!-- MODAL ABRIR GESTIÓN -->
+    <div class="modal-backdrop" id="modalAbrir">
+
+        <div class="modal">
+
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    Abrir Gestión Académica
+                </h3>
+
+                <button class="modal-close" onclick="cerrarModal('modalAbrir')">
+                    &times;
+                </button>
+            </div>
+
+            <p class="modal-text">
+                Seleccione la nueva gestión que desea habilitar.
+            </p>
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Nueva Gestión
+                </label>
+                <select id="gestionNueva" class="form-control">
+                </select>
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn btn-ghost" onclick="cerrarModal('modalAbrir')">
+
+                    Cancelar
+
+                </button>
+
+                <button class="btn btn-success" id="confirmarAbrir">
+
+                    Abrir Gestión
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MODAL CERRAR GESTIÓN -->
+    <div class="modal-backdrop" id="modalCerrar">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <h3 class="modal-title">
+
+                    Cerrar Gestión
+
+                </h3>
+
+                <button class="modal-close" onclick="cerrarModal('modalCerrar')">
+
+                    &times;
+
+                </button>
+
+            </div>
+
+            <p class="warning-text">
+
+                ⚠ Después del cierre los docentes no
+                podrán registrar ni modificar notas.
+
+            </p>
+
+            <div class="modal-footer">
+
+                <button class="btn btn-ghost" onclick="cerrarModal('modalCerrar')">
+
+                    Cancelar
+
+                </button>
+
+                <button class="btn btn-danger" id="confirmarCerrar">
+
+                    Cerrar Gestión
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MODAL PROCESAR -->
+    <div class="modal-backdrop" id="modalProcesar">
+
+        <div class="modal modal-lg">
+
+            <div class="modal-header">
+
+                <h3 class="modal-title">
+
+                    Procesar Promociones
+
+                </h3>
+
+                <button class="modal-close" onclick="cerrarModal('modalProcesar')">
+
+                    &times;
+
+                </button>
+
+            </div>
+
+            <div class="alert-danger-custom">
+
+                <i class="fas fa-triangle-exclamation"></i>
+
+                Esta acción evaluará a todos los
+                estudiantes activos y modificará
+                niveles académicos.
+
+            </div>
+
+            <div class="resumen-proceso">
+
+                <div>
+                    <strong>Gestión:</strong>
+                    I-2026
+                </div>
+
+                <div>
+                    <strong>Estudiantes:</strong>
+                    125
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="form-label">
+
+                    Escriba:
+
+                    <strong>
+                        PROCESAR
+                    </strong>
+
+                </label>
+
+                <input type="text" id="txtConfirmacion" class="form-control" placeholder="PROCESAR">
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn btn-ghost" onclick="cerrarModal('modalProcesar')">
+
+                    Cancelar
+
+                </button>
+
+                <button class="btn btn-primary" id="confirmarProcesar" disabled>
+
+                    Procesar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script type="module" src="../../controllers/gestionAcademicaController.js">
+    </script>
+    <script>
+
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebar-overlay");
+        const btnMenu = document.getElementById("btnMenu");
+
+        btnMenu.addEventListener("click", () => {
+
+            sidebar.classList.toggle("open");
+            overlay.classList.toggle("show");
+
+        });
+
+        overlay.addEventListener("click", () => {
+
+            sidebar.classList.remove("open");
+            overlay.classList.remove("show");
+
+        });
+        const modalAbrir =
+            document.getElementById("modalAbrir");
+
+        const modalCerrar =
+            document.getElementById("modalCerrar");
+
+        const modalProcesar =
+            document.getElementById("modalProcesar");
+
+        document
+            .getElementById("btnAbrirGestion")
+            .addEventListener("click", () => {
+
+                modalAbrir.classList.add("show");
+
+            });
+
+        document
+            .getElementById("btnCerrarGestion")
+            .addEventListener("click", () => {
+
+                modalCerrar.classList.add("show");
+
+            });
+
+        document
+            .getElementById("btnProcesarPromociones")
+            .addEventListener("click", () => {
+
+                modalProcesar.classList.add("show");
+
+            });
+        function cerrarModal(id) {
+
+            document
+                .getElementById(id)
+                .classList.remove("show");
+
+        }
+        const txt =
+            document.getElementById(
+                "txtConfirmacion"
+            );
+
+        const btnProcesar =
+            document.getElementById(
+                "confirmarProcesar"
+            );
+
+        txt.addEventListener("input", () => {
+
+            btnProcesar.disabled =
+                txt.value !== "PROCESAR";
+
+        });
+    </script>
+
+</body>
+
+</html>

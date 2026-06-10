@@ -9,12 +9,12 @@ import {
     doc,
     updateDoc,
     addDoc
-} 
-from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+}
+    from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 import {
     auth
 }
-from "../firebase/auth.js";
+    from "../firebase/auth.js";
 
 /* ===========================
    DASHBOARD
@@ -249,9 +249,7 @@ async function obtenerTotalNotas(
    PROMOVER
 =========================== */
 
-async function promoverEstudiante(
-    estudiante
-) {
+async function promoverEstudiante(estudiante) {
 
     const nivelActual =
         await obtenerNivel(
@@ -263,16 +261,17 @@ async function promoverEstudiante(
             nivelActual.orden
         );
 
+    // SI YA NO EXISTE SIGUIENTE NIVEL
     if (!siguienteNivel) {
 
         await marcarComoEgresado(
-            estudiante.id
+            estudiante
         );
 
         return;
-
     }
 
+    // ACTUALIZAR NIVEL DEL ESTUDIANTE
     await updateDoc(
         doc(
             db,
@@ -280,11 +279,11 @@ async function promoverEstudiante(
             estudiante.id
         ),
         {
-            nivelId:
-                siguienteNivel.id
+            nivelId: siguienteNivel.id
         }
     );
 
+    // GUARDAR HISTORIAL
     await addDoc(
         collection(
             db,
@@ -295,7 +294,7 @@ async function promoverEstudiante(
                 estudiante.id,
 
             estudianteNombre:
-                estudiante.nombre || "",
+                estudiante.nombreCompleto || "",
 
             nivelAnterior:
                 nivelActual.sigla,
@@ -303,11 +302,14 @@ async function promoverEstudiante(
             nivelNuevo:
                 siguienteNivel.sigla,
 
+            gestion:
+                estudiante.gestionActual,
+
             fecha:
                 new Date(),
 
-            promovido:
-                true
+            tipo:
+                "PROMOCION"
         }
     );
 
@@ -340,21 +342,48 @@ async function reprobarEstudiante(
 =========================== */
 
 async function marcarComoEgresado(
-    estudianteId
+    estudiante
 ) {
 
     await updateDoc(
         doc(
             db,
             "estudiantes",
-            estudianteId
+            estudiante.id
         ),
         {
-            estado:
+            estado: "EGRESADO",
+            egresado: true
+        }
+    );
+
+    // HISTORIAL DE EGRESO
+    await addDoc(
+        collection(
+            db,
+            "promociones"
+        ),
+        {
+            estudianteId:
+                estudiante.id,
+
+            estudianteNombre:
+                estudiante.nombreCompleto || "",
+
+            nivelAnterior:
+                "TM2",
+
+            nivelNuevo:
                 "EGRESADO",
 
-            egresado:
-                true
+            gestion:
+                estudiante.gestionActual,
+
+            fecha:
+                new Date(),
+
+            tipo:
+                "EGRESO"
         }
     );
 
@@ -485,6 +514,37 @@ async function cargarContadores() {
 
 }
 
+
+
+function formatearFecha(fecha) {
+
+    if (!fecha) return "";
+
+    // Timestamp Firestore
+    if (fecha.seconds) {
+
+        return new Date(fecha.seconds * 1000)
+            .toLocaleDateString(
+                "es-ES",
+                {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                }
+            );
+    }
+
+    // String YYYY-MM-DD
+    return new Date(fecha)
+        .toLocaleDateString(
+            "es-ES",
+            {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            }
+        );
+}
 /* ===========================
    HISTORIAL
 =========================== */
@@ -510,22 +570,66 @@ async function cargarHistorial() {
 
     snapshot.forEach(docu => {
 
-        const p =
-            docu.data();
+    const p = docu.data();
 
-        html += `
-        <tr>
-            <td>${p.estudianteNombre || ""}</td>
-            <td>${p.nivelAnterior || ""}</td>
-            <td>${p.nivelNuevo || ""}</td>
-            <td>Promovido</td>
-            <td>${new Date(p.fecha.seconds * 1000).toLocaleDateString()}</td>
-        </tr>
-        `;
+    html += `
+    <tr>
+
+        <td>${p.estudianteNombre || ""}</td>
+
+        <td>${p.nivelAnterior || ""}</td>
+
+        <td>${p.nivelNuevo || ""}</td>
+
+        <td>${formatearFecha(p.fecha)}</td>
+
+    </tr>
+    `;
 
     });
 
     tbody.innerHTML =
         html;
+
+}
+
+export async function cargarResumenProceso() {
+
+    // Gestión activa
+
+    const qPeriodo = query(
+        collection(db, "periodos"),
+        where("estado", "==", "ACTIVO")
+    );
+
+    const periodoSnapshot =
+        await getDocs(qPeriodo);
+
+    if (!periodoSnapshot.empty) {
+
+        const periodo =
+            periodoSnapshot.docs[0].data();
+
+        document.getElementById(
+            "gestionProceso"
+        ).textContent =
+            periodo.nombre;
+
+    }
+
+    // Estudiantes activos
+
+    const qEstudiantes = query(
+        collection(db, "estudiantes"),
+        where("estado", "==", "ACTIVO")
+    );
+
+    const estudiantesSnapshot =
+        await getDocs(qEstudiantes);
+
+    document.getElementById(
+        "cantidadEstudiantes"
+    ).textContent =
+        estudiantesSnapshot.size;
 
 }

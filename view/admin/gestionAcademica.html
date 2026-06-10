@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../../assets/css/Gestion.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
@@ -18,65 +19,64 @@
 
     <!-- SIDEBAR -->
     <aside id="sidebar">
-
         <a href="#" class="sidebar-brand">
-
-            <div class="brand-icon">
-                <i class="fas fa-graduation-cap"></i>
-            </div>
-
+            <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
             <div class="brand-text">
-                <div class="name">
-                    CEA Abya Yala
-                </div>
-
-                <div class="sub">
-                    Sistema Académico
-                </div>
+                <div class="name">C.E.A. "Abya Yala"</div>
+                <div class="sub">Sistema Académico</div>
             </div>
-
         </a>
 
         <div class="nav-section">
-
-            <div class="nav-section-label">
-                MENÚ PRINCIPAL
-            </div>
-
+            <div class="nav-section-label">Principal</div>
             <div class="nav-item-wrap">
-
                 <a href="dashboard.html" class="nav-link-custom">
-
-                    <i class="fas fa-chart-line"></i>
-                    Dashboard
-
+                    <i class="bi bi-grid-1x2-fill"></i> Dashboard
                 </a>
-
-                <a href="estudiantes.html" class="nav-link-custom">
-
-                    <i class="fas fa-users"></i>
-                    Estudiantes
-
-                </a>
-
-                <a href="calificaciones.html" class="nav-link-custom">
-
-                    <i class="fas fa-file-alt"></i>
-                    Calificaciones
-
-                </a>
-
-                <a href="gestionAcademica.html" class="nav-link-custom active">
-
-                    <i class="fas fa-graduation-cap"></i>
-                    Gestión Académica
-
-                </a>
-
             </div>
-
         </div>
 
+        <div class="nav-section">
+            <div class="nav-section-label">Gestión</div>
+            <div class="nav-item-wrap">
+                <a href="usuarios.html" class="nav-link-custom">
+                    <i class="bi bi-people-fill"></i> Usuarios
+                    <span class="badge-pill">48</span>
+                </a>
+                <a href="estudiantes.html" class="nav-link-custom">
+                    <i class="bi bi-person-badge-fill"></i> Estudiantes
+                </a>
+                <a href="docentes.html" class="nav-link-custom">
+                    <i class="bi bi-person-workspace"></i> Docentes
+                </a>
+                <a href="carreras.html" class="nav-link-custom">
+                    <i class="bi bi-building-fill"></i> Carreras
+                </a>
+                <a href="modulos.html" class="nav-link-custom">
+                    <i class="bi bi-journal-bookmark-fill"></i> Módulos
+                </a>
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-label">Académico</div>
+            <div class="nav-item-wrap">
+                <a href="gestionAcademica.html" class="nav-link-custom active">
+                    <i class="bi bi-bar-chart-fill"></i> Gestión Académica
+                </a>
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="user-card">
+                <div class="user-avatar">A</div>
+                <div class="user-info">
+                    <div class="uname">Admin CEA</div>
+                    <div class="urole">Administrador</div>
+                </div>
+                <i class="bi bi-three-dots-vertical"></i>
+            </div>
+        </div>
     </aside>
 
     <!-- TOPBAR -->
@@ -114,13 +114,7 @@
                     <div class="icon-wrap ic-blue">
                         <i class="fas fa-calendar"></i>
                     </div>
-
-                    <div class="stat-value" id="gestionActual">
-
-                        I-2026
-
-                    </div>
-
+                    <div class="stat-value" id="gestionActual">Cargando...</div>
                     <div class="stat-label">
                         Gestión Activa
                     </div>
@@ -249,7 +243,6 @@
                     </div>
 
                 </div>
-
                 <div class="table-responsive">
 
                     <table class="data-table">
@@ -261,7 +254,6 @@
                                 <th>Estudiante</th>
                                 <th>Nivel Anterior</th>
                                 <th>Nuevo Nivel</th>
-                                <th>Estado</th>
                                 <th>Fecha</th>
 
                             </tr>
@@ -275,9 +267,7 @@
                     </table>
 
                 </div>
-
             </div>
-
         </div>
 
     </main>
@@ -414,12 +404,16 @@
 
                 <div>
                     <strong>Gestión:</strong>
-                    I-2026
+                    <span id="gestionProceso">
+                        Cargando...
+                    </span>
                 </div>
 
                 <div>
                     <strong>Estudiantes:</strong>
-                    125
+                    <span id="cantidadEstudiantes">
+                        Cargando...
+                    </span>
                 </div>
 
             </div>
@@ -459,6 +453,7 @@
         </div>
 
     </div>
+
     <script type="module" src="../../controllers/gestionAcademicaController.js">
     </script>
     <script>

@@ -290,3 +290,175 @@
     }
 
 }
+/* ==========================
+   SIDEBAR MODERNO
+========================== */
+
+#sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-w);
+    height: 100vh; /* ocupa toda la pantalla */
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border);
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    z-index: 1000;
+
+    transition: transform .3s ease;
+}
+
+/* Logo */
+.sidebar-brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:20px;
+
+    border-bottom:1px solid var(--border);
+
+    text-decoration:none;
+
+    flex-shrink:0;
+}
+
+/* Área de menús */
+.sidebar-content{
+    flex:1;
+    overflow-y:auto;
+    padding-bottom:20px;
+}
+
+/* Scroll elegante */
+.sidebar-content::-webkit-scrollbar{
+    width:6px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb{
+    background:var(--border-light);
+    border-radius:20px;
+}
+
+/* Secciones */
+.nav-section{
+    padding:18px 14px 0;
+}
+
+.nav-section-label{
+    font-size:11px;
+    text-transform:uppercase;
+    color:var(--txt-muted);
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.nav-item-wrap{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+/* Links */
+.nav-link-custom{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    color:var(--txt-secondary);
+    text-decoration:none;
+
+    transition:.25s;
+}
+
+.nav-link-custom:hover{
+    background:var(--bg-elevated);
+    color:var(--txt-primary);
+}
+
+.nav-link-custom.active{
+    background:rgba(59,130,246,.15);
+    color:var(--accent);
+}
+
+/* Badge */
+.badge-pill{
+    margin-left:auto;
+
+    background:var(--accent);
+    color:white;
+
+    font-size:10px;
+    font-weight:700;
+
+    padding:2px 8px;
+
+    border-radius:20px;
+}
+
+/* Footer siempre abajo */
+.sidebar-footer{
+    margin-top:auto;
+
+    padding:16px;
+
+    border-top:1px solid var(--border);
+
+    background:var(--bg-surface);
+
+    flex-shrink:0;
+}
+
+/* Usuario */
+.user-card{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.user-avatar{
+    width:40px;
+    height:40px;
+
+    border-radius:50%;
+
+    background:linear-gradient(
+        135deg,
+        var(--accent),
+        var(--accent-2)
+    );
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:white;
+    font-weight:bold;
+}
+
+.user-info{
+    flex:1;
+}
+
+.uname{
+    font-weight:600;
+    color:white;
+}
+
+.urole{
+    font-size:12px;
+    color:var(--txt-muted);
+}
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+    text-align: center;
+}

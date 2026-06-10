@@ -3,7 +3,8 @@ import {
     cerrarGestion,
     procesarPromociones,
     cargarDashboardGestion,
-    cargarSiguienteGestion
+    cargarSiguienteGestion,
+    cargarResumenProceso
 }
 from "../services/promocionService.js";
 
@@ -148,6 +149,47 @@ document
             );
 
         }
+
+    }
+);
+
+const txtConfirmacion =
+document.getElementById(
+    "txtConfirmacion"
+);
+
+const btnProcesar =
+document.getElementById(
+    "confirmarProcesar"
+);
+
+txtConfirmacion.addEventListener(
+    "input",
+    ()=>{
+
+        btnProcesar.disabled =
+            txtConfirmacion.value
+            .trim()
+            .toUpperCase()
+            !== "PROCESAR";
+
+    }
+);
+
+document
+.getElementById("btnProcesarPromociones")
+.addEventListener(
+    "click",
+    async ()=>{
+
+        await cargarResumenProceso();
+
+        document
+        .getElementById(
+            "modalProcesar"
+        )
+        .classList
+        .add("show");
 
     }
 );

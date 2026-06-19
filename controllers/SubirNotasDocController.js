@@ -511,6 +511,51 @@ async function cargarTablaNotas(
       carreraId,
       nivelId
     );
+  
+
+  // CARGAR DATOS DEL USUARIO
+for(const e of estudiantesActuales){
+
+  const usuarioSnap =
+    await getDoc(
+      doc(
+        db,
+        "usuarios",
+        e.usuarioId
+      )
+    );
+
+
+  e.usuario =
+    usuarioSnap.exists()
+      ? usuarioSnap.data()
+      : {};
+
+}
+
+
+// ORDENAR POR APELLIDO
+
+estudiantesActuales.sort((a,b)=>{
+  const nombreA =
+  `${a.usuario.ap_paterno || ""}
+   ${a.usuario.ap_materno || ""}
+   ${a.usuario.nombre || ""}`
+  .toLowerCase();
+  
+  
+  const nombreB =
+  `${b.usuario.ap_paterno || ""}
+   ${b.usuario.ap_materno || ""}
+   ${b.usuario.nombre || ""}`
+  .toLowerCase();
+  
+  
+  
+  return nombreA.localeCompare(nombreB);
+  
+  
+  });
 
   const tbody =
     document.getElementById(
@@ -589,9 +634,9 @@ async function cargarTablaNotas(
 
         <td>
 
-          ${usuario.nombre || ""}
-          ${usuario.ap_paterno || ""}
-          ${usuario.ap_materno || ""}
+        ${usuario.ap_paterno || ""}
+        ${usuario.ap_materno || ""}
+        ${usuario.nombre || ""}
 
         </td>
 
@@ -799,9 +844,24 @@ window.guardarTodas =
       Guardar Todas
     `;
 
-    alert(
-      `${total} notas guardadas`
-    );
+    await Swal.fire({
+
+      title: "¡Registro exitoso!",
+
+      text:
+        `${total} calificaciones fueron guardadas correctamente`,
+
+      icon: "success",
+
+      confirmButtonText: "Aceptar",
+
+      confirmButtonColor: "#16a34a",
+
+      background: "#ffffff",
+
+      color: "#111827"
+
+    });
 
   };
 

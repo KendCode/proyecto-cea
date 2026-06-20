@@ -83,7 +83,25 @@ export async function obtenerNivel(id) {
   };
 
 }
+export async function obtenerNiveles(){
 
+ const snap =
+ await getDocs(
+  collection(db,"niveles")
+ );
+
+
+ return snap.docs
+ .map(doc=>({
+    id:doc.id,
+    ...doc.data()
+ }))
+ .filter(n=>n.estado)
+ .sort(
+  (a,b)=>a.orden-b.orden
+ );
+
+}
 
 // =========================
 // MODULOS
@@ -110,7 +128,28 @@ export async function obtenerModulos(
   }));
 
 }
+export async function obtenerTodosModulos(carreraId){
 
+ const q=query(
+ collection(db,"modulos"),
+ where(
+ "carreraId",
+ "==",
+ carreraId
+ )
+ );
+
+
+ const snap =
+ await getDocs(q);
+
+
+ return snap.docs.map(d=>({
+ id:d.id,
+ ...d.data()
+ }));
+
+}
 
 // =========================
 // CALIFICACIONES
@@ -133,7 +172,28 @@ export async function obtenerCalificaciones(uid) {
   }));
 
 }
+export async function obtenerTodasCalificaciones(estudianteId){
 
+ const q=query(
+ collection(db,"calificaciones"),
+ where(
+ "estudianteId",
+ "==",
+ estudianteId
+ )
+ );
+
+
+ const snap =
+ await getDocs(q);
+
+
+ return snap.docs.map(d=>({
+    id:d.id,
+    ...d.data()
+ }));
+
+}
 
 // =========================
 // DOCENTE

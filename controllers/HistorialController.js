@@ -12,8 +12,9 @@ import {
 import {
 
   obtenerEstudiante,
-  obtenerCalificaciones,
-  obtenerModulos
+  obtenerNiveles,
+  obtenerTodosModulos,
+  obtenerTodasCalificaciones
 
 }
   from "../services/EstudService.js";
@@ -54,17 +55,29 @@ async function cargarHistorial(uid) {
   const carreraId =
     est.carreraId.id;
 
-  const nivelId =
+  const nivelActualId =
     est.nivelId.id;
 
-  const modulos =
-    await obtenerModulos(
-      carreraId,
-      nivelId
+  const niveles =
+    await obtenerNiveles();
+
+  const nivelActual =
+    niveles.find(
+      n => n.id === nivelActualId
     );
 
+  const modulos =
+    await obtenerTodosModulos(
+      carreraId
+    );
+
+
   const notas =
-    await obtenerCalificaciones(est.id);
+    await obtenerTodasCalificaciones(
+      est.id
+    );
+
+
 
   const container =
     document.getElementById(
@@ -86,81 +99,229 @@ async function cargarHistorial(uid) {
     return;
 
   }
-
   modulos.sort(
     (a, b) => a.orden - b.orden
   );
 
-  modulos.forEach((m, i) => {
+  niveles.forEach(nivel => {
 
-    const notaObj =
-      notas.find(
-        n => n.moduloId === m.id
+
+    const modulosNivel =
+      modulos.filter(
+        m => m.nivelId === nivel.id
       );
 
-    const nota =
-      notaObj
-        ? Number(notaObj.nota)
-        : null;
 
-    let estado = "";
-    let estadoClass = "";
-    let notaClass = "";
-    let icono = "";
 
-    if (nota === null) {
+    if (modulosNivel.length === 0)
+      return;
 
-      estado = "Sin calificar";
-      estadoClass = "estado-sin-nota";
-      notaClass = "np-sin";
-      icono = "bi-dash-circle";
 
-    }
 
-    else if (nota >= 51) {
+    const estadoNivel =
+      nivel.orden < nivelActual.orden
+        ? "CURSADO"
+        :
+        nivel.orden === nivelActual.orden
+          ? "ACTUAL"
+          :
+          "PROXIMO";
 
-      estado = "Aprobado";
-      estadoClass = "estado-aprobado";
-      notaClass = "np-b";
-      icono = "bi-check-circle-fill";
 
-    }
-
-    else {
-
-      estado = "Reprobado";
-      estadoClass = "estado-reprobado";
-      notaClass = "np-r";
-      icono = "bi-x-circle-fill";
-
-    }
 
     container.innerHTML += `
-      <tr>
 
-        <td>
-          ${m.orden || i + 1}
-        </td>
+<tr>
 
-        <td>
-          ${m.nombre}
-        </td>
+<td colspan="4">
 
-        <td>
-          <span class="nota-pill ${notaClass}">
-            ${nota !== null ? nota : "-"}
-          </span>
-        </td>
 
-        <td>
-          <span class="estado-badge ${estadoClass}">
-            <i class="bi ${icono}"></i>
-            ${estado}
-          </span>
-        </td>
+<div class="nivel-card">
 
-      </tr>
-    `;
+
+<div class="nivel-header"
+onclick="toggleNivel('${nivel.id}', this)">
+
+
+<div class="nivel-title">
+
+<i class="bi bi-mortarboard-fill"></i>
+
+${nivel.nombre}
+
+</div>
+
+
+<i class="bi bi-chevron-left icono-flecha"></i>
+
+
+</div>
+
+
+
+<div 
+class="nivel-content"
+id="nivel-${nivel.id}">
+
+
+<table class="historial-table">
+
+
+<thead>
+
+<tr>
+
+<th width="70">
+#
+</th>
+
+
+<th>
+Módulo
+</th>
+
+
+<th width="140">
+Nota
+</th>
+
+
+<th width="180">
+Estado
+</th>
+
+
+</tr>
+
+</thead>
+
+
+
+<tbody>
+
+${modulosNivel.map((m, i) => {
+
+
+      const notaObj =
+        notas.find(
+          n => n.moduloId === m.id
+        );
+
+
+      const nota =
+        notaObj
+          ? Number(notaObj.nota)
+          : null;
+
+
+      let estado;
+      let estadoClass = "";
+      let notaClass = "";
+      let icono = "";
+
+
+      if (estadoNivel === "CURSADO") {
+
+        estado = "Cursado";
+        estadoClass = "estado-cursado";
+        notaClass = "nota-cursado";
+        icono = "bi-check-circle";
+
+      }
+
+      else if (estadoNivel === "PROXIMO") {
+
+        estado = "No iniciado";
+        estadoClass = "estado-proximo";
+        notaClass = "nota-proximo";
+        icono = "bi-lock";
+
+      }
+
+      else if (nota === null) {
+
+        estado = "Pendiente";
+        estadoClass = "estado-pendiente";
+        notaClass = "nota-pendiente";
+        icono = "bi-clock";
+
+      }
+
+      else if (nota >= 51) {
+
+        estado = "Aprobado";
+        estadoClass = "estado-aprobado";
+        notaClass = "nota-aprobado";
+        icono = "bi-check-circle-fill";
+
+      }
+
+      else {
+
+        estado = "Reprobado";
+        estadoClass = "estado-reprobado";
+        notaClass = "nota-reprobado";
+        icono = "bi-x-circle-fill";
+
+      }
+
+      return `
+
+<tr>
+
+<td>
+${i + 1}
+</td>
+
+
+<td>
+${m.nombre}
+</td>
+
+<td class="centrado">
+
+<span class="nota-resaltada ${notaClass}">
+${nota !== null ? nota : "-"}
+
+</span>
+
+</td>
+
+<td class="centrado">
+
+<span class="estado-resaltado ${estadoClass}">
+<i class="bi ${icono}"></i>
+${estado}
+</span>
+
+</td>
+
+
+</tr>
+
+`;
+
+
+
+    }).join("")}
+
+</table>
+
+
+</div>
+
+
+</div>
+
+
+</td>
+
+</tr>
+
+
+`;
+
+
 
   });
   // =========================
@@ -201,9 +362,19 @@ async function cargarHistorial(uid) {
       n => Number(n.nota) < 51
     ).length;
 
+  const modulosActuales =
+    modulos.filter(
+      m => m.nivelId === nivelActualId
+    );
+
+
   const pendientes =
-    modulos.length -
-    notasValidas.length;
+    modulosActuales.length -
+    notasValidas.filter(
+      n => modulosActuales.some(
+        m => m.id === n.moduloId
+      )
+    ).length;
 
 
   // =========================
@@ -234,68 +405,68 @@ async function cargarHistorial(uid) {
   document.getElementById(
     "resumenBanner"
   ).style.display = "grid";
-}
 
-// ==========================
-// CERRAR SESION
-// ==========================
-document
-  .getElementById("btnLogout")
-  .addEventListener(
-    "click",
-    async () => {
 
-      const result =
-        await Swal.fire({
+  // ==========================
+  // CERRAR SESION
+  // ==========================
+  document
+    .getElementById("btnLogout")
+    .addEventListener(
+      "click",
+      async () => {
 
-          title:
-            "¿Cerrar sesión?",
+        const result =
+          await Swal.fire({
 
-          text:
-            "Tu sesión actual se cerrará.",
+            title:
+              "¿Cerrar sesión?",
 
-          icon:
-            "question",
+            text:
+              "Tu sesión actual se cerrará.",
 
-          showCancelButton:
-            true,
+            icon:
+              "question",
 
-          confirmButtonText:
-            "Sí, cerrar",
+            showCancelButton:
+              true,
 
-          cancelButtonText:
-            "Cancelar",
+            confirmButtonText:
+              "Sí, cerrar",
 
-          confirmButtonColor:
-            "#ef4444",
+            cancelButtonText:
+              "Cancelar",
 
-          cancelButtonColor:
-            "#64748b",
+            confirmButtonColor:
+              "#ef4444",
 
-          background:
-            "#0f172a",
+            cancelButtonColor:
+              "#64748b",
 
-          color:
-            "#fff"
+            background:
+              "#0f172a",
 
-        });
+            color:
+              "#fff"
 
-      // ==========================
-      // CONFIRMAR
-      // ==========================
-      if (result.isConfirmed) {
+          });
 
-        await signOut(auth);
+        // ==========================
+        // CONFIRMAR
+        // ==========================
+        if (result.isConfirmed) {
 
-        localStorage.removeItem(
-          "usuario"
-        );
+          await signOut(auth);
 
-        window.location.href =
-          "../auth/login.html";
+          localStorage.removeItem(
+            "usuario"
+          );
+
+          window.location.href =
+            "../auth/login.html";
+
+        }
 
       }
-
-    }
-  );
-
+    );
+}

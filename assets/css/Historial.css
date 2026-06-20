@@ -852,3 +852,380 @@ a {
 .sidebar.active{
   left:0;
 }
+
+
+
+
+
+
+
+/* ****** */
+.nivel-content{
+
+max-height:0;
+overflow:hidden;
+transition:.4s ease;
+
+}
+
+
+.nivel-content.active{
+
+max-height:1000px;
+
+}
+
+
+.nivel-header{
+
+cursor:pointer;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+/* =========================
+   TARJETA DE NIVEL
+========================= */
+
+.nivel-card{
+
+background:#0c1118;
+border-radius:18px;
+margin-bottom:18px;
+overflow:hidden;
+box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+
+.nivel-header{
+
+background:#0d1117;
+color:white;
+padding:18px 22px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+font-weight:700;
+
+}
+
+
+
+.nivel-title{
+
+display:flex;
+gap:10px;
+align-items:center;
+
+}
+
+
+
+
+/* =========================
+ TABLA INTERNA
+========================= */
+
+
+.nivel-content table{
+
+width:100%;
+border-collapse:collapse;
+
+}
+
+
+
+.nivel-content td{
+
+padding:14px;
+border-bottom:1px solid #eee;
+
+}
+
+
+
+/* =========================
+ COLORES NOTAS
+========================= */
+
+
+.nota-color{
+
+padding:6px 14px;
+border-radius:20px;
+font-weight:800;
+
+}
+
+
+
+.nota-aprobada{
+
+background:#dcfce7;
+color:#15803d;
+
+}
+
+
+
+.nota-reprobada{
+
+background:#fee2e2;
+color:#b91c1c;
+
+}
+
+
+
+.nota-pendiente{
+
+background:#fef3c7;
+color:#b45309;
+
+}
+
+
+
+.nota-cursada{
+
+background:#dbeafe;
+color:#1d4ed8;
+
+}
+
+
+
+
+/* =========================
+ COLORES ESTADOS
+========================= */
+
+
+.estado-color{
+
+padding:6px 15px;
+border-radius:20px;
+font-weight:700;
+
+}
+
+
+
+.estado-aprobado{
+
+background:#22c55e;
+color:white;
+
+}
+
+
+
+.estado-reprobado{
+
+background:#ef4444;
+color:white;
+
+}
+
+
+
+.estado-pendiente{
+
+background:#f59e0b;
+color:white;
+
+}
+
+
+
+.estado-cursado{
+
+background:#3b82f6;
+color:white;
+
+}
+/* ==========================
+   CENTRAR NOTA Y ESTADO
+========================== */
+
+.centrado{
+
+text-align:center;
+vertical-align:middle;
+
+}
+
+
+
+/* ==========================
+      NOTAS RESALTADAS
+========================== */
+
+
+.nota-resaltada{
+
+display:inline-flex;
+align-items:center;
+justify-content:center;
+
+min-width:60px;
+height:38px;
+
+border-radius:14px;
+
+font-size:16px;
+font-weight:800;
+
+box-shadow:0 4px 10px rgba(0,0,0,.15);
+
+}
+
+
+
+/* APROBADO */
+
+.nota-aprobada{
+
+background:linear-gradient(
+135deg,
+#22c55e,
+#16a34a
+);
+
+color:white;
+
+}
+
+
+
+/* REPROBADO */
+
+.nota-reprobada{
+
+background:linear-gradient(
+135deg,
+#ef4444,
+#b91c1c
+);
+
+color:white;
+
+}
+
+
+
+/* PENDIENTE */
+
+.nota-pendiente{
+
+background:linear-gradient(
+135deg,
+#facc15,
+#d97706
+);
+
+color:white;
+
+}
+
+
+
+/* CURSADO */
+
+.nota-cursada{
+
+background:linear-gradient(
+135deg,
+#3b82f6,
+#1d4ed8
+);
+
+color:white;
+
+}
+
+
+
+
+/* ==========================
+       ESTADOS
+========================== */
+
+
+.estado-resaltado{
+
+
+display:inline-flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:7px;
+
+padding:8px 16px;
+
+border-radius:20px;
+
+font-weight:700;
+
+font-size:14px;
+
+box-shadow:0 4px 12px rgba(0,0,0,.15);
+
+}
+
+
+
+/* APROBADO */
+
+.estado-aprobado{
+
+background:#16a34a;
+
+color:white;
+
+}
+
+
+
+/* REPROBADO */
+
+.estado-reprobado{
+
+background:#dc2626;
+
+color:white;
+
+}
+
+
+
+/* PENDIENTE */
+
+.estado-pendiente{
+
+background:#d97706;
+
+color:white;
+
+}
+
+
+
+/* CURSADO */
+
+.estado-cursado{
+
+background:#2563eb;
+
+color:white;
+
+}

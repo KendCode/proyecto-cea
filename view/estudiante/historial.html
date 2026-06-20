@@ -28,6 +28,7 @@
     top: 0;
     z-index: 100;
   }
+
   .menu-btn {
     width: 46px;
     height: 46px;
@@ -40,8 +41,9 @@
     color: white;
     border: 1px solid rgb(128, 128, 128);
     transition: all .2s ease;
-}
+  }
 </style>
+
 <body>
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
@@ -117,8 +119,8 @@
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
   <!-- BOTON MENU -->
-   <!-- MENU -->
-   
+  <!-- MENU -->
+
   <!-- <button id="openSidebar" style="position:fixed;top:15px;left:15px;width:50px;height:50px;z-index:2000;border:none;border-radius:12px;background:#0f172a;color:white;">
     <i class="bi bi-list"></i>
   </button> -->
@@ -134,9 +136,9 @@
 
       <div class="topbar-title">
         <div style="font-size:22px;font-weight:800;letter-spacing:-.4px">Mi Historial Académico</div>
-          <div style="color:var(--txt-muted);font-size:13px;margin-top:3px">Todas tus calificaciones organizadas por
-            gestión
-          </div>
+        <div style="color:var(--txt-muted);font-size:13px;margin-top:3px">Todas tus calificaciones organizadas por
+          gestión
+        </div>
       </div>
 
     </header>
@@ -144,7 +146,7 @@
 
       <div
         style="margin-bottom:24px;animation:fadeUp .4s ease;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-        
+
         <div style="display:flex;gap:10px">
           <!-- <select class="filter-select" id="filtroGestion" onchange="filtrar()">
             <option value="">Todas las gestiones</option>
@@ -183,34 +185,9 @@
 
         <table class="historial-table">
 
-          <thead>
-
-            <tr>
-
-              <th width="70">
-                #
-              </th>
-
-              <th>
-                Módulo
-              </th>
-
-              <th width="140">
-                Nota
-              </th>
-
-              <th width="180">
-                Estado
-              </th>
-
-            </tr>
-
-          </thead>
-
           <!-- EL CONTROLLER INSERTA LAS FILAS AQUÍ -->
           <tbody id="historialContainer">
 
-            <!-- LOADING -->
             <tr>
 
               <td colspan="4">
@@ -241,6 +218,7 @@
 
     </div>
   </main>
+
   <script type="module" src="../../controllers/sidebarController.js"></script>
   <!-- SCRIPT -->
   <script>
@@ -273,6 +251,106 @@
       }
 
     });
+    let nivelAbierto = null;
+
+
+    window.toggleNivel = function (id, header) {
+
+
+      const div =
+        document.getElementById(
+          "nivel-" + id
+        );
+
+
+      const icono =
+        header.querySelector(
+          ".icono-flecha"
+        );
+
+
+      // Si presiona el mismo nivel
+      if (nivelAbierto === id) {
+
+        div.classList.remove("active");
+
+
+        icono.classList.remove(
+          "bi-chevron-down"
+        );
+
+        icono.classList.add(
+          "bi-chevron-left"
+        );
+
+
+        nivelAbierto = null;
+
+        return;
+
+      }
+
+
+
+      // Cerrar el anterior
+      if (nivelAbierto !== null) {
+
+        const anterior =
+          document.getElementById(
+            "nivel-" + nivelAbierto
+          );
+
+
+        if (anterior) {
+
+          anterior.classList.remove(
+            "active"
+          );
+
+
+          const anteriorIcono =
+            anterior
+              .closest(".nivel-card")
+              .querySelector(
+                ".icono-flecha"
+              );
+
+
+          anteriorIcono.classList.remove(
+            "bi-chevron-down"
+          );
+
+
+          anteriorIcono.classList.add(
+            "bi-chevron-left"
+          );
+
+        }
+
+      }
+
+
+
+      // Abrir nuevo nivel
+
+      div.classList.add(
+        "active"
+      );
+
+
+      icono.classList.remove(
+        "bi-chevron-left"
+      );
+
+
+      icono.classList.add(
+        "bi-chevron-down"
+      );
+
+
+      nivelAbierto = id;
+
+    }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="module" src="../../controllers/HistorialController.js"></script>

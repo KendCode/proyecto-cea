@@ -30,7 +30,9 @@
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
     #sidebar {
-      position: fixed; inset-y: 0; left: 0;
+      position: fixed; 
+      left: 0;
+      height: 100vh;
       width: var(--sidebar-w);
       background: var(--bg-surface);
       border-right: 1px solid var(--border);

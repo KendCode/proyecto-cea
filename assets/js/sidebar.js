@@ -38,9 +38,8 @@ function renderLayout({ title, subtitle, activeLink }) {
         <a href="modulos.html" class="nav-link-custom ${activeLink==='modulos'?'active':''}">
           <i class="bi bi-journals"></i> Módulos
         </a>
-        <a href="niveles.html" class="nav-link-custom ${activeLink==='niveles'?'active':''}">
-          <i class="bi bi-layers-fill"></i> Niveles
-        </a>
+        
+        
       </div>
     </div>
 
@@ -52,6 +51,14 @@ function renderLayout({ title, subtitle, activeLink }) {
         </a>
       </div>
     </div>
+    <div class="nav-section">
+    <div class="nav-section-label">Sistema</div>
+    <div class="nav-item-wrap">
+      <a href="#" class="nav-link-custom">
+        <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+      </a>
+    </div>
+  </div>
 
     <div class="sidebar-footer">
       <div class="user-card" id="userCard">

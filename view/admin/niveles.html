@@ -4,29 +4,121 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CEA — Niveles</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
-  <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
   <link rel="stylesheet" href="../../assets/css/styles.css">
 </head>
 
 <body>
+  <!-- ═══════════════ SIDEBAR ═══════════════ -->
+  <div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
-  <script src="../../assets/js/sidebar.js"></script>
+  <aside id="sidebar">
+    <a href="#" class="sidebar-brand">
+      <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+      <div class="brand-text">
+        <div class="name">C.E.A. "Abya Yala"</div>
+        <div class="sub">Sistema Académico</div>
+      </div>
+    </a>
 
-  <script>
-    renderLayout({
-      title: 'Niveles',
-      subtitle: 'Gestión de niveles académicos',
-      activeLink: 'niveles'
-    });
-  </script>
+    <div class="nav-section">
+      <div class="nav-section-label">Principal</div>
+      <div class="nav-item-wrap">
+        <a href="dashboard.html" class="nav-link-custom active">
+          <i class="bi bi-grid-1x2-fill"></i> Dashboard
+        </a>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Gestión</div>
+      <div class="nav-item-wrap">
+        <a href="usuarios.html" class="nav-link-custom">
+          <i class="bi bi-people-fill"></i> Usuarios
+          <span class="badge-pill">48</span>
+        </a>
+        <a href="estudiantes.html" class="nav-link-custom">
+          <i class="bi bi-person-badge-fill"></i> Estudiantes
+        </a>
+        <a href="docentes.html" class="nav-link-custom">
+          <i class="bi bi-person-workspace"></i> Docentes
+        </a>
+        <a href="carreras.html" class="nav-link-custom">
+          <i class="bi bi-building-fill"></i> Carreras
+        </a>
+        <a href="modulos.html" class="nav-link-custom">
+          <i class="bi bi-journal-bookmark-fill"></i> Módulos
+        </a>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Académico</div>
+      <div class="nav-item-wrap">
+        <a href="gestionAcademica.html" class="nav-link-custom">
+          <i class="bi bi-bar-chart-fill"></i> Gestión Académica
+        </a>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Sistema</div>
+      <div class="nav-item-wrap">
+        <a href="#" class="nav-link-custom" onclick="abrirModalSesion(); return false;">
+          <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+        </a>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar">A</div>
+        <div class="user-info">
+          <div class="uname">Admin CEA</div>
+          <div class="urole">Administrador</div>
+        </div>
+        <i class="bi bi-three-dots-vertical"></i>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════ TOPBAR ═══════════════ -->
+  <header id="topbar">
+    <button class="hamburger" onclick="toggleSidebar()">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <div>
+      <div class="topbar-title">Dashboard</div>
+      <div class="topbar-sub">Bienvenido, Administrador · <span class="gestion-tag">Gestión 2026</span></div>
+    </div>
+
+    <div class="topbar-search">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Buscar usuarios, módulos…" />
+    </div>
+
+    <div class="topbar-actions">
+      <div class="icon-btn" title="Notificaciones">
+        <i class="bi bi-bell"></i>
+        <span class="dot"></span>
+      </div>
+      <div class="icon-btn" title="Modo claro">
+        <i class="bi bi-sun"></i>
+      </div>
+      <div class="icon-btn" title="Perfil">
+        <i class="bi bi-person-circle"></i>
+      </div>
+    </div>
+  </header>
 
   <div id="main">
     <div class="page-content">
@@ -131,12 +223,7 @@
       <div class="form-group">
         <label class="form-label">Nombre</label>
 
-        <input
-          type="text"
-          class="form-control"
-          id="fNombre"
-          placeholder="Técnico Básico"
-        >
+        <input type="text" class="form-control" id="fNombre" placeholder="Técnico Básico">
       </div>
 
       <div class="form-row">
@@ -144,23 +231,13 @@
         <div class="form-group">
           <label class="form-label">Sigla</label>
 
-          <input
-            type="text"
-            class="form-control"
-            id="fSigla"
-            placeholder="TB"
-          >
+          <input type="text" class="form-control" id="fSigla" placeholder="TB">
         </div>
 
         <div class="form-group">
           <label class="form-label">Orden</label>
 
-          <input
-            type="number"
-            class="form-control"
-            id="fOrden"
-            placeholder="1"
-          >
+          <input type="number" class="form-control" id="fOrden" placeholder="1">
         </div>
 
       </div>
@@ -191,7 +268,72 @@
 
   </div>
 
-  <script type="module" src="../../controllers/nivelesController.js"></script>
+ <!-- ================= MODAL CERRAR SESIÓN ================= -->
+  <div id="modalCerrarSesion" class="logout-overlay">
+    <div class="logout-modal">
+      <div class="logout-header">
+        <div class="logout-icon">
+          <i class="bi bi-box-arrow-right"></i>
+        </div>
+        <h3>Cerrar sesión</h3>
+        <p>
+          ¿Está seguro de que desea cerrar la sesión?
+          Tendrá que volver a iniciar sesión para acceder al sistema.
+        </p>
+      </div>
 
+      <div class="logout-actions">
+        <button class="btn-cancelar" onclick="cerrarModalSesion()">
+          <i class="bi bi-x-circle"></i>
+          Cancelar
+        </button>
+
+        <button class="btn-salir" onclick="confirmarCerrarSesion()">
+          <i class="bi bi-box-arrow-right"></i>
+          Cerrar sesión
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <script type="module" src="../../controllers/nivelesController.js"></script>
+  <script>
+        //CERRAR SESION
+        function abrirModalSesion() {
+            document.getElementById("modalCerrarSesion").classList.add("show");
+        }
+
+        function cerrarModalSesion() {
+            document.getElementById("modalCerrarSesion").classList.remove("show");
+        }
+
+        function confirmarCerrarSesion() {
+            sessionStorage.clear();
+            window.location.href = "../../index.html";
+        }
+        //
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebar-overlay').classList.toggle('show');
+        }
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebar-overlay').classList.remove('show');
+        }
+
+        /* Staggered animation for stat cards */
+        document.querySelectorAll('.stat-card').forEach((el, i) => {
+            el.style.animationDelay = `${i * 0.07}s`;
+        });
+
+        /* Active nav link auto-detection */
+        document.querySelectorAll('.nav-link-custom').forEach(link => {
+            link.addEventListener('click', function (e) {
+                document.querySelectorAll('.nav-link-custom').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
 </body>
 </html>

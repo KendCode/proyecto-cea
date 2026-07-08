@@ -66,7 +66,14 @@
                 </a>
             </div>
         </div>
-
+        <div class="nav-section">
+            <div class="nav-section-label">Sistema</div>
+            <div class="nav-item-wrap">
+                <a href="#" class="nav-link-custom" onclick="abrirModalSesion(); return false;">
+                    <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                </a>
+            </div>
+        </div>
         <div class="sidebar-footer">
             <div class="user-card">
                 <div class="user-avatar">A</div>
@@ -319,56 +326,6 @@
 
     </div>
 
-
-    <!-- MODAL CERRAR GESTIÓN -->
-    <div class="modal-backdrop" id="modalCerrar">
-
-        <div class="modal">
-
-            <div class="modal-header">
-
-                <h3 class="modal-title">
-
-                    Cerrar Gestión
-
-                </h3>
-
-                <button class="modal-close" onclick="cerrarModal('modalCerrar')">
-
-                    &times;
-
-                </button>
-
-            </div>
-
-            <p class="warning-text">
-
-                ⚠ Después del cierre los docentes no
-                podrán registrar ni modificar notas.
-
-            </p>
-
-            <div class="modal-footer">
-
-                <button class="btn btn-ghost" onclick="cerrarModal('modalCerrar')">
-
-                    Cancelar
-
-                </button>
-
-                <button class="btn btn-danger" id="confirmarCerrar">
-
-                    Cerrar Gestión
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
     <!-- MODAL PROCESAR -->
     <div class="modal-backdrop" id="modalProcesar">
 
@@ -454,7 +411,73 @@
 
     </div>
 
+
+     <!-- ================= MODAL CERRAR SESIÓN ================= -->
+  <div id="modalCerrarSesion" class="logout-overlay">
+    <div class="logout-modal">
+      <div class="logout-header">
+        <div class="logout-icon">
+          <i class="bi bi-box-arrow-right"></i>
+        </div>
+        <h3>Cerrar sesión</h3>
+        <p>
+          ¿Está seguro de que desea cerrar la sesión?
+          Tendrá que volver a iniciar sesión para acceder al sistema.
+        </p>
+      </div>
+
+      <div class="logout-actions">
+        <button class="btn-cancelar" onclick="cerrarModalSesion()">
+          <i class="bi bi-x-circle"></i>
+          Cancelar
+        </button>
+
+        <button class="btn-salir" onclick="confirmarCerrarSesion()">
+          <i class="bi bi-box-arrow-right"></i>
+          Cerrar sesión
+        </button>
+      </div>
+    </div>
+  </div>
+
     <script type="module" src="../../controllers/gestionAcademicaController.js">
+    </script>
+    <script>
+        //CERRAR SESION
+        function abrirModalSesion() {
+            document.getElementById("modalCerrarSesion").classList.add("show");
+        }
+
+        function cerrarModalSesion() {
+            document.getElementById("modalCerrarSesion").classList.remove("show");
+        }
+
+        function confirmarCerrarSesion() {
+            sessionStorage.clear();
+            window.location.href = "../../index.html";
+        }
+        //
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebar-overlay').classList.toggle('show');
+        }
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebar-overlay').classList.remove('show');
+        }
+
+        /* Staggered animation for stat cards */
+        document.querySelectorAll('.stat-card').forEach((el, i) => {
+            el.style.animationDelay = `${i * 0.07}s`;
+        });
+
+        /* Active nav link auto-detection */
+        document.querySelectorAll('.nav-link-custom').forEach(link => {
+            link.addEventListener('click', function (e) {
+                document.querySelectorAll('.nav-link-custom').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
     </script>
     <script>
 

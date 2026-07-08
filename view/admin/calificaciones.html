@@ -1,313 +1,312 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CEA — Calificaciones</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../../assets/css/styles.css">
-  <style>
-    .nota-badge {
-      display:inline-block; padding:4px 10px; border-radius:99px;
-      font-family:var(--mono); font-weight:700; font-size:13px;
-    }
-    .nota-excelente { background:rgba(16,185,129,.15); color:var(--accent-3); }
-    .nota-bueno     { background:rgba(59,130,246,.15);  color:var(--accent); }
-    .nota-regular   { background:rgba(245,158,11,.15);  color:var(--accent-4); }
-    .nota-malo      { background:rgba(239,68,68,.15);   color:var(--danger); }
-
-    .ranking-item {
-      display:flex; align-items:center; gap:14px;
-      padding:12px 16px; background:var(--bg-elevated);
-      border:1px solid var(--border); border-radius:var(--radius-sm);
-      margin-bottom:8px; transition:border-color .2s;
-    }
-    .ranking-item:hover { border-color:var(--border-light); }
-    .rank-pos { width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-weight:800;font-size:12px;flex-shrink:0; }
-    .pos-1 { background:rgba(245,158,11,.2);color:var(--accent-4); }
-    .pos-2 { background:rgba(148,163,184,.15);color:#94a3b8; }
-    .pos-3 { background:rgba(180,120,80,.15);color:#cd7f32; }
-    .pos-n { background:var(--bg-surface);color:var(--txt-muted); }
-  </style>
+  
 </head>
+
 <body>
-<script src="../../assets/js/sidebar.js"></script>
-<script>renderLayout({ title: 'Calificaciones', subtitle: 'Registro y consulta de notas', activeLink: 'calificaciones' });</script>
+  <!-- ═══════════════ SIDEBAR ═══════════════ -->
+  <div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
-<div id="main">
-  <div class="page-content">
+  <aside id="sidebar">
+    <a href="#" class="sidebar-brand">
+      <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+      <div class="brand-text">
+        <div class="name">C.E.A. "Abya Yala"</div>
+        <div class="sub">Sistema Académico</div>
+      </div>
+    </a>
 
-    <!-- Stats -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px">
-      <div class="stat-card">
-        <div class="icon-wrap ic-blue"><i class="bi bi-star-fill"></i></div>
-        <div class="stat-value" id="totalNotas">—</div>
-        <div class="stat-label">Calificaciones</div>
-      </div>
-      <div class="stat-card">
-        <div class="icon-wrap ic-green"><i class="bi bi-graph-up-arrow"></i></div>
-        <div class="stat-value" id="promedio">—</div>
-        <div class="stat-label">Promedio General</div>
-      </div>
-      <div class="stat-card">
-        <div class="icon-wrap ic-amber"><i class="bi bi-award-fill"></i></div>
-        <div class="stat-value" id="aprobados">—</div>
-        <div class="stat-label">Aprobados</div>
-      </div>
-      <div class="stat-card">
-        <div class="icon-wrap ic-red"><i class="bi bi-x-circle-fill"></i></div>
-        <div class="stat-value" id="reprobados">—</div>
-        <div class="stat-label">Reprobados</div>
+    <div class="nav-section">
+      <div class="nav-section-label">Principal</div>
+      <div class="nav-item-wrap">
+        <a href="dashboard.html" class="nav-link-custom">
+          <i class="bi bi-grid-1x2-fill"></i> Dashboard
+        </a>
       </div>
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start">
+    <div class="nav-section">
+      <div class="nav-section-label">Gestión</div>
+      <div class="nav-item-wrap">
+        <a href="usuarios.html" class="nav-link-custom">
+          <i class="bi bi-people-fill"></i> Usuarios
+          <span class="badge-pill">48</span>
+        </a>
+        <a href="estudiantes.html" class="nav-link-custom">
+          <i class="bi bi-person-badge-fill"></i> Estudiantes
+        </a>
+        <a href="docentes.html" class="nav-link-custom">
+          <i class="bi bi-person-workspace"></i> Docentes
+        </a>
+        <a href="carreras.html" class="nav-link-custom">
+          <i class="bi bi-building-fill"></i> Carreras
+        </a>
+        <a href="modulos.html" class="nav-link-custom">
+          <i class="bi bi-journal-bookmark-fill"></i> Módulos
+        </a>
+        <a href="calificaciones.html" class="nav-link-custom active">
+          <i class="bi bi-journal-bookmark-fill"></i> Calificaciones
+        </a>
+      </div>
+    </div>
 
-      <!-- Tabla principal -->
-      <div class="panel-card">
-        <div class="section-header">
-          <div>
-            <div class="section-title">Registro de Notas</div>
-            <div class="section-sub">Notas por estudiante, módulo y gestión</div>
-          </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <select class="filter-select" id="filtroModulo" onchange="filtrar()">
-              <option value="">Todos los módulos</option>
-            </select>
-            <select class="filter-select" id="filtroGestion" onchange="filtrar()">
-              <option value="">Todas las gestiones</option>
-              <option value="2026">2026</option>
-              <option value="2025">2025</option>
-            </select>
-            <button class="btn btn-primary" onclick="abrirModal()">
-              <i class="bi bi-plus-lg"></i> Registrar Nota
-            </button>
-          </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Académico</div>
+      <div class="nav-item-wrap">
+        <a href="gestionAcademica.html" class="nav-link-custom">
+          <i class="bi bi-bar-chart-fill"></i> Gestión Académica
+        </a>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Sistema</div>
+      <div class="nav-item-wrap">
+        <a href="#" class="nav-link-custom" onclick="abrirModalSesion(); return false;">
+          <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+        </a>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar">A</div>
+        <div class="user-info">
+          <div class="uname">Admin CEA</div>
+          <div class="urole">Administrador</div>
         </div>
+        <i class="bi bi-three-dots-vertical"></i>
+      </div>
+    </div>
+  </aside>
 
-        <div style="overflow-x:auto">
-          <table class="data-table">
-            <thead>
-              <tr><th>#</th><th>Estudiante</th><th>Docente</th><th>Módulo</th><th>Nota</th><th>Gestión</th><th>Acciones</th></tr>
-            </thead>
-            <tbody id="tbodyNotas"></tbody>
-          </table>
+  <!-- ═══════════════ TOPBAR ═══════════════ -->
+  <header id="topbar">
+    <button class="hamburger" onclick="toggleSidebar()">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <div>
+      <div class="topbar-title">Dashboard</div>
+      <div class="topbar-sub">Bienvenido, Administrador · <span class="gestion-tag">Gestión 2026</span></div>
+    </div>
+
+    <div class="topbar-search">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Buscar usuarios, módulos…" />
+    </div>
+
+    <div class="topbar-actions">
+      <div class="icon-btn" title="Notificaciones">
+        <i class="bi bi-bell"></i>
+        <span class="dot"></span>
+      </div>
+      <div class="icon-btn" title="Modo claro">
+        <i class="bi bi-sun"></i>
+      </div>
+      <div class="icon-btn" title="Perfil">
+        <i class="bi bi-person-circle"></i>
+      </div>
+    </div>
+  </header>
+  <div id="main">
+    <div class="page-content">
+
+      <!-- Stats -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px">
+        <div class="stat-card">
+          <div class="icon-wrap ic-blue"><i class="bi bi-star-fill"></i></div>
+          <div class="stat-value" id="totalNotas">—</div>
+          <div class="stat-label">Calificaciones</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon-wrap ic-green"><i class="bi bi-graph-up-arrow"></i></div>
+          <div class="stat-value" id="promedio">—</div>
+          <div class="stat-label">Promedio General</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon-wrap ic-amber"><i class="bi bi-award-fill"></i></div>
+          <div class="stat-value" id="aprobados">—</div>
+          <div class="stat-label">Aprobados</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon-wrap ic-red"><i class="bi bi-x-circle-fill"></i></div>
+          <div class="stat-value" id="reprobados">—</div>
+          <div class="stat-label">Reprobados</div>
         </div>
       </div>
 
-      <!-- Ranking -->
-      <div class="panel-card">
-        <div class="section-header">
-          <div class="section-title">🏆 Ranking</div>
-          <div class="section-sub">Top estudiantes</div>
+      <div style="display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start">
+
+        <!-- Tabla principal -->
+        <div class="panel-card">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Registro de Notas</div>
+              <div class="section-sub">Notas por estudiante, módulo y gestión</div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <select class="filter-select" id="filtroModulo" onchange="filtrar()">
+                <option value="">Todos los módulos</option>
+              </select>
+              <select class="filter-select" id="filtroGestion" onchange="filtrar()">
+                <option value="">Todas las gestiones</option>
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+              </select>
+              <button class="btn btn-primary" onclick="abrirModal()">
+                <i class="bi bi-plus-lg"></i> Registrar Nota
+              </button>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Estudiante</th>
+                  <th>Docente</th>
+                  <th>Módulo</th>
+                  <th>Nota</th>
+                  <th>Gestión</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyNotas"></tbody>
+            </table>
+          </div>
         </div>
-        <div id="rankingList"></div>
+
+        <!-- Ranking -->
+        <div class="panel-card">
+          <div class="section-header">
+            <div class="section-title">🏆 Ranking</div>
+            <div class="section-sub">Top estudiantes</div>
+          </div>
+          <div id="rankingList"></div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Modal Calificación -->
-<div class="modal-backdrop" id="modalCal">
-  <div class="modal" style="max-width:520px">
-    <div class="modal-header">
-      <div class="modal-title" id="modalTitulo">Registrar Calificación</div>
-      <button class="modal-close" onclick="cerrarModal()"><i class="bi bi-x-lg"></i></button>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Estudiante ID</label>
-        <input type="text" class="form-control" id="fEstId" placeholder="ID estudiante">
+  <!-- Modal Calificación -->
+  <div class="modal-backdrop" id="modalCal">
+    <div class="modal" style="max-width:520px">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitulo">Registrar Calificación</div>
+        <button class="modal-close" onclick="cerrarModal()"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Estudiante ID</label>
+          <input type="text" class="form-control" id="fEstId" placeholder="ID estudiante">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Docente ID</label>
+          <input type="text" class="form-control" id="fDocId" placeholder="ID docente">
+        </div>
       </div>
       <div class="form-group">
-        <label class="form-label">Docente ID</label>
-        <input type="text" class="form-control" id="fDocId" placeholder="ID docente">
+        <label class="form-label">Módulo</label>
+        <select class="form-control" id="fModulo">
+          <option value="">Seleccionar módulo...</option>
+        </select>
       </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Módulo</label>
-      <select class="form-control" id="fModulo">
-        <option value="">Seleccionar módulo...</option>
-      </select>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Nota (0–100)</label>
-        <input type="number" class="form-control" id="fNota" min="0" max="100" placeholder="85">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Nota (0–100)</label>
+          <input type="number" class="form-control" id="fNota" min="0" max="100" placeholder="85">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Gestión</label>
+          <input type="text" class="form-control" id="fGestion" value="2026" placeholder="2026">
+        </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Gestión</label>
-        <input type="text" class="form-control" id="fGestion" value="2026" placeholder="2026">
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="cerrarModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="guardar()"><i class="bi bi-floppy-fill"></i> Guardar</button>
       </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="cerrarModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="guardar()"><i class="bi bi-floppy-fill"></i> Guardar</button>
     </div>
   </div>
-</div>
 
-<script type="module">
-const DEMO_MODULOS = [
-  { id:'mod1', nombre:'Programación I', sigla:'PROG1' },
-  { id:'mod2', nombre:'Base de Datos I', sigla:'BD1' },
-  { id:'mod3', nombre:'Contabilidad Básica', sigla:'CONT1' },
-  { id:'mod4', nombre:'Electricidad Básica', sigla:'ELEC1' },
-];
-const DEMO_ESTUDIANTES = {
-  'est1':{ nombre:'Juan Pérez', usuario:'juan_p2026' },
-  'est2':{ nombre:'María López', usuario:'maria_l2026' },
-  'est3':{ nombre:'Pedro Mamani', usuario:'pedro_m2026' },
-  'est4':{ nombre:'Ana Ticona', usuario:'ana_t2026' },
-  'est5':{ nombre:'Carlos Condori', usuario:'carlos_c2026' },
-};
-const DEMO_DOCENTES = {
-  'doc1':{ nombre:'Ana Quispe' },
-  'doc2':{ nombre:'Roberto Flores' },
-};
-
-let calificaciones = [
-  { id:'cal1', estudianteId:'est1', docenteId:'doc1', moduloId:'mod1', nota:92, gestion:'2026' },
-  { id:'cal2', estudianteId:'est2', docenteId:'doc1', moduloId:'mod1', nota:85, gestion:'2026' },
-  { id:'cal3', estudianteId:'est3', docenteId:'doc2', moduloId:'mod2', nota:78, gestion:'2026' },
-  { id:'cal4', estudianteId:'est4', docenteId:'doc1', moduloId:'mod3', nota:55, gestion:'2026' },
-  { id:'cal5', estudianteId:'est5', docenteId:'doc2', moduloId:'mod4', nota:40, gestion:'2025' },
-  { id:'cal6', estudianteId:'est1', docenteId:'doc2', moduloId:'mod2', nota:88, gestion:'2026' },
-  { id:'cal7', estudianteId:'est2', docenteId:'doc1', moduloId:'mod3', nota:70, gestion:'2026' },
-];
-const modulos = {}, editId = { v: null };
-DEMO_MODULOS.forEach(m => modulos[m.id]=m);
-
-function notaBadge(n) {
-  if (n>=90) return `<span class="nota-badge nota-excelente">${n}</span>`;
-  if (n>=70) return `<span class="nota-badge nota-bueno">${n}</span>`;
-  if (n>=51) return `<span class="nota-badge nota-regular">${n}</span>`;
-  return `<span class="nota-badge nota-malo">${n}</span>`;
-}
-
-function actualizarStats(data) {
-  const notas = data.map(c=>c.nota);
-  document.getElementById('totalNotas').textContent = data.length;
-  document.getElementById('promedio').textContent = notas.length ? (notas.reduce((a,b)=>a+b,0)/notas.length).toFixed(1) : '—';
-  document.getElementById('aprobados').textContent = notas.filter(n=>n>=51).length;
-  document.getElementById('reprobados').textContent = notas.filter(n=>n<51).length;
-}
-
-function getFiltrados() {
-  const fm = document.getElementById('filtroModulo').value;
-  const fg = document.getElementById('filtroGestion').value;
-  return calificaciones.filter(c => (!fm||c.moduloId===fm) && (!fg||c.gestion===fg));
-}
-
-function renderTabla() {
-  const data = getFiltrados();
-  actualizarStats(data);
-  const tbody = document.getElementById('tbodyNotas');
-  if (!data.length) { tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--txt-muted)">Sin calificaciones</td></tr>`; return; }
-  tbody.innerHTML = data.map((c,i) => {
-    const est = DEMO_ESTUDIANTES[c.estudianteId]||{ nombre:'Desconocido' };
-    const doc = DEMO_DOCENTES[c.docenteId]||{ nombre:'Desconocido' };
-    const mod = modulos[c.moduloId]||{ nombre:'—', sigla:'—' };
-    return `<tr>
-      <td style="color:var(--txt-muted)">${i+1}</td>
-      <td class="td-name">
-        <div>${est.nombre}</div>
-        <div style="font-size:11px;color:var(--txt-muted);font-family:var(--mono)">${est.usuario||''}</div>
-      </td>
-      <td>${doc.nombre}</td>
-      <td><span class="role-badge rb-admin">${mod.sigla}</span> ${mod.nombre}</td>
-      <td>${notaBadge(c.nota)}</td>
-      <td><span class="gestion-tag">${c.gestion}</span></td>
-      <td>
-        <div style="display:flex;gap:6px">
-          <button class="btn btn-ghost btn-sm" onclick="editar('${c.id}')"><i class="bi bi-pencil-fill"></i></button>
-          <button class="btn btn-danger btn-sm" onclick="eliminar('${c.id}')"><i class="bi bi-trash-fill"></i></button>
+  <!-- ================= MODAL CERRAR SESIÓN ================= -->
+  <div id="modalCerrarSesion" class="logout-overlay">
+    <div class="logout-modal">
+      <div class="logout-header">
+        <div class="logout-icon">
+          <i class="bi bi-box-arrow-right"></i>
         </div>
-      </td>
-    </tr>`;
-  }).join('');
-  renderRanking();
-}
-
-function renderRanking() {
-  const promedios = {};
-  calificaciones.forEach(c => {
-    if (!promedios[c.estudianteId]) promedios[c.estudianteId] = { sum:0, count:0 };
-    promedios[c.estudianteId].sum += c.nota;
-    promedios[c.estudianteId].count++;
-  });
-  const ranked = Object.entries(promedios)
-    .map(([id, {sum,count}]) => ({ id, promedio: sum/count, puntos: sum }))
-    .sort((a,b)=>b.promedio-a.promedio)
-    .slice(0,5);
-
-  const max = ranked[0]?.promedio || 100;
-  const posClass = ['pos-1','pos-2','pos-3'];
-  const cont = document.getElementById('rankingList');
-  cont.innerHTML = ranked.map((r,i) => {
-    const est = DEMO_ESTUDIANTES[r.id]||{ nombre:'Desconocido' };
-    const pct = Math.round((r.promedio/max)*100);
-    return `<div class="ranking-item">
-      <div class="rank-pos ${posClass[i]||'pos-n'}">${i+1}</div>
-      <div style="flex:1;min-width:0">
-        <div style="font-weight:600;font-size:13px;color:var(--txt-primary)">${est.nombre}</div>
-        <div style="font-size:11px;color:var(--txt-muted)">${r.promedio.toFixed(1)}% promedio</div>
-        <div class="prog-bar" style="margin-top:6px">
-          <div class="prog-fill" style="width:${pct}%;background:linear-gradient(90deg,var(--accent),var(--accent-2))"></div>
-        </div>
+        <h3>Cerrar sesión</h3>
+        <p>
+          ¿Está seguro de que desea cerrar la sesión?
+          Tendrá que volver a iniciar sesión para acceder al sistema.
+        </p>
       </div>
-      <div style="font-family:var(--mono);font-weight:700;font-size:14px;color:var(--txt-primary)">${Math.round(r.puntos)}</div>
-    </div>`;
-  }).join('');
-}
 
-function init() {
-  const selFM = document.getElementById('filtroModulo');
-  const selM  = document.getElementById('fModulo');
-  DEMO_MODULOS.forEach(m => {
-    selFM.insertAdjacentHTML('beforeend',`<option value="${m.id}">${m.nombre}</option>`);
-    selM.insertAdjacentHTML('beforeend',`<option value="${m.id}">${m.nombre}</option>`);
-  });
-  renderTabla();
-}
+      <div class="logout-actions">
+        <button class="btn-cancelar" onclick="cerrarModalSesion()">
+          <i class="bi bi-x-circle"></i>
+          Cancelar
+        </button>
 
-window.filtrar = renderTabla;
-window.abrirModal = function(id=null) {
-  editId.v = id;
-  document.getElementById('modalTitulo').textContent = id ? 'Editar Calificación' : 'Registrar Calificación';
-  if (id) {
-    const c = calificaciones.find(x=>x.id===id);
-    document.getElementById('fEstId').value=c.estudianteId;
-    document.getElementById('fDocId').value=c.docenteId;
-    document.getElementById('fModulo').value=c.moduloId;
-    document.getElementById('fNota').value=c.nota;
-    document.getElementById('fGestion').value=c.gestion;
-  } else {
-    ['fEstId','fDocId','fNota'].forEach(i=>document.getElementById(i).value='');
-    document.getElementById('fModulo').value='';
-    document.getElementById('fGestion').value='2026';
-  }
-  document.getElementById('modalCal').classList.add('show');
-};
-window.cerrarModal = () => document.getElementById('modalCal').classList.remove('show');
-window.editar = id => abrirModal(id);
-window.guardar = function() {
-  const nota = parseInt(document.getElementById('fNota').value);
-  if (nota<0||nota>100||isNaN(nota)) { showToast('La nota debe estar entre 0 y 100','error'); return; }
-  const data = { estudianteId:document.getElementById('fEstId').value.trim(), docenteId:document.getElementById('fDocId').value.trim(), moduloId:document.getElementById('fModulo').value, nota, gestion:document.getElementById('fGestion').value.trim() };
-  if (!data.estudianteId||!data.docenteId||!data.moduloId) { showToast('Completa todos los campos','error'); return; }
-  if (editId.v) { const i=calificaciones.findIndex(c=>c.id===editId.v); if(i>-1) calificaciones[i]={...calificaciones[i],...data}; showToast('Nota actualizada'); }
-  else { calificaciones.push({id:'cal'+Date.now(),...data}); showToast('Nota registrada'); }
-  cerrarModal(); renderTabla();
-};
-window.eliminar = function(id) {
-  if(!confirm('¿Eliminar calificación?')) return;
-  calificaciones=calificaciones.filter(c=>c.id!==id); showToast('Eliminado','info'); renderTabla();
-};
+        <button class="btn-salir" onclick="confirmarCerrarSesion()">
+          <i class="bi bi-box-arrow-right"></i>
+          Cerrar sesión
+        </button>
+      </div>
+    </div>
+  </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/calificaciones.js"></script>
+   <script>
+    //CERRAR SESION
+    function abrirModalSesion() {
+      document.getElementById("modalCerrarSesion").classList.add("show");
+    }
 
-init();
-</script>
+    function cerrarModalSesion() {
+      document.getElementById("modalCerrarSesion").classList.remove("show");
+    }
+
+    function confirmarCerrarSesion() {
+      sessionStorage.clear();
+      window.location.href = "../../index.html";
+    }
+    //
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebar-overlay').classList.toggle('show');
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebar-overlay').classList.remove('show');
+    }
+
+    /* Staggered animation for stat cards */
+    document.querySelectorAll('.stat-card').forEach((el, i) => {
+      el.style.animationDelay = `${i * 0.07}s`;
+    });
+
+    /* Active nav link auto-detection */
+    document.querySelectorAll('.nav-link-custom').forEach(link => {
+      link.addEventListener('click', function (e) {
+        document.querySelectorAll('.nav-link-custom').forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  </script>
 </body>
+
 </html>

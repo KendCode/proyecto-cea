@@ -30,7 +30,8 @@
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
     #sidebar {
-      position: fixed; inset-y: 0; left: 0;
+      position: fixed; left: 0;
+      height: 100vh;
       width: var(--sidebar-w);
       background: var(--bg-surface);
       border-right: 1px solid var(--border);
@@ -193,3 +194,117 @@
       .page-content { padding: 16px; }
       .topbar-search { display: none; }
     }
+
+
+/* ================= MODAL LOGOUT ================= */
+
+.logout-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.65);
+    backdrop-filter:blur(6px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    opacity:0;
+    visibility:hidden;
+    transition:.25s;
+    z-index:99999;
+}
+
+.logout-overlay.show{
+    opacity:1;
+    visibility:visible;
+}
+
+.logout-modal{
+    width:420px;
+    max-width:95%;
+    background:#fff;
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:
+    0 25px 60px rgba(0,0,0,.30);
+    animation:modalScale .25s ease;
+}
+@keyframes modalScale{
+
+    from{
+        transform:scale(.85);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+
+.logout-header{
+    padding:35px 30px;
+    text-align:center;
+    border-top:6px solid #dc3545;
+}
+
+.logout-icon{
+    width:90px;
+    height:90px;
+    margin:auto;
+    border-radius:50%;
+    background:#fdecec;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#dc3545;
+    font-size:42px;
+    margin-bottom:20px;
+}
+
+.logout-header h3{
+    margin:0;
+    font-size:28px;
+    font-weight:700;
+    color:#1e293b;
+}
+.logout-header p{
+    margin-top:15px;
+    color:#64748b;
+    line-height:1.6;
+}
+
+.logout-actions{
+    display:flex;
+    gap:15px;
+    padding:25px;
+}
+
+.logout-actions button{
+    flex:1;
+    border:none;
+    border-radius:12px;
+    padding:14px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.btn-cancelar{
+    background:#edf2f7;
+    color:#334155;
+}
+
+.btn-cancelar:hover{
+    background:#dbe4ee;
+}
+
+.btn-salir{
+    background:#dc3545;
+    color:white;
+}
+
+.btn-salir:hover{
+    background:#bb2d3b;
+    transform:translateY(-2px);
+}

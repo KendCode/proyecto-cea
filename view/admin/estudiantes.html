@@ -184,7 +184,7 @@
                 <th>Nivel</th>
                 <th>Gestión</th>
                 <th>Estado</th>
-                <!-- <th>Acciones</th> -->
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody id="tbodyEst">
@@ -257,7 +257,7 @@
   </div>
 
 
-   <!-- ================= MODAL CERRAR SESIÓN ================= -->
+  <!-- ================= MODAL CERRAR SESIÓN ================= -->
   <div id="modalCerrarSesion" class="logout-overlay">
     <div class="logout-modal">
       <div class="logout-header">
@@ -284,44 +284,63 @@
       </div>
     </div>
   </div>
-
+  <!-- Modal Eliminar Estudiante -->
+  <div class="modal-backdrop" id="modalEliminar">
+    <div class="modal" style="max-width:420px">
+      <div class="modal-header">
+        <div class="modal-title">Eliminar estudiante</div>
+        <button class="modal-close" onclick="cerrarModalEliminar()"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <p style="color:var(--txt-muted);font-size:14px;margin-bottom:18px">
+        ¿Seguro que deseas eliminar a <strong id="nombreEliminar" style="color:var(--txt-primary)"></strong>
+        de la lista de estudiantes? El usuario no se borrará, solo su asignación de carrera y nivel.
+      </p>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="cerrarModalEliminar()">Cancelar</button>
+        <button class="btn btn-primary" style="background:#ef4444" onclick="confirmarEliminar()">
+          <i class="bi bi-trash-fill"></i> Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
   <script type="module" src="../../controllers/estudiantesController.js"></script>
   <script>
-        //CERRAR SESION
-        function abrirModalSesion() {
-            document.getElementById("modalCerrarSesion").classList.add("show");
-        }
+    //CERRAR SESION
+    function abrirModalSesion() {
+      document.getElementById("modalCerrarSesion").classList.add("show");
+    }
 
-        function cerrarModalSesion() {
-            document.getElementById("modalCerrarSesion").classList.remove("show");
-        }
+    function cerrarModalSesion() {
+      document.getElementById("modalCerrarSesion").classList.remove("show");
+    }
 
-        function confirmarCerrarSesion() {
-            sessionStorage.clear();
-            window.location.href = "../../index.html";
-        }
-        //
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
-            document.getElementById('sidebar-overlay').classList.toggle('show');
-        }
-        function closeSidebar() {
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('sidebar-overlay').classList.remove('show');
-        }
+    function confirmarCerrarSesion() {
+      sessionStorage.clear();
+      window.location.href = "../../index.html";
+    }
+    //
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebar-overlay').classList.toggle('show');
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebar-overlay').classList.remove('show');
+    }
 
-        /* Staggered animation for stat cards */
-        document.querySelectorAll('.stat-card').forEach((el, i) => {
-            el.style.animationDelay = `${i * 0.07}s`;
-        });
+    /* Staggered animation for stat cards */
+    document.querySelectorAll('.stat-card').forEach((el, i) => {
+      el.style.animationDelay = `${i * 0.07}s`;
+    });
 
-        /* Active nav link auto-detection */
-        document.querySelectorAll('.nav-link-custom').forEach(link => {
-            link.addEventListener('click', function (e) {
-                document.querySelectorAll('.nav-link-custom').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-    </script>
+    /* Active nav link auto-detection */
+    document.querySelectorAll('.nav-link-custom').forEach(link => {
+      link.addEventListener('click', function (e) {
+        document.querySelectorAll('.nav-link-custom').forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  </script>
 </body>
+
 </html>

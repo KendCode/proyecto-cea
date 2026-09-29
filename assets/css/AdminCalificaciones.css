@@ -187,3 +187,8 @@
     background:#bb2d3b;
     transform:translateY(-2px);
 }
+@media (max-width: 991px) {
+    #sidebar.open {
+        transform: translateX(0);
+    }
+}

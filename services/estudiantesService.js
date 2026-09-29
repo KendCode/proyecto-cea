@@ -5,6 +5,8 @@ import {
     query,
     where,
     addDoc,
+    updateDoc,
+    deleteDoc,
     doc
 
 }
@@ -196,5 +198,31 @@ export async function obtenerNivelesMapa() {
     });
 
     return niveles;
+
+}
+// ==========================
+// ACTUALIZAR ESTUDIANTE
+// ==========================
+export async function actualizarEstudiante(id, data) {
+
+    await updateDoc(
+        doc(db, "estudiantes", id),
+        {
+            carreraId: doc(db, data.carreraId),
+            nivelId: doc(db, data.nivelId),
+            gestion: data.gestion
+        }
+    );
+
+}
+
+// ==========================
+// ELIMINAR ESTUDIANTE
+// ==========================
+export async function eliminarEstudiante(id) {
+
+    await deleteDoc(
+        doc(db, "estudiantes", id)
+    );
 
 }

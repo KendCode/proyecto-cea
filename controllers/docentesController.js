@@ -768,3 +768,7 @@ window.eliminar =
     }
 
   };
+
+function showToast(mensaje, tipo = "success") {
+    alert(mensaje);
+}
